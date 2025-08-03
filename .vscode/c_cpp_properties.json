@@ -1,0 +1,34 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            // 搜索头文件路径，包含所有的QT模块
+            "includePath": [
+                "${workspaceFolder}/**",
+                "D:/dev/Qt6.9/6.9.0/msvc2022_64/include",
+                "D:/dev/Qt6.9/6.9.0/msvc2022_64/include/QtCore",
+                "D:/dev/Qt6.9/6.9.0/msvc2022_64/include/QtGui", 
+                "D:/dev/Qt6.9/6.9.0/msvc2022_64/include/QtWidgets",
+                "D:/dev/Qt6.9/6.9.0/msvc2022_64/include/QtNetwork",
+                "${workspaceFolder}/build"
+            ],
+            // 定义宏，便于编译器识别
+            "defines": [
+                "_DEBUG",
+                "UNICODE", 
+                "_UNICODE",
+                "QT_CORE_LIB",
+                "QT_GUI_LIB", 
+                "QT_WIDGETS_LIB",
+                "QT_NETWORK_LIB"
+            ],
+            // Windows SDK版本
+            "windowsSdkVersion": "10.0.22621.0",
+            "compilerPath": "D:/dev/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.44.35207/bin/Hostx64/x64/cl.exe",
+            "cStandard": "c17",
+            "cppStandard": "c++17", 
+            "intelliSenseMode": "windows-msvc-x64"
+        }
+    ],
+    "version": 4
+}

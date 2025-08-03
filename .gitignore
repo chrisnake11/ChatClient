@@ -62,7 +62,7 @@ qrc_*.cpp
 *.qbs.user.*
 
 # VS Code
-.vscode/
+# .vscode/
 .vs/
 
 # Temporary files

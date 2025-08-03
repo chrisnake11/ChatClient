@@ -1,0 +1,15 @@
+{
+    // CMake配置参数，告诉CMake在哪里找Qt库，使IntelliSense能正确解析Qt头文件
+    "cmake.configureArgs": [
+        "-DCMAKE_PREFIX_PATH=D:/dev/Qt6.9/6.9.0/msvc2022_64"
+    ],
+    "cmake.buildDirectory": "${workspaceFolder}/build",
+    "cmake.generator": "Visual Studio 17 2022",
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "C_Cpp.default.intelliSenseMode": "windows-msvc-x64",
+    "files.associations": {
+        "*.qss": "css",
+        "*.ui": "xml",
+        "qapplication": "cpp"
+    }
+}

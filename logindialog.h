@@ -35,9 +35,9 @@ signals:
 private:
     Ui::LoginDialog *ui;
 
-    // �����������ͣ���ȡ�ص�����
+    // HTTP请求的回调函数
     QMap<RequestID, std::function<void(const QJsonObject&)>> _handlers;
-    // ע��Handler�ص�����
+    // 初始化Handler的回调函数
     void initHttpHandlers();
     quint16 _uid;
     QString _token;

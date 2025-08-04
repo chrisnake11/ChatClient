@@ -18,16 +18,16 @@ public:
 	void setState(QString normal, QString hover, QString press, QString selected, QString selected_hover, QString selected_press);
 	ClickLabelState getCurrentState();
 private:
-	// 6ÖÖÊó±êÊÂ¼ş×´Ì¬
-	QString _normal;	// Ä¬ÈÏ×´Ì¬
-	QString _normal_hover; // Ğü¸¡
-	QString _normal_press; // °´×¡
+	// 6ä¸ªçŠ¶æ€çš„å­—ç¬¦ä¸²
+	QString _normal;	// é»˜è®¤çŠ¶æ€
+	QString _normal_hover; // æ‚¬åœ
+	QString _normal_press; // æŒ‰ä¸‹
 
-	QString _selected; // Ñ¡ÖĞ×´Ì¬
-    QString _selected_hover; // Ğü¸¡
-    QString _selected_press; // °´×¡
+	QString _selected; // é€‰ä¸­çŠ¶æ€
+    QString _selected_hover; // æ‚¬åœ
+    QString _selected_press; // æŒ‰ä¸‹
 
-	// °´Å¥×´Ì¬
+	// æŒ‰é’®çŠ¶æ€
 	ClickLabelState _current_state;
 
 signals:

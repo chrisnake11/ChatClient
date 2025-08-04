@@ -35,9 +35,9 @@ signals:
 private:
     Ui::LoginDialog *ui;
 
-    // ¸ù¾ÝÇëÇóÀàÐÍ£¬¶ÁÈ¡»Øµ÷º¯Êý
+    // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Í£ï¿½ï¿½ï¿½È¡ï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½
     QMap<RequestID, std::function<void(const QJsonObject&)>> _handlers;
-    // ×¢²áHandler»Øµ÷º¯Êý
+    // ×¢ï¿½ï¿½Handlerï¿½Øµï¿½ï¿½ï¿½ï¿½ï¿½
     void initHttpHandlers();
     quint16 _uid;
     QString _token;

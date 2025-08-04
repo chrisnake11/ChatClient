@@ -17,13 +17,13 @@ private:
 	TcpManager();
 	void initHandlers();
 	void handleMsg(RequestID id, int len, QByteArray data);
-	// 根据req id类型，执行不同的发送逻辑
+	// handle login response
 	QMap<RequestID, std::function<void(RequestID id, int len, QByteArray data)>> _handlers;
 	// client socket
 	QTcpSocket _socket;
 	QString _host;
 	uint16_t _port;
-	// 共享的发送缓冲区
+	// 鎺ユ敹鏁版嵁鐨勭紦鍐插尯
 	QByteArray _buffer;
 	bool _b_recv_pending;
 	quint16 _message_id;

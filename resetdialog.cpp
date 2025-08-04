@@ -8,17 +8,17 @@ ResetDialog::ResetDialog(QWidget *parent)
 	ui->setupUi(this);
 	ui->err_tip->clear();
 
-	// Ìæ»»µôget_code_btnÎª×Ô¶¨Òå¿Ø¼þ timerbtn
+	// å°† get_code_btn æ›¿æ¢ä¸ºä¸€ä¸ªæ–°çš„ timerbtn
 	{
-		// ±£´æ¾ÉµÄ QPushButton Õ¼Î»·û
+		// èŽ·å–åŽŸæ¥çš„ QPushButton ä½ç½®
 		QPushButton* old_btn = ui->get_code_btn;
 
-		// ¹¹ÔìÐÂµÄ timerbtn Ìæ´ú
+		// åˆ›å»ºä¸€ä¸ªæ–°çš„ timerbtn
 		timerbtn* new_btn = new timerbtn(this);
 		new_btn->setObjectName("get_code_btn");
 		new_btn->setText(old_btn->text());
 
-		// Èç¹ûÓÐ²¼¾Ö£¬ÔòÌæ»»µ½Ô­Î»ÖÃ
+		// å°†æ–°çš„ timerbtn æ›¿æ¢åˆ°åŽŸæ¥çš„ä½ç½®
 		QLayout* layout = old_btn->parentWidget()->layout();
 		if (layout) {
 			layout->replaceWidget(old_btn, new_btn);
@@ -27,7 +27,7 @@ ResetDialog::ResetDialog(QWidget *parent)
 		old_btn->hide();
 		old_btn->deleteLater();
 
-		// Ç¿ÖÆÀàÐÍ×ª»»²¢ÖØÐÂ¸³Öµ¸ø UI Ö¸Õë
+		// å¼ºåˆ¶æ›´æ–° UI æŒ‡é’ˆ
 		ui->get_code_btn = new_btn;
 	}
 	qDebug() << "get_code_btn is of type:" << ui->get_code_btn->metaObject()->className();
@@ -36,7 +36,7 @@ ResetDialog::ResetDialog(QWidget *parent)
 
 	connect(HttpManager::getInstance().get(), &HttpManager::sig_reset_mod_finish, this, &ResetDialog::on_reset_mod_finish);
 
-	// on_xxx_do ²»ÐèÒª°ó¶¨£¬QT»á×Ô¶¯°ó¶¨²Ûº¯Êý
+	// on_xxx_do éœ€è¦é‡æ–°å®žçŽ°QTçš„ä¿¡å·æ§½æœºåˆ¶
 	connect(ui->get_code_btn, &QPushButton::clicked, this, &ResetDialog::on_get_code_btn_clicked);
 
 	connect(ui->reset_btn, &QPushButton::clicked, this, &ResetDialog::on_reset_btn_clicked);
@@ -45,7 +45,7 @@ ResetDialog::ResetDialog(QWidget *parent)
 
 	initHttpHandlers();
 
-	// °ó¶¨ÊäÈë¿ò¼ì²éÊÂ¼þ
+	// è¿žæŽ¥è¾“å…¥æ¡†çš„ç¼–è¾‘å®Œæˆä¿¡å·
 	connect(ui->email_text, &QLineEdit::editingFinished, this, [this]() {
 		checkEmailValid();
 		});
@@ -62,17 +62,17 @@ ResetDialog::ResetDialog(QWidget *parent)
 		checkCodeValid();
 		});
 
-	// ÉèÖÃÃÜÂë¿É¼û°´Å¥µÄÐü¸¡¹â±ê
+	// è¿žæŽ¥å¯è§æ€§åˆ‡æ¢æ ‡ç­¾çš„ç‚¹å‡»äº‹ä»¶
 	ui->passwd_visible->setCursor(Qt::PointingHandCursor);
 	ui->confirm_visible->setCursor(Qt::PointingHandCursor);
 
-	// ÉèÖÃ°´Å¥³õÊ¼×´Ì¬
+	// åˆå§‹åŒ–æ ‡ç­¾çš„çŠ¶æ€
 	ui->passwd_visible->setState("unvisible", "unvisible_hover", "", "visible",
 		"visible_hover", "");
 	ui->confirm_visible->setState("unvisible", "unvisible_hover", "", "visible",
 		"visible_hover", "");
 
-	// ÃÜÂë¿É¼ûÐÔ°´Å¥×´Ì¬µã»÷ÇÐ»»
+	// è¿žæŽ¥å¯†ç å¯è§æ€§åˆ‡æ¢æ ‡ç­¾çš„ç‚¹å‡»äº‹ä»¶
 	connect(ui->passwd_visible, &clickedlabel::clicked, [this]() {
 		auto state = ui->passwd_visible->getCurrentState();
 		if (state == ClickLabelState::NORMAL) {
@@ -104,7 +104,7 @@ ResetDialog::~ResetDialog()
 
 void ResetDialog::on_get_code_btn_clicked() {
 	auto email = ui->email_text->text();
-	// ¸ñÊ½¼ì²é
+	// ï¿½ï¿½Ê½ï¿½ï¿½ï¿½
 	QRegularExpression email_regex(R"(^\w+(-+.\w+)*@\w+(-.\w+)*.\w+(-.\w+)*$)");
 	if (!email_regex.match(email).hasMatch()) {
         showTip(tr("email format error"), false);
@@ -211,13 +211,13 @@ void ResetDialog::initHttpHandlers() {
 
 bool ResetDialog::checkEmailValid()
 {
-	//ÑéÖ¤ÓÊÏäµÄµØÖ·ÕýÔò±í´ïÊ½
+	//ï¿½ï¿½Ö¤ï¿½ï¿½ï¿½ï¿½Äµï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½
 	auto email = ui->email_text->text();
-	// ÓÊÏäµØÖ·µÄÕýÔò±í´ïÊ½
+	// ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½
 	QRegularExpression regex(R"((\w+)(\.|_)?(\w*)@(\w+)(\.(\w+))+)");
-	bool match = regex.match(email).hasMatch(); // Ö´ÐÐÕýÔò±í´ïÊ½Æ¥Åä
+	bool match = regex.match(email).hasMatch(); // Ö´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½Æ¥ï¿½ï¿½
 	if (!match) {
-		//ÌáÊ¾ÓÊÏä²»ÕýÈ·
+		//ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½ä²»ï¿½ï¿½È·
 		addTipErr(TipErr::TIP_EMAIL_ERR, tr("email address is incorrect"));
 		return false;
 	}
@@ -229,18 +229,18 @@ bool ResetDialog::checkPasswdValid()
 {
 	auto pass = ui->passwd_text->text();
 	if (pass.length() < 6 || pass.length() > 15) {
-		//ÌáÊ¾³¤¶È²»×¼È·
-		addTipErr(TipErr::TIP_PWD_ERR, tr("ÃÜÂë³¤¶ÈÓ¦Îª6~15"));
+		//ï¿½ï¿½Ê¾ï¿½ï¿½ï¿½È²ï¿½×¼È·
+		addTipErr(TipErr::TIP_PWD_ERR, tr("ï¿½ï¿½ï¿½ë³¤ï¿½ï¿½Ó¦Îª6~15"));
 		return false;
 	}
-	// ´´½¨Ò»¸öÕýÔò±í´ïÊ½¶ÔÏó£¬°´ÕÕÉÏÊöÃÜÂëÒªÇó
-	// Õâ¸öÕýÔò±í´ïÊ½½âÊÍ£º
-	// ^[a-zA-Z0-9!@#$%^&*]{6,15}$ ÃÜÂë³¤¶ÈÖÁÉÙ6£¬¿ÉÒÔÊÇ×ÖÄ¸¡¢Êý×ÖºÍÌØ¶¨µÄÌØÊâ×Ö·û
+	// ï¿½ï¿½ï¿½ï¿½Ò»ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½ó£¬°ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Òªï¿½ï¿½
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½ï¿½ï¿½ï¿½Í£ï¿½
+	// ^[a-zA-Z0-9!@#$%^&*]{6,15}$ ï¿½ï¿½ï¿½ë³¤ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½6ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ä¸ï¿½ï¿½ï¿½ï¿½ï¿½Öºï¿½ï¿½Ø¶ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ö·ï¿½
 	QRegularExpression regExp("^[a-zA-Z0-9!@#$%^&*]{6,15}$");
 	bool match = regExp.match(pass).hasMatch();
 	if (!match) {
-		//ÌáÊ¾×Ö·û·Ç·¨
-		addTipErr(TipErr::TIP_PWD_ERR, tr("²»ÄÜ°üº¬·Ç·¨×Ö·û"));
+		//ï¿½ï¿½Ê¾ï¿½Ö·ï¿½ï¿½Ç·ï¿½
+		addTipErr(TipErr::TIP_PWD_ERR, tr("ï¿½ï¿½ï¿½Ü°ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½Ö·ï¿½"));
 		return false;;
 	}
 	delTipErr(TipErr::TIP_PWD_ERR);
@@ -252,7 +252,7 @@ bool ResetDialog::checkConfirmValid()
 	auto pass = ui->passwd_text->text();
 	auto confirm = ui->confirm_text->text();
 	if (pass != confirm) {
-		addTipErr(TipErr::TIP_CONFIRM_ERR, tr("ÃÜÂë²»Ò»ÖÂ"));
+		addTipErr(TipErr::TIP_CONFIRM_ERR, tr("ï¿½ï¿½ï¿½ë²»Ò»ï¿½ï¿½"));
 		return false;
 	}
 	delTipErr(TipErr::TIP_CONFIRM_ERR);

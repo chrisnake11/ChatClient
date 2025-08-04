@@ -5,23 +5,23 @@
 
 
 TcpManager::TcpManager() : _host(""), _port(0), _b_recv_pending(false), _message_id(0), _message_len(0) {
-	// °ó¶¨Á¬½ÓÊÂ¼ş
+	// QTcpSocketè¿æ¥æˆåŠŸåï¼Œå‘é€ä¿¡å·
 	QObject::connect(&_socket, &QTcpSocket::connected, [&] {
 		qDebug() << "Success Connect to Server";
 		emit sig_connect_success(true);
 		});
 
-	// °ó¶¨¶ÁÈ¡ÊÂ¼ş
+	// QTcpSocketæ¥æ”¶åˆ°æ•°æ®åï¼Œå¤„ç†æ¥æ”¶çš„æ•°æ®
 	QObject::connect(&_socket, &QTcpSocket::readyRead, [&] {
 		_buffer.append(_socket.readAll());
 
 		QDataStream stream(&_buffer, QIODevice::ReadOnly);
 		stream.setVersion(QDataStream::Qt_6_0);
 
-		// Ñ­»·¶ÁÈ¡Êı¾İ
+		// å¤„ç†æ¥æ”¶åˆ°çš„æ•°æ®
 		forever{
 			if (!_b_recv_pending) {
-				// ¶ÁÈ¡header£¬Êı¾İ³¤¶È²»¹»
+				// æ£€æŸ¥æ˜¯å¦æœ‰è¶³å¤Ÿçš„æ•°æ®æ¥è¯»å–æ¶ˆæ¯å¤´
 				if (_buffer.size() < static_cast<int>(sizeof(quint16) * 2)) {
 					return;
 				}
@@ -33,38 +33,38 @@ TcpManager::TcpManager() : _host(""), _port(0), _b_recv_pending(false), _message
 				qDebug() << "Message id: " << _message_id << ", Message len: " << _message_len;
 			}
 
-			// Êı¾İÌåÃ»¶ÁÍê
+			// æ£€æŸ¥æ˜¯å¦æœ‰è¶³å¤Ÿçš„æ•°æ®æ¥è¯»å–æ¶ˆæ¯ä½“
 			if (_buffer.size() < _message_len) {
 				_b_recv_pending = true;
 				return;
 			}
 
 
-			// ¶ÁÈ¡ÏûÏ¢Ìå
+			// è·å–æ¶ˆæ¯ä½“
 			_b_recv_pending = false;
 			QByteArray message_body = _buffer.mid(0, _message_len);
 			qDebug() << "recv body is: " << message_body;
 
-			// ´¦ÀíÊı¾İ°ü
+			// å¤„ç†æ¶ˆæ¯ä½“
 			_buffer = _buffer.mid(_message_len);
 			handleMsg(RequestID(_message_id), _message_len, message_body);
 		}
 
 		});
 
-	// socketÁ¬½ÓÒì³£´¦Àí
+	// socketå‘ç”Ÿé”™è¯¯æ—¶
 	 QObject::connect(&_socket, QOverload<QAbstractSocket::SocketError>::of(&QTcpSocket::errorOccurred), [&](QAbstractSocket::SocketError socketError) {
            Q_UNUSED(socketError)
            qDebug() << "Error:" << _socket.errorString();
 		   emit sig_connect_success(false);
        });
 
-	 // ´¦ÀíÁ¬½Ó¶Ï¿ª
+	 // QTcpSocketæ–­å¼€è¿æ¥æ—¶
 	 QObject::connect(&_socket, &QTcpSocket::disconnected, [&]() {
 		 qDebug() << "Disconnected from server.";
 		 });
 
-	 // °ó¶¨·¢ËÍĞÅºÅÀ´·¢ËÍÊı¾İ
+	 // å¤„ç†QTcpSocketçš„é”™è¯¯
 	 QObject::connect(this, &TcpManager::sig_send_data, this, &TcpManager::slot_send_data);
 
 	 initHandlers();

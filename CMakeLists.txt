@@ -6,9 +6,34 @@ project(ChatRoom2 LANGUAGES CXX)
 
 # 设置C++标准为C++17
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # 导出编译命令供IDE使用
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# 跨平台编译器配置
+if(MSVC)
+    # Windows MSVC编译器
+    add_compile_options(/utf-8)
+    add_compile_options(/W3)  # 警告级别
+    add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    # Linux GCC编译器
+    add_compile_options(-Wall -Wextra -O2)
+    add_compile_options(-fPIC)  # 位置无关代码
+elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    # macOS Clang编译器
+    add_compile_options(-Wall -Wextra -O2)
+endif()
+
+# 平台特定定义
+if(WIN32)
+    add_compile_definitions(PLATFORM_WINDOWS)
+elseif(UNIX AND NOT APPLE)
+    add_compile_definitions(PLATFORM_LINUX)
+elseif(APPLE)
+    add_compile_definitions(PLATFORM_MACOS)
+endif()
 
 # 启用Qt的自动MOC、RCC和UIC功能，自动处理元对象、资源和UI文件
 set(CMAKE_AUTOMOC ON)
@@ -20,33 +45,42 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Network)
 
 # 列出所有源文件
 set(SOURCES
+    # logic
     main.cpp
+    httpmanager.cpp
+    TcpManager.cpp
+    global.cpp
+    UserManager.cpp
+    # ui
     mainwindow.cpp
     logindialog.cpp
     registerdialog.cpp
     resetdialog.cpp
-    timerbtn.cpp
-    httpmanager.cpp
-    TcpManager.cpp
     ChatDialog.cpp
-    global.cpp
+
+    # custom widgets
+    timerbtn.cpp
     clickedlabel.cpp
-    UserManager.cpp
 )
 
 # 列出所有头文件
 set(HEADERS
+    # logic
+    global.h
+    httpmanager.h
+    TcpManager.h
+    singleton.h
+    UserManager.h
+    
+    # ui
     mainwindow.h
     logindialog.h
     registerdialog.h
     resetdialog.h
-    timerbtn.h
-    httpmanager.h
-    TcpManager.h
     ChatDialog.h
-    global.h
-    singleton.h
-    UserManager.h
+    
+    # custom widgets
+    timerbtn.h
     clickedlabel.h
 )
 

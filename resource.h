@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ ���ɵİ����ļ���
-// �� ChatRoom2.rc ʹ��
+// Microsoft Visual C++ 生成的头文件。
+// 为 ChatRoom2.rc 使用
 //
 #define IDB_PNG1                        101
 #define IDB_PNG2                        102

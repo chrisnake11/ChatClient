@@ -6,33 +6,13 @@ project(ChatRoom2 LANGUAGES CXX)
 
 # 设置C++标准为C++17
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # 导出编译命令供IDE使用
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# 跨平台编译器配置
+# 设置编译器标志以支持UTF-8编码
 if(MSVC)
-    # Windows MSVC编译器
     add_compile_options(/utf-8)
-    add_compile_options(/W3)  # 警告级别
-    add_compile_definitions(_CRT_SECURE_NO_WARNINGS)
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    # Linux GCC编译器
-    add_compile_options(-Wall -Wextra -O2)
-    add_compile_options(-fPIC)  # 位置无关代码
-elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    # macOS Clang编译器
-    add_compile_options(-Wall -Wextra -O2)
-endif()
-
-# 平台特定定义
-if(WIN32)
-    add_compile_definitions(PLATFORM_WINDOWS)
-elseif(UNIX AND NOT APPLE)
-    add_compile_definitions(PLATFORM_LINUX)
-elseif(APPLE)
-    add_compile_definitions(PLATFORM_MACOS)
 endif()
 
 # 启用Qt的自动MOC、RCC和UIC功能，自动处理元对象、资源和UI文件

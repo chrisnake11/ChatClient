@@ -1,11 +1,10 @@
 #pragma once
 
 #include <QDialog>
-#include "ui_ChatDialog.h"
-
-QT_BEGIN_NAMESPACE
-namespace Ui { class ChatDialogClass; };
-QT_END_NAMESPACE
+#include <QWidget>
+namespace Ui {
+class ChatDialog;
+}
 
 class ChatDialog : public QDialog
 {
@@ -16,6 +15,6 @@ public:
 	~ChatDialog();
 
 private:
-	Ui::ChatDialogClass *ui;
+	Ui::ChatDialog *ui;
 };
 

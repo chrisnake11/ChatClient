@@ -1,165 +1,489 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>ChatDialogClass</class>
- <widget class="QDialog" name="ChatDialogClass">
+ <class>ChatDialog</class>
+ <widget class="QDialog" name="ChatDialog">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>686</width>
-    <height>420</height>
+    <width>973</width>
+    <height>689</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>ChatDialog</string>
+  <property name="minimumSize">
+   <size>
+    <width>900</width>
+    <height>600</height>
+   </size>
   </property>
-  <widget class="QWidget" name="horizontalLayoutWidget">
-   <property name="geometry">
-    <rect>
-     <x>10</x>
-     <y>10</y>
-     <width>671</width>
-     <height>401</height>
-    </rect>
+  <property name="windowTitle">
+   <string>聊天窗口</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">
+/* QQ NT 风格样式 */
+QDialog#ChatDialogClass {
+    background-color: #f7f7f7;
+    border: 1px solid #e1e4e8;
+}
+
+/* 左侧用户头像区域 */
+QFrame#user_frame {
+    background-color: #2c2c2c;
+    border: none;
+    border-right: 1px solid #e1e4e8;
+}
+
+QLabel#user_avatar {
+    border-radius: 20px;
+    background-color: #4285f4;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* 联系人列表区域 */
+QFrame#contact_frame {
+    background-color: #ffffff;
+    border: none;
+    border-right: 1px solid #e1e4e8;
+}
+
+QScrollArea#contact_scroll {
+    border: none;
+    background-color: transparent;
+}
+
+QWidget#contact_content {
+    background-color: transparent;
+}
+
+/* 聊天主区域 */
+QFrame#chat_frame {
+    background-color: #ffffff;
+    border: none;
+}
+
+/* 聊天标题栏 */
+QFrame#chat_header {
+    background-color: #ffffff;
+    border-bottom: 1px solid #e1e4e8;
+    min-height: 60px;
+    max-height: 60px;
+}
+
+QLabel#chat_title {
+    color: #1f2329;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+QLabel#chat_status {
+    color: #8a919f;
+    font-size: 12px;
+}
+
+/* 消息显示区域 */
+QScrollArea#chat_scroll {
+    border: none;
+    background-color: #f7f7f7;
+}
+
+QWidget#chat_content {
+    background-color: #f7f7f7;
+}
+
+/* 输入区域 */
+QFrame#input_frame {
+    background-color: #ffffff;
+    border-top: 1px solid #e1e4e8;
+    min-height: 120px;
+    max-height: 120px;
+}
+
+QTextEdit#textEdit {
+    border: 1px solid #e1e4e8;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: #1f2329;
+    font-size: 14px;
+    padding: 8px 12px;
+}
+
+QTextEdit#textEdit:focus {
+    border: 2px solid #4285f4;
+}
+
+/* 发送按钮 */
+QPushButton#send_btn {
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    min-width: 80px;
+    min-height: 36px;
+}
+
+QPushButton#send_btn:hover {
+    background-color: #3367d6;
+}
+
+QPushButton#send_btn:pressed {
+    background-color: #2851a3;
+}
+
+/* 工具按钮 */
+QPushButton#emoji_btn, QPushButton#file_btn {
+    border: none;
+    border-radius: 6px;
+    background-color: transparent;
+    min-width: 32px;
+    min-height: 32px;
+    max-width: 32px;
+    max-height: 32px;
+}
+
+QPushButton#emoji_btn:hover, QPushButton#file_btn:hover {
+    background-color: #f0f0f0;
+}
+   </string>
+  </property>
+  <layout class="QHBoxLayout" name="main_layout">
+   <property name="spacing">
+    <number>0</number>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <item>
-     <widget class="QFrame" name="user_frame">
-      <property name="minimumSize">
-       <size>
-        <width>40</width>
-        <height>0</height>
-       </size>
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QFrame" name="user_frame">
+     <property name="minimumSize">
+      <size>
+       <width>60</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>60</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
+     </property>
+     <layout class="QVBoxLayout" name="user_layout">
+      <property name="spacing">
+       <number>16</number>
       </property>
-      <property name="maximumSize">
-       <size>
-        <width>40</width>
-        <height>16777215</height>
-       </size>
+      <property name="leftMargin">
+       <number>10</number>
       </property>
-      <property name="frameShape">
-       <enum>QFrame::Shape::StyledPanel</enum>
+      <property name="topMargin">
+       <number>20</number>
       </property>
-      <property name="frameShadow">
-       <enum>QFrame::Shadow::Raised</enum>
+      <property name="rightMargin">
+       <number>10</number>
       </property>
-      <widget class="QLabel" name="label">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>21</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string>Avatar</string>
-       </property>
-      </widget>
-     </widget>
-    </item>
-    <item>
-     <widget class="QFrame" name="contact_frame">
-      <property name="minimumSize">
-       <size>
-        <width>200</width>
-        <height>0</height>
-       </size>
+      <property name="bottomMargin">
+       <number>20</number>
       </property>
-      <property name="maximumSize">
-       <size>
-        <width>200</width>
-        <height>16777215</height>
-       </size>
-      </property>
-      <property name="frameShape">
-       <enum>QFrame::Shape::StyledPanel</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Shadow::Raised</enum>
-      </property>
-      <widget class="QScrollArea" name="contact_scroll">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>181</width>
-         <height>381</height>
-        </rect>
-       </property>
-       <property name="widgetResizable">
-        <bool>true</bool>
-       </property>
-       <widget class="QWidget" name="scrollAreaWidgetContents">
-        <property name="geometry">
-         <rect>
-          <x>0</x>
-          <y>0</y>
-          <width>179</width>
-          <height>379</height>
-         </rect>
+      <item>
+       <widget class="QLabel" name="user_avatar">
+        <property name="minimumSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>40</width>
+          <height>40</height>
+         </size>
+        </property>
+        <property name="text">
+         <string>Me</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignmentFlag::AlignCenter</set>
         </property>
        </widget>
-      </widget>
-     </widget>
-    </item>
-    <item>
-     <widget class="QFrame" name="chat_frame">
-      <property name="frameShape">
-       <enum>QFrame::Shape::StyledPanel</enum>
+      </item>
+      <item>
+       <spacer name="user_spacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="contact_frame">
+     <property name="minimumSize">
+      <size>
+       <width>280</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>280</width>
+       <height>16777215</height>
+      </size>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
+     </property>
+     <layout class="QVBoxLayout" name="contact_layout">
+      <property name="spacing">
+       <number>0</number>
       </property>
-      <property name="frameShadow">
-       <enum>QFrame::Shadow::Raised</enum>
+      <property name="leftMargin">
+       <number>0</number>
       </property>
-      <widget class="QWidget" name="verticalLayoutWidget">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>10</y>
-         <width>401</width>
-         <height>381</height>
-        </rect>
-       </property>
-       <layout class="QVBoxLayout" name="verticalLayout">
-        <item>
-         <widget class="QScrollArea" name="chat_scroll">
-          <property name="widgetResizable">
-           <bool>true</bool>
-          </property>
-          <widget class="QWidget" name="scrollAreaWidgetContents_2">
-           <property name="geometry">
-            <rect>
-             <x>0</x>
-             <y>0</y>
-             <width>397</width>
-             <height>271</height>
-            </rect>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QScrollArea" name="contact_scroll">
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarPolicy::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="contact_content">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>279</width>
+           <height>689</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QFrame" name="chat_frame">
+     <property name="frameShape">
+      <enum>QFrame::Shape::NoFrame</enum>
+     </property>
+     <layout class="QVBoxLayout" name="chat_layout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <widget class="QFrame" name="chat_header">
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <layout class="QHBoxLayout" name="header_layout">
+         <property name="leftMargin">
+          <number>20</number>
+         </property>
+         <property name="topMargin">
+          <number>16</number>
+         </property>
+         <property name="rightMargin">
+          <number>20</number>
+         </property>
+         <property name="bottomMargin">
+          <number>16</number>
+         </property>
+         <item>
+          <layout class="QVBoxLayout" name="title_layout">
+           <property name="spacing">
+            <number>4</number>
            </property>
-          </widget>
-         </widget>
-        </item>
-        <item>
-         <widget class="QTextEdit" name="textEdit">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>100</height>
-           </size>
-          </property>
-          <property name="maximumSize">
-           <size>
-            <width>16777215</width>
-            <height>100</height>
-           </size>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-     </widget>
-    </item>
-   </layout>
-  </widget>
+           <item>
+            <widget class="QLabel" name="chat_title">
+             <property name="text">
+              <string>选择一个好友开始聊天</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="chat_status">
+             <property name="text">
+              <string>在线</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <spacer name="header_spacer">
+           <property name="orientation">
+            <enum>Qt::Orientation::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QScrollArea" name="chat_scroll">
+        <property name="widgetResizable">
+         <bool>true</bool>
+        </property>
+        <widget class="QWidget" name="chat_content">
+         <property name="geometry">
+          <rect>
+           <x>0</x>
+           <y>0</y>
+           <width>633</width>
+           <height>507</height>
+          </rect>
+         </property>
+        </widget>
+       </widget>
+      </item>
+      <item>
+       <widget class="QFrame" name="input_frame">
+        <property name="frameShape">
+         <enum>QFrame::Shape::NoFrame</enum>
+        </property>
+        <layout class="QVBoxLayout" name="input_layout">
+         <property name="spacing">
+          <number>8</number>
+         </property>
+         <property name="leftMargin">
+          <number>16</number>
+         </property>
+         <property name="topMargin">
+          <number>12</number>
+         </property>
+         <property name="rightMargin">
+          <number>16</number>
+         </property>
+         <property name="bottomMargin">
+          <number>12</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="tools_layout">
+           <item>
+            <widget class="QPushButton" name="emoji_btn">
+             <property name="toolTip">
+              <string>表情</string>
+             </property>
+             <property name="text">
+              <string>😊</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="file_btn">
+             <property name="toolTip">
+              <string>发送文件</string>
+             </property>
+             <property name="text">
+              <string>📎</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer name="tools_spacer">
+             <property name="orientation">
+              <enum>Qt::Orientation::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>40</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QHBoxLayout" name="send_layout">
+           <property name="spacing">
+            <number>12</number>
+           </property>
+           <item>
+            <widget class="QTextEdit" name="textEdit">
+             <property name="minimumSize">
+              <size>
+               <width>0</width>
+               <height>64</height>
+              </size>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>64</height>
+              </size>
+             </property>
+             <property name="placeholderText">
+              <string>输入消息...</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QPushButton" name="send_btn">
+             <property name="text">
+              <string>发送</string>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
  <resources/>

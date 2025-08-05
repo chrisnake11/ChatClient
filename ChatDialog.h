@@ -2,19 +2,25 @@
 
 #include <QDialog>
 #include <QWidget>
+
 namespace Ui {
 class ChatDialog;
 }
 
 class ChatDialog : public QDialog
 {
-	Q_OBJECT
+    Q_OBJECT
 
 public:
-	ChatDialog(QWidget *parent = nullptr);
-	~ChatDialog();
+    ChatDialog(QWidget *parent = nullptr);
+    ~ChatDialog();
+
+private slots:
+    void initUI();
 
 private:
-	Ui::ChatDialog *ui;
+    void loadChatDialogStyle();
+    
+    Ui::ChatDialog *ui;
 };
 

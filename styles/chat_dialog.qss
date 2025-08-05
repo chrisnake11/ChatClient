@@ -1,0 +1,126 @@
+/* QQ NT 风格样式 */
+QDialog#ChatDialogClass {
+    background-color: #f2f2f2;
+    border: 1px solid #e1e4e8;
+}
+
+/* 左侧用户头像区域 */
+QFrame#user_frame {
+    background-color: #f2f2f2;
+    border: none;
+    border-right: 1px solid #e1e4e8;
+}
+
+QLabel#user_avatar {
+    border-radius: 20px;
+    background-color: #4285f4;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* 联系人列表区域 */
+QFrame#contact_frame {
+    background-color: #ffffff;
+    border: none;
+    border-right: 1px solid #e1e4e8;
+}
+
+QScrollArea#contact_scroll {
+    border: none;
+    background-color: transparent;
+}
+
+QWidget#contact_content {
+    background-color: #ffffff;
+    border: none;
+}
+
+/* 聊天主区域 */
+QFrame#chat_frame {
+    background-color: #f2f2f2;
+    border: none;
+}
+
+/* 聊天标题栏 */
+QFrame#chat_header {
+    background-color: #f2f2f2;
+    border-bottom: 1px solid #e1e4e8;
+    min-height: 60px;
+    max-height: 60px;
+}
+
+QLabel#chat_title {
+    color: #1f2329;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+QLabel#chat_status {
+    color: #8a919f;
+    font-size: 12px;
+}
+
+/* 消息显示区域 */
+QScrollArea#contact_scroll {
+    border: none;
+    background-color: #f2f2f2;
+}
+
+QWidget#chat_content {
+    background-color: #f2f2f2;
+}
+
+/* 输入区域 */
+QFrame#input_frame {
+    background-color: #f2f2f2;
+    border-top: 1px solid #e1e4e8;
+}
+
+QTextEdit#textEdit {
+    border: 1px solid #e1e4e8;
+    border-radius: 8px;
+    background-color: #ffffff;
+    color: #1f2329;
+    font-size: 14px;
+    padding: 8px 12px;
+}
+
+QTextEdit#textEdit:focus {
+    border: 2px solid #4285f4;
+}
+
+/* 发送按钮 */
+QPushButton#send_btn {
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    min-width: 80px;
+    min-height: 36px;
+}
+
+QPushButton#send_btn:hover {
+    background-color: #3367d6;
+}
+
+QPushButton#send_btn:pressed {
+    background-color: #2851a3;
+}
+
+/* 工具按钮 */
+QPushButton#emoji_btn, QPushButton#file_btn {
+    border: none;
+    border-radius: 6px;
+    background-color: transparent;
+    min-width: 32px;
+    min-height: 32px;
+    max-width: 32px;
+    max-height: 32px;
+}
+
+QPushButton#emoji_btn:hover, QPushButton#file_btn:hover {
+    background-color: #f0f0f0;
+}

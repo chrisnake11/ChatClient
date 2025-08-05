@@ -1,11 +1,15 @@
 <RCC>
-    <qresource prefix="/">
+    <qresource prefix="/images/">
         <file>resources/wechat.png</file>
         <file>resources/avatar.png</file>
-        <file>styles/stylesheet.qss</file>
         <file>resources/eye.png</file>
         <file>resources/eye-close.png</file>
         <file>resources/eye-hover.png</file>
         <file>resources/eye-hover-close.png</file>
+        <file>resources/search_icon.png</file>
+    </qresource>
+    <qresource prefix="/styles/">
+        <file>styles/stylesheet.qss</file>
+        <file>styles/chat_dialog.qss</file>
     </qresource>
 </RCC>

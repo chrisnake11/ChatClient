@@ -23,28 +23,28 @@ QLabel{
 }
 
 #passwd_visible[state='unvisible']{
-   border-image: url(:/resources/eye-close.png);
+   border-image: url(:/images/eye-close.png);
 }
 #passwd_visible[state='unvisible_hover']{
-   border-image: url(:/resources/eye-hover-close.png);
+   border-image: url(:/images/eye-hover-close.png);
 }
 #passwd_visible[state='visible']{
-   border-image: url(:/resources/eye.png);
+   border-image: url(:/images/eye.png);
 }
 #passwd_visible[state='visible_hover']{
-   border-image: url(:/resources/eye-hover.png);
+   border-image: url(:/images/eye-hover.png);
 }
 #confirm_visible[state='unvisible']{
-   border-image: url(:/resources/eye-close.png);
+   border-image: url(:/images/eye-close.png);
 }
 #confirm_visible[state='unvisible_hover']{
-   border-image: url(:/resources/eye-hover-close.png);
+   border-image: url(:/images/eye-hover-close.png);
 }
 #confirm_visible[state='visible']{
-   border-image: url(:/resources/eye.png);
+   border-image: url(:/images/eye.png);
 }
 #confirm_visible[state='visible_hover']{
-   border-image: url(:/resources/eye-hover-close.png);
+   border-image: url(:/images/eye-hover-close.png);
 }
 
 #forget_label[state='normal']{
@@ -52,4 +52,15 @@ QLabel{
 }
 #forget_label[state='hover']{
     color: blue;
+}
+
+/* 为ClickedButton样式 */
+ClickedButton[state='normal']{
+    background-color: rgb(240, 240, 240);
+}
+ClickedButton[state='hover']{
+    background-color: rgb(160, 160, 160);
+}
+ClickedButton[state='pressed']{
+    background-color: rgb(100, 100, 100);
 }

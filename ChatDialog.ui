@@ -116,13 +116,13 @@
     <widget class="QFrame" name="contact_frame">
      <property name="minimumSize">
       <size>
-       <width>280</width>
+       <width>200</width>
        <height>0</height>
       </size>
      </property>
      <property name="maximumSize">
       <size>
-       <width>280</width>
+       <width>16777215</width>
        <height>16777215</height>
       </size>
      </property>
@@ -177,7 +177,7 @@
            <string/>
           </property>
           <property name="pixmap">
-           <pixmap>:/resources/search_icon.png</pixmap>
+           <pixmap resource="resources.qrc">:/images/search_icon.png</pixmap>
           </property>
           <property name="scaledContents">
            <bool>true</bool>
@@ -207,7 +207,7 @@
          </widget>
         </item>
         <item>
-         <widget class="QPushButton" name="search_btn">
+         <widget class="ClickedButton" name="search_btn">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
             <horstretch>0</horstretch>
@@ -237,7 +237,7 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>278</width>
+           <width>271</width>
            <height>626</height>
           </rect>
          </property>
@@ -249,6 +249,21 @@
    </item>
    <item>
     <widget class="QFrame" name="chat_frame">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="MinimumExpanding" vsizetype="Expanding">
+       <horstretch>1</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>640</width>
+       <height>0</height>
+      </size>
+     </property>
      <property name="styleSheet">
       <string notr="true"/>
      </property>
@@ -348,7 +363,7 @@
           <rect>
            <x>0</x>
            <y>0</y>
-           <width>631</width>
+           <width>638</width>
            <height>355</height>
           </rect>
          </property>
@@ -400,7 +415,7 @@
          <item>
           <layout class="QHBoxLayout" name="tools_layout">
            <item>
-            <widget class="QPushButton" name="emoji_btn">
+            <widget class="ClickedButton" name="emoji_btn">
              <property name="toolTip">
               <string>表情</string>
              </property>
@@ -410,7 +425,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="file_btn">
+            <widget class="ClickedButton" name="file_btn">
              <property name="toolTip">
               <string>发送文件</string>
              </property>
@@ -465,7 +480,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QPushButton" name="send_btn">
+            <widget class="ClickedButton" name="send_btn">
              <property name="text">
               <string>发送</string>
              </property>
@@ -482,6 +497,13 @@
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>ClickedButton</class>
+   <extends>QPushButton</extends>
+   <header>ClickedButton.h</header>
+  </customwidget>
+ </customwidgets>
  <resources>
   <include location="resources.qrc"/>
  </resources>

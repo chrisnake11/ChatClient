@@ -8,12 +8,11 @@ ChatDialog::ChatDialog(QWidget *parent)
     , ui(new Ui::ChatDialog)
 {
     ui->setupUi(this);
+    this->setWindowFlags(Qt::CustomizeWindowHint|Qt::FramelessWindowHint);
     
     // 加载聊天对话框专用样式
     loadChatDialogStyle();
-    
-    // 初始化界面
-    initUI();
+
 }
 
 ChatDialog::~ChatDialog()
@@ -33,13 +32,3 @@ void ChatDialog::loadChatDialogStyle()
         qDebug() << "Failed to load chat_dialog.qss from resources";
     }
 }
-
-void ChatDialog::initUI()
-{
-    // 设置窗口属性
-    setWindowTitle("聊天室");
-    setWindowFlags(Qt::Window | Qt::WindowCloseButtonHint | Qt::WindowMinimizeButtonHint);
-    
-    // 这里可以添加其他初始化代码
-}
-

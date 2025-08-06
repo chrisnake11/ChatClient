@@ -20,7 +20,7 @@
 #include <QString>
 #include <QCryptographicHash>
 
-
+// repolish widget style
 extern std::function<void(QWidget*)> repolish;
 
 extern std::function<QString(QString)> md5Encrypt;

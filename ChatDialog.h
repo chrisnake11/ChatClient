@@ -15,9 +15,6 @@ public:
     ChatDialog(QWidget *parent = nullptr);
     ~ChatDialog();
 
-private slots:
-    void initUI();
-
 private:
     void loadChatDialogStyle();
     

@@ -8,6 +8,8 @@ LoginDialog::LoginDialog(QWidget *parent)
     , ui(new Ui::LoginDialog), _uid(0), _token("")
 {
     ui->setupUi(this);
+    // 设置对话框为无边框和自定义窗口，使其能够嵌入在主窗口中
+    this->setWindowFlags(Qt::CustomizeWindowHint|Qt::FramelessWindowHint);
     _tip_errs.clear();
 
     ui->login_tip->setProperty("state", "normal");
@@ -34,6 +36,13 @@ LoginDialog::LoginDialog(QWidget *parent)
     // tcp connect failed
     connect(TcpManager::getInstance().get(), &TcpManager::sig_login_failed, this, 
         &LoginDialog::slot_login_failed);
+
+    // 用户名回车后，焦点移动到密码输入框
+    connect(ui->name_text, &QLineEdit::returnPressed, this, [this]() {
+        ui->passwd_text->setFocus();
+    });
+    // 密码输入框回车触发登录
+    connect(ui->passwd_text, &QLineEdit::returnPressed, this, &LoginDialog::on_login_btn_clicked);
 
 }
 

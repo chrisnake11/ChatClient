@@ -20,6 +20,7 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+
 # 查找Qt6所需模块（Core、Gui、Widgets、Network）
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Network)
 
@@ -41,6 +42,7 @@ set(SOURCES
     # custom widgets
     timerbtn.cpp
     clickedlabel.cpp
+    ClickedButton.cpp
 )
 
 # 列出所有头文件
@@ -62,6 +64,7 @@ set(HEADERS
     # custom widgets
     timerbtn.h
     clickedlabel.h
+    ClickedButton.h
 )
 
 # 列出所有UI文件
@@ -89,35 +92,16 @@ target_link_libraries(${PROJECT_NAME}
     Qt6::Network
 )
 
-# 收集resources下的所有png文件
-file(GLOB RESOURCE_IMAGES "${CMAKE_SOURCE_DIR}/resources/*.png")
-
-set(RESOURCE_FILES
-    ${RESOURCE_IMAGES}
+# 拷贝 resources 目录
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+    ${CMAKE_SOURCE_DIR}/resources
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>/resources
 )
-
-foreach(RES_FILE ${RESOURCE_FILES})
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E make_directory
-        $<TARGET_FILE_DIR:${PROJECT_NAME}>/resources
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        ${RES_FILE}
-        $<TARGET_FILE_DIR:${PROJECT_NAME}>/resources/
-    )
-endforeach()
 
 # 复制配置文件 config.ini 到可执行文件目录
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
     ${CMAKE_SOURCE_DIR}/config.ini
     $<TARGET_FILE_DIR:${PROJECT_NAME}>
-)
-
-# 复制样式表文件到可执行文件目录
-add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    COMMAND ${CMAKE_COMMAND} -E make_directory
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>/styles
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-    ${CMAKE_SOURCE_DIR}/styles/stylesheet.qss
-    $<TARGET_FILE_DIR:${PROJECT_NAME}>/styles/stylesheet.qss
 )

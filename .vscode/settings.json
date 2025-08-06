@@ -10,6 +10,15 @@
     "files.associations": {
         "*.qss": "css",
         "*.ui": "xml",
-        "qapplication": "cpp"
+        "qapplication": "cpp",
+        "qpushbutton": "cpp",
+        "charconv": "cpp",
+        "format": "cpp",
+        "future": "cpp",
+        "sstream": "cpp",
+        "xhash": "cpp",
+        "xlocnum": "cpp",
+        "xmemory": "cpp",
+        "functional": "cpp"
     }
 }

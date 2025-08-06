@@ -6,6 +6,8 @@ ResetDialog::ResetDialog(QWidget *parent)
 	, ui(new Ui::ResetDialogClass())
 {
 	ui->setupUi(this);
+    this->setWindowFlags(Qt::CustomizeWindowHint|Qt::FramelessWindowHint);
+
 	ui->err_tip->clear();
 
 	// 将 get_code_btn 替换为一个新的 timerbtn

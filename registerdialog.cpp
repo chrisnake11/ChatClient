@@ -12,6 +12,8 @@ RegisterDialog::RegisterDialog(QWidget *parent)
     , ui(new Ui::RegisterDialog)
 {
     ui->setupUi(this);
+    this->setWindowFlags(Qt::CustomizeWindowHint|Qt::FramelessWindowHint);
+    
     ui->err_tip->clear();
 
     // 替换掉get_code_btn为自定义控件 timerbtn

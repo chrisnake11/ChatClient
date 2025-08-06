@@ -18,44 +18,21 @@
   </property>
   <property name="maximumSize">
    <size>
-    <width>300</width>
-    <height>500</height>
+    <width>16777215</width>
+    <height>16777215</height>
    </size>
   </property>
   <property name="windowTitle">
    <string>theychat</string>
   </property>
   <property name="windowIcon">
-   <iconset>
-    <normaloff>resources/wechat.png</normaloff>resources/wechat.png</iconset>
+   <iconset resource="resources.qrc">
+    <normaloff>:/images/wechat.png</normaloff>:/images/wechat.png</iconset>
   </property>
-  <widget class="QWidget" name="centralwidget">
-   <widget class="QStackedWidget" name="stackedWidget">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>10</y>
-      <width>300</width>
-      <height>500</height>
-     </rect>
-    </property>
-    <property name="minimumSize">
-     <size>
-      <width>300</width>
-      <height>500</height>
-     </size>
-    </property>
-    <property name="maximumSize">
-     <size>
-      <width>300</width>
-      <height>500</height>
-     </size>
-    </property>
-    <widget class="QWidget" name="page"/>
-    <widget class="QWidget" name="page_2"/>
-   </widget>
-  </widget>
+  <widget class="QWidget" name="centralwidget"/>
  </widget>
- <resources/>
+ <resources>
+  <include location="resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

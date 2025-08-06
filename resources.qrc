@@ -1,15 +1,28 @@
+<!--
+    代码访问路径： ": + prefix + alias"
+    例如：":/images/wechat.png"
+
+    实际文件索引路径：<file> real_path </file>
+    例如：<file alias="wechat.png">resources/images/wechat.png</file>
+    QT Designer 会根据<file>标签内的路径，去项目文件夹下寻找对应的资源文件
+
+    优点：这样如果文件位置变动，只需修改<file>标签内的路径，代码中访问路径不变
+-->
 <RCC>
     <qresource prefix="/images/">
-        <file>resources/wechat.png</file>
-        <file>resources/avatar.png</file>
-        <file>resources/eye.png</file>
-        <file>resources/eye-close.png</file>
-        <file>resources/eye-hover.png</file>
-        <file>resources/eye-hover-close.png</file>
-        <file>resources/search_icon.png</file>
+        <!--图片资源-->
+        <file alias="wechat.png">resources/images/wechat.png</file>
+        <file alias="avatar.png">resources/images/avatar.png</file>
+        <file alias="eye.png">resources/images/eye.png</file>
+        <file alias="eye-close.png">resources/images/eye-close.png</file>
+        <file alias="eye-hover.png">resources/images/eye-hover.png</file>
+        <file alias="eye-hover-close.png">resources/images/eye-hover-close.png</file>
+        <file alias="search_icon.png">resources/images/search_icon.png</file>
+        
     </qresource>
     <qresource prefix="/styles/">
-        <file>styles/stylesheet.qss</file>
-        <file>styles/chat_dialog.qss</file>
+        <!--样式资源-->
+        <file alias="stylesheet.qss">resources/styles/stylesheet.qss</file>
+        <file alias="chat_dialog.qss">resources/styles/chat_dialog.qss</file>
     </qresource>
 </RCC>

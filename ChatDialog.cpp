@@ -1,6 +1,7 @@
 #include "ChatDialog.h"
 #include "ui_ChatDialog.h"
 #include "ContactListWidget.h"
+#include <QScrollBar>
 #include <QFile>
 #include <QDebug>
 #include <QTime>
@@ -11,11 +12,13 @@ ChatDialog::ChatDialog(QWidget *parent)
     , ui(new Ui::ChatDialog)
 {
     ui->setupUi(this);
-    qDebug() << "contact_widget width:" << ui->contact_widget->width();
     this->setWindowFlags(Qt::CustomizeWindowHint|Qt::FramelessWindowHint);
-    
+
     // 加载聊天对话框专用qss样式
     initChatDialog();
+
+    // 初始化联系人列表
+    initContactList();
 }
 
 ChatDialog::~ChatDialog()
@@ -45,4 +48,20 @@ void ChatDialog::initChatDialog()
 
 void ChatDialog::initContactList()
 {
+    // 设置contact_list的滚动条
+    // ui->contact_scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    // ui->contact_scroll->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+    for(int i = 0; i < 20; ++i){
+        ui->contact_list->addContact(test_users[i], ":/images/wechat.png", test_messages[i], test_times[i]);
+    }
+
+    connect(ui->contact_scroll->verticalScrollBar(), &QScrollBar::valueChanged,
+        this, &ChatDialog::updateContactList);
 }
+
+void ChatDialog::updateContactList(int value)
+{
+    // 更新联系人列表
+    
+}   

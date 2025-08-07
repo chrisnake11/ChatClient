@@ -5,10 +5,10 @@
 #include <QString>
 #include <QLabel>
 #include <QMouseEvent>
-#include <QEnterEvent>
 #include <QPainter>
 #include <QPixmap>
 #include <QFileInfo>
+#include <QScrollArea>
 #include "ContactItem.h"
 
 
@@ -17,6 +17,7 @@ class ContactListWidget : public QWidget{
 public:
     explicit ContactListWidget(QWidget *parent = nullptr);
     ~ContactListWidget();
+    // contact management functions
     void addContact(const QString &name, const QString &avatarPath,
                     const QString &message, const QString &time);
     void removeContact(const QString &name);
@@ -24,8 +25,8 @@ public:
     void setCurrentContact(const QString &name);
     ContactItem* getContactItem(const QString &name);
     void updateContact(const QString &name, const QString &time,
-                       const QString &message, int unreadCount);
-
+        const QString &message, int unreadCount);
+    
 private:
     void setupUI();
     ContactItem* findContactItem(const QString &name);

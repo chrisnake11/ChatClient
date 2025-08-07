@@ -5,9 +5,6 @@ ContactListWidget::ContactListWidget(QWidget *parent)
       _contentLayout(nullptr)
 {
     setupUI();
-    for(int i = 0; i < 20; ++i){
-        addContact(test_users[i], ":/images/wechat.png", test_messages[i], test_times[i]);
-    }
 }
 
 ContactListWidget::~ContactListWidget()

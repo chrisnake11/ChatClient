@@ -45,6 +45,7 @@ set(SOURCES
     ClickedButton.cpp
     ContactItem.cpp
     ContactListWidget.cpp
+    CustomScrollArea.cpp
 )
 
 # 列出所有头文件
@@ -70,6 +71,7 @@ set(HEADERS
     ClickedButton.h
     ContactItem.h
     ContactListWidget.h
+    CustomScrollArea.h
 )
 
 # 列出所有UI文件

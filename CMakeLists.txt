@@ -38,11 +38,13 @@ set(SOURCES
     registerdialog.cpp
     resetdialog.cpp
     ChatDialog.cpp
-
+    
     # custom widgets
     timerbtn.cpp
     clickedlabel.cpp
     ClickedButton.cpp
+    ContactItem.cpp
+    ContactListWidget.cpp
 )
 
 # 列出所有头文件
@@ -60,11 +62,14 @@ set(HEADERS
     registerdialog.h
     resetdialog.h
     ChatDialog.h
+
     
     # custom widgets
     timerbtn.h
     clickedlabel.h
     ClickedButton.h
+    ContactItem.h
+    ContactListWidget.h
 )
 
 # 列出所有UI文件

@@ -78,4 +78,11 @@ struct ServerInfo {
 
 extern QString gate_url_prefix;
 
+extern std::vector<QString> test_users;
+
+extern std::vector<QString> test_messages;
+
+extern std::vector<QString> test_times;
+
+
 #endif // GLOBAL_H

@@ -1,0 +1,125 @@
+#include "ContactListWidget.h"
+#include "global.h"
+ContactListWidget::ContactListWidget(QWidget *parent)
+    : QWidget(parent),
+      _contentLayout(nullptr)
+{
+    setupUI();
+    for(int i = 0; i < 20; ++i){
+        addContact(test_users[i], ":/images/wechat.png", test_messages[i], test_times[i]);
+    }
+}
+
+ContactListWidget::~ContactListWidget()
+{
+    clearContacts();
+}
+
+void ContactListWidget::setupUI()
+{
+    // 创建主布局
+    _contentLayout = new QVBoxLayout(this);
+    _contentLayout->setContentsMargins(0, 0, 0, 0);
+    _contentLayout->setSpacing(0);
+    
+    setLayout(_contentLayout);
+
+    // 设置样式
+    setStyleSheet(
+        "ContactListWidget {"
+        "   background-color: transparent;"
+        "}"
+    );
+}
+
+void ContactListWidget::addContact(const QString &name, const QString &avatarPath, 
+                                 const QString &message, const QString &time)
+{
+    // 检查是否已存在该联系人
+    if (findContactItem(name) != nullptr) {
+        qDebug() << "Contact already exists:" << name;
+        return;
+    }
+    
+    // 创建新的联系人项目
+    ContactItem *contactItem = new ContactItem(this);
+    contactItem->setInfo(name, avatarPath, message, time);
+
+    // 添加到布局
+    _contentLayout->insertWidget(_contentLayout->count(), contactItem);
+
+    _contactItems.append(contactItem);    
+    qDebug() << "Added contact:" << name;
+}
+
+void ContactListWidget::updateContact(const QString &name, const QString &time, 
+                                    const QString &message, int unreadCount)
+{
+    ContactItem *item = findContactItem(name);
+    if (item) {
+        item->setInfo(name, item->getAvatarPath(), time, message);
+        qDebug() << "Updated contact:" << name;
+    } else {
+        qDebug() << "Contact not found for update:" << name;
+    }
+}
+
+void ContactListWidget::removeContact(const QString &name)
+{
+    ContactItem *item = findContactItem(name);
+    if (item) {
+        _contactItems.removeOne(item);
+        _contentLayout->removeWidget(item);
+        item->deleteLater();
+        
+        // 如果删除的是当前选中的联系人，清空选中状态
+        if (_currentSelectedContact == name) {
+            _currentSelectedContact.clear();
+        }
+        
+        qDebug() << "Removed contact:" << name;
+    }
+    else{
+        qDebug() << "Contact not found for removal:" << name;
+    }
+}
+
+void ContactListWidget::clearContacts()
+{
+    for (ContactItem *item : _contactItems) {
+        _contentLayout->removeWidget(item);
+        item->deleteLater();
+    }
+    _contactItems.clear();
+    _currentSelectedContact.clear();
+}
+
+void ContactListWidget::setCurrentContact(const QString &name)
+{
+    // 清除之前的选中状态
+    for (ContactItem *item : _contactItems) {
+        item->setSelected(false);
+    }
+    
+    // 设置新的选中状态
+    ContactItem *item = findContactItem(name);
+    if (item) {
+        item->setSelected(true);
+        _currentSelectedContact = name;
+    }
+}
+
+ContactItem* ContactListWidget::getContactItem(const QString &name)
+{
+    return findContactItem(name);
+}
+
+ContactItem* ContactListWidget::findContactItem(const QString &name)
+{
+    for (ContactItem *item : _contactItems) {
+        if (item->getName() == name) {
+            return item;
+        }
+    }
+    return nullptr;
+}

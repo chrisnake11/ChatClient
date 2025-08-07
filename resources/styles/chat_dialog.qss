@@ -5,7 +5,7 @@ QDialog#ChatDialogClass {
 }
 
 /* 左侧用户头像区域 */
-QFrame#user_frame {
+QWidget#user_widget {
     background-color: #f2f2f2;
     border: none;
     border-right: 1px solid #e1e4e8;
@@ -20,10 +20,9 @@ QLabel#user_avatar {
 }
 
 /* 联系人列表区域 */
-QFrame#contact_frame {
+QWidget#contact_widget{
     background-color: #ffffff;
     border: none;
-    border-right: 1px solid #e1e4e8;
 }
 
 QScrollArea#contact_scroll {
@@ -33,17 +32,16 @@ QScrollArea#contact_scroll {
 
 QWidget#contact_content {
     background-color: #ffffff;
-    border: none;
 }
 
 /* 聊天主区域 */
-QFrame#chat_frame {
+QWidget#chat_frame {
     background-color: #f2f2f2;
     border: none;
 }
 
 /* 聊天标题栏 */
-QFrame#chat_header {
+QWidget#chat_header {
     background-color: #f2f2f2;
     border-bottom: 1px solid #e1e4e8;
     min-height: 60px;
@@ -72,22 +70,17 @@ QWidget#chat_content {
 }
 
 /* 输入区域 */
-QFrame#input_frame {
+QWidget#input_widget {
     background-color: #f2f2f2;
     border-top: 1px solid #e1e4e8;
+    margin: 10px 12px 10px 12px;
 }
 
-QTextEdit#textEdit {
-    border: 1px solid #e1e4e8;
-    border-radius: 8px;
-    background-color: #ffffff;
+QTextEdit#send_edit {
+    background-color: transparent;
+    border : none;
     color: #1f2329;
     font-size: 14px;
-    padding: 8px 12px;
-}
-
-QTextEdit#textEdit:focus {
-    border: 2px solid #4285f4;
 }
 
 /* 发送按钮 */
@@ -113,12 +106,11 @@ QPushButton#send_btn:pressed {
 /* 工具按钮 */
 QPushButton#emoji_btn, QPushButton#file_btn {
     border: none;
-    border-radius: 6px;
     background-color: transparent;
-    min-width: 32px;
-    min-height: 32px;
-    max-width: 32px;
-    max-height: 32px;
+    min-width: 30px;
+    min-height: 30px;
+    max-width: 30px;
+    max-height: 30px;
 }
 
 QPushButton#emoji_btn:hover, QPushButton#file_btn:hover {

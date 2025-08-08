@@ -14,13 +14,10 @@ class ChatDialog : public QDialog
 public:
     ChatDialog(QWidget *parent = nullptr);
     ~ChatDialog();
-public slots:
-    void updateContactList(int value);
 
 private:
     void loadChatDialogStyle();
     void initChatDialog();
-    void initContactList();
     
     Ui::ChatDialog *ui;
 

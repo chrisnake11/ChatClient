@@ -11,14 +11,15 @@ ChatDialog::ChatDialog(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::ChatDialog)
 {
+    qDebug() << "ChatDialog initialized";
     ui->setupUi(this);
+    // 设置联系人列表的滚动区域，绑定滚动加载事件。
+    ui->contact_list->setScrollArea(ui->contact_scroll);
     this->setWindowFlags(Qt::CustomizeWindowHint|Qt::FramelessWindowHint);
-
     // 加载聊天对话框专用qss样式
     initChatDialog();
+    qDebug() << "ChatDialog initialize finish";
 
-    // 初始化联系人列表
-    initContactList();
 }
 
 ChatDialog::~ChatDialog()
@@ -45,23 +46,3 @@ void ChatDialog::initChatDialog()
     // 初始化聊天对话框的UI和其他设置
     loadChatDialogStyle();
 }
-
-void ChatDialog::initContactList()
-{
-    // 设置contact_list的滚动条
-    // ui->contact_scroll->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    // ui->contact_scroll->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-
-    for(int i = 0; i < 20; ++i){
-        ui->contact_list->addContact(test_users[i], ":/images/wechat.png", test_messages[i], test_times[i]);
-    }
-
-    connect(ui->contact_scroll->verticalScrollBar(), &QScrollBar::valueChanged,
-        this, &ChatDialog::updateContactList);
-}
-
-void ChatDialog::updateContactList(int value)
-{
-    // 更新联系人列表
-    
-}   

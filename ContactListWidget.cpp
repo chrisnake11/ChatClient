@@ -1,10 +1,17 @@
 #include "ContactListWidget.h"
 #include "global.h"
+#include <QScrollBar>
+
+
 ContactListWidget::ContactListWidget(QWidget *parent)
     : QWidget(parent),
-      _contentLayout(nullptr)
+      _contentLayout(nullptr), _scrollArea(nullptr)
 {
+    qDebug() << "ContactListWidget initialized";
     setupUI();
+    initContactList();
+    qDebug() << "ContactListWidget initialize finish";
+
 }
 
 ContactListWidget::~ContactListWidget()
@@ -119,4 +126,36 @@ ContactItem* ContactListWidget::findContactItem(const QString &name)
         }
     }
     return nullptr;
+}
+
+void ContactListWidget::initContactList(){
+    // 加载联系人数据
+    for(int i = 0; i < 20; ++i){
+        addContact(test_users[i], ":/images/wechat.png", test_messages[i], test_times[i]);
+    }
+}
+
+void ContactListWidget::setScrollArea(QScrollArea *scrollArea)
+{
+    _scrollArea = scrollArea;
+
+    // 绑定动态加载事件
+    connect(_scrollArea->verticalScrollBar(), &QScrollBar::valueChanged, this, &ContactListWidget::loadContactList);
+}
+
+void ContactListWidget::loadContactList()
+{
+    // 获取当前滚动条的值
+    int scrollValue = _scrollArea->verticalScrollBar()->value();
+    int maxScrollValue = _scrollArea->verticalScrollBar()->maximum();
+
+    // 如果滚动条已经到达底部，加载更多联系人
+    if (scrollValue == maxScrollValue) {
+        int n = _contactItems.size();
+        // 从内存中加载20条数据。
+        // 假设_contactItems与test_user长度一致。
+        for (int i = n; i < n + 20 && i < test_users.size(); ++i) {
+            addContact(test_users[i], ":/images/wechat.png", test_messages[i], test_times[i]);
+        }
+    }
 }

@@ -17,6 +17,7 @@ class ContactListWidget : public QWidget{
 public:
     explicit ContactListWidget(QWidget *parent = nullptr);
     ~ContactListWidget();
+
     // contact management functions
     void addContact(const QString &name, const QString &avatarPath,
                     const QString &message, const QString &time);
@@ -24,15 +25,22 @@ public:
     void clearContacts();
     void setCurrentContact(const QString &name);
     ContactItem* getContactItem(const QString &name);
-    void updateContact(const QString &name, const QString &time,
-        const QString &message, int unreadCount);
-    
+    void updateContact(const QString &name,
+        const QString &message, const QString &time, int unreadCount);
+
+    void setScrollArea(QScrollArea *scrollArea);
+
+public slots:
+    void loadContactList();
+
 private:
+    // 初始化联系人列表
+    void initContactList();
     void setupUI();
     ContactItem* findContactItem(const QString &name);
     QVBoxLayout * _contentLayout;
     QList<ContactItem*> _contactItems;
     QString _currentSelectedContact;
-
+    QScrollArea* _scrollArea;
 };
 #endif // CONTACTLISTWIDGET_H

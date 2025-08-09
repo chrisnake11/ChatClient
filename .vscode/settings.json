@@ -91,6 +91,8 @@
         "xtree": "cpp",
         "xutility": "cpp",
         "qvboxlayout": "cpp",
-        "qtime": "cpp"
+        "qtime": "cpp",
+        "qhboxlayout": "cpp",
+        "qresizeevent": "cpp"
     }
 }

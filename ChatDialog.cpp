@@ -6,19 +6,18 @@
 #include <QDebug>
 #include <QTime>
 #include "global.h"
+#include <QApplication>
 
 ChatDialog::ChatDialog(QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::ChatDialog)
 {
-    qDebug() << "ChatDialog initialized";
-    ui->setupUi(this);
+    ui->setupUi(this);    
     // 设置联系人列表的滚动区域，绑定滚动加载事件。
     ui->contact_list->setScrollArea(ui->contact_scroll);
     this->setWindowFlags(Qt::CustomizeWindowHint|Qt::FramelessWindowHint);
     // 加载聊天对话框专用qss样式
     initChatDialog();
-    qDebug() << "ChatDialog initialize finish";
 
 }
 

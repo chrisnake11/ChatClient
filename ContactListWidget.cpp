@@ -5,12 +5,10 @@
 
 ContactListWidget::ContactListWidget(QWidget *parent)
     : QWidget(parent),
-      _contentLayout(nullptr), _scrollArea(nullptr)
+      _contentLayout(nullptr), _scrollArea(nullptr), _currentSelectedContact(nullptr)
 {
-    qDebug() << "ContactListWidget initialized";
     setupUI();
     initContactList();
-    qDebug() << "ContactListWidget initialize finish";
 
 }
 
@@ -28,12 +26,7 @@ void ContactListWidget::setupUI()
     
     setLayout(_contentLayout);
 
-    // 设置样式
-    setStyleSheet(
-        "ContactListWidget {"
-        "   background-color: transparent;"
-        "}"
-    );
+    setMouseTracking(true);
 }
 
 void ContactListWidget::addContact(const QString &name, const QString &avatarPath, 
@@ -47,6 +40,8 @@ void ContactListWidget::addContact(const QString &name, const QString &avatarPat
     
     // 创建新的联系人项目
     ContactItem *contactItem = new ContactItem(this);
+    // 连接点击信号
+    connect(contactItem, &ContactItem::contactClicked, this, &ContactListWidget::setCurrentContact);
     contactItem->setInfo(name, avatarPath, message, time);
     // 添加到布局
     _contentLayout->insertWidget(_contentLayout->count(), contactItem);
@@ -55,35 +50,13 @@ void ContactListWidget::addContact(const QString &name, const QString &avatarPat
     qDebug() << "Added contact:" << name;
 }
 
-void ContactListWidget::updateContact(const QString &name, const QString &time, 
-                                    const QString &message, int unreadCount)
+void ContactListWidget::updateContact(ContactItem *item, const QString &name, const QString &message, const QString &time, int unreadCount)
 {
-    ContactItem *item = findContactItem(name);
     if (item) {
-        item->setInfo(name, item->getAvatarPath(), time, message);
+        item->setInfo(name, item->getAvatarPath(), message, time);
         qDebug() << "Updated contact:" << name;
     } else {
         qDebug() << "Contact not found for update:" << name;
-    }
-}
-
-void ContactListWidget::removeContact(const QString &name)
-{
-    ContactItem *item = findContactItem(name);
-    if (item) {
-        _contactItems.removeOne(item);
-        _contentLayout->removeWidget(item);
-        item->deleteLater();
-        
-        // 如果删除的是当前选中的联系人，清空选中状态
-        if (_currentSelectedContact == name) {
-            _currentSelectedContact.clear();
-        }
-        
-        qDebug() << "Removed contact:" << name;
-    }
-    else{
-        qDebug() << "Contact not found for removal:" << name;
     }
 }
 
@@ -94,38 +67,28 @@ void ContactListWidget::clearContacts()
         item->deleteLater();
     }
     _contactItems.clear();
-    _currentSelectedContact.clear();
+    _currentSelectedContact = nullptr;
 }
 
-void ContactListWidget::setCurrentContact(const QString &name)
+
+void ContactListWidget::setCurrentContact(ContactItem *item)
 {
+    // 如果点击的是当前选中项，则不处理
+    if (item == _currentSelectedContact) {
+        return;
+    }
     // 清除之前的选中状态
-    for (ContactItem *item : _contactItems) {
-        item->setSelected(false);
+    if (_currentSelectedContact) {
+        _currentSelectedContact->setState(WidgetState::NORMAL);
     }
-    
-    // 设置新的选中状态
-    ContactItem *item = findContactItem(name);
+
+    // 记录当前选中联系人
     if (item) {
-        item->setSelected(true);
-        _currentSelectedContact = name;
+        item->setState(WidgetState::SELECTED);
+        _currentSelectedContact = item;
     }
 }
 
-ContactItem* ContactListWidget::getContactItem(const QString &name)
-{
-    return findContactItem(name);
-}
-
-ContactItem* ContactListWidget::findContactItem(const QString &name)
-{
-    for (ContactItem *item : _contactItems) {
-        if (item->getName() == name) {
-            return item;
-        }
-    }
-    return nullptr;
-}
 
 void ContactListWidget::initContactList(){
     // 加载联系人数据
@@ -157,4 +120,14 @@ void ContactListWidget::loadContactList()
             addContact(test_users[i], ":/images/wechat.png", test_messages[i], test_times[i]);
         }
     }
+}
+
+ContactItem* ContactListWidget::findContactItem(const QString &name)
+{
+    for (ContactItem *item : _contactItems) {
+        if (item->getName() == name) {
+            return item;
+        }
+    }
+    return nullptr;
 }

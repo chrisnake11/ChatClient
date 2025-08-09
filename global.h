@@ -84,5 +84,12 @@ extern std::vector<QString> test_messages;
 
 extern std::vector<QString> test_times;
 
+enum class WidgetState{
+    NORMAL = 0,
+    HOVERED = 1,
+    SELECTED = 2,
+    DISABLED = 3
+};
+
 
 #endif // GLOBAL_H

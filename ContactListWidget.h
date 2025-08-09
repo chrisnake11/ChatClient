@@ -21,26 +21,25 @@ public:
     // contact management functions
     void addContact(const QString &name, const QString &avatarPath,
                     const QString &message, const QString &time);
-    void removeContact(const QString &name);
     void clearContacts();
-    void setCurrentContact(const QString &name);
-    ContactItem* getContactItem(const QString &name);
-    void updateContact(const QString &name,
-        const QString &message, const QString &time, int unreadCount);
-
+    void updateContact(ContactItem *item, const QString &name, const QString &message, const QString &time, int unreadCount);
+    ContactItem* findContactItem(const QString &name);
+    
+    
     void setScrollArea(QScrollArea *scrollArea);
-
+    
 public slots:
+    void setCurrentContact(ContactItem *item);
     void loadContactList();
 
 private:
     // 初始化联系人列表
     void initContactList();
     void setupUI();
-    ContactItem* findContactItem(const QString &name);
     QVBoxLayout * _contentLayout;
     QList<ContactItem*> _contactItems;
-    QString _currentSelectedContact;
+
+    ContactItem* _currentSelectedContact;
     QScrollArea* _scrollArea;
 };
 #endif // CONTACTLISTWIDGET_H

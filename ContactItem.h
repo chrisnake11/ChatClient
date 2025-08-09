@@ -10,6 +10,7 @@
 #include <QPixmap>
 #include <QFileInfo>
 #include <QResizeEvent>
+#include "global.h"
 
 class ContactItem : public QWidget
 {
@@ -17,35 +18,46 @@ class ContactItem : public QWidget
 public:
     explicit ContactItem(QWidget *parent = nullptr);
     ~ContactItem();
+
+    // 更新信息
     void setInfo(const QString &name, const QString &avatarPath, const QString &message, const QString &time);
     void setAvatar(const QString &avatarPath);
     QString getAvatarPath() const { return _avatarPath; }
     QString getName() const { return _name; }
-    // 设置内容
+    // 绘制ui的内容
     void updateDisplayContent();
-    void setSelected(bool selected);
-    void setHovered(bool hovered);
+    // 状态
+    void setState(WidgetState state);
 
 public slots:
     // 鼠标点击事件
     void mousePressEvent(QMouseEvent *event) override;
+    // 尺寸改变事件
     void resizeEvent(QResizeEvent *event) override;
+    void enterEvent(QEnterEvent *event) override;
+    void leaveEvent(QEvent *event) override;
 
 signals:
-    void contactClicked(const QString &name);
+    // 联系人被点击
+    void contactClicked(ContactItem *item);
 
 private:
     void setupUI();
     void setDefaultAvatar();
+
+    // 信息
     QString _avatarPath;
     QString _name;
     QString _message;
     QString _time;
+
+    // ui组件
     QLabel *_avatarLabel;
     QLabel *_nameLabel;
     QLabel *_msgLabel;
     QLabel *_timeLabel;
-    bool _isSelected;
+
+    WidgetState _state;
 };
 
 #endif // CONTACTITEM_H

@@ -13,9 +13,10 @@ ContactItem::ContactItem(QWidget *parent) : QWidget(parent),
                                             _nameLabel(nullptr),
                                             _msgLabel(nullptr),
                                             _timeLabel(nullptr),
-                                            _isSelected(false)
+                                            _state(WidgetState::NORMAL)
 {
     setupUI();
+    setProperty("state", "normal");
 }
 
 ContactItem::~ContactItem()
@@ -70,18 +71,7 @@ void ContactItem::setupUI()
     
     // 设置默认头像
     setDefaultAvatar();
-    
-    // 设置默认样式
-    setStyleSheet(
-        "ContactItem {"
-        "   background-color: transparent;"
-        "   border: none;"
-        "}"
-        "ContactItem:hover {"
-        "   background-color: #f0f0f0;"
-        "}"
-    );
-    
+
     // 设置鼠标追踪
     setMouseTracking(true);
 }
@@ -92,6 +82,7 @@ void ContactItem::setInfo(const QString &name, const QString &avatarPath, const 
     _avatarPath = avatarPath;
     _time = time;
     _message = message;
+    updateDisplayContent();
 }
 
 void ContactItem::setAvatar(const QString &avatarPath)
@@ -147,25 +138,13 @@ void ContactItem::setDefaultAvatar()
     _avatarLabel->setAlignment(Qt::AlignCenter);
 }
 
-void ContactItem::setSelected(bool selected)
-{
-    _isSelected = selected;
-    update(); // 触发重绘
-}
-
 void ContactItem::updateDisplayContent()
 {
     _nameLabel->setText(_name);
-    
     _msgLabel->setText(_message);
 
     // 处理消息显示，末尾省略
     QFontMetrics fontWidth(_msgLabel->font());
-    qDebug() << "Contact Item width: " << width();
-    qDebug() << "avatar label: " << _avatarLabel->width();
-    qDebug() << "name Label width: " << _nameLabel->width();
-    qDebug() << "msg Label width: " << _msgLabel->width();
-    qDebug() << "time Label width: " << _timeLabel->width();
     QString elideNote = fontWidth.elidedText(_message, Qt::ElideRight, _msgLabel->width());
     
     _msgLabel->setText(elideNote);
@@ -177,14 +156,64 @@ void ContactItem::updateDisplayContent()
 
 void ContactItem::mousePressEvent(QMouseEvent *event)
 {
+    // 发送选中信号，让ContactListWidget处理
     if (event->button() == Qt::LeftButton) {
-        emit contactClicked(_name);
+        emit contactClicked(this);
     }
+    // 继续事件传播
     QWidget::mousePressEvent(event);
 }
 
 void ContactItem::resizeEvent(QResizeEvent *event)
 {
+    // 改变尺寸
     QWidget::resizeEvent(event);
+    // 重新调整显示内容
     updateDisplayContent();
+}
+
+void ContactItem::enterEvent(QEnterEvent *event){
+    qDebug() << "ContactItem Mouse entered:" << _name;
+    QWidget::enterEvent(event);
+    if(_state != WidgetState::SELECTED){
+        setState(WidgetState::HOVERED);
+    }
+}
+
+void ContactItem::leaveEvent(QEvent *event){
+    qDebug() << "ContactItem Mouse left:" << _name;
+    QWidget::leaveEvent(event);
+    if(_state != WidgetState::SELECTED){
+        setState(WidgetState::NORMAL);
+    }
+}
+
+void ContactItem::setState(WidgetState state){
+    if (_state == state) {
+        return;
+    }
+    _state = state;
+
+    switch (state) {
+        case WidgetState::NORMAL:
+            setProperty("state", "normal");
+            break;
+        case WidgetState::HOVERED:
+            setProperty("state", "hovered");
+            break;
+        case WidgetState::SELECTED:
+            setProperty("state", "selected");
+            break;
+        case WidgetState::DISABLED:
+            setProperty("state", "disabled");
+            break;
+    }
+        // 添加调试信息
+    qDebug() << "Current styleSheet for" << _name << ":" << this->styleSheet();
+    qDebug() << "Proprty 'state' value:" << this->property("state").toString();
+    
+    repolish(this);
+    
+    // 再次检查样式表是否生效
+    qDebug() << "After repolish, styleSheet:" << this->styleSheet();
 }

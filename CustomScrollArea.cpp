@@ -12,7 +12,8 @@ CustomScrollArea::CustomScrollArea(QWidget *parent)
     
     // 设置定时器
     hideTimer->setSingleShot(true);
-    hideTimer->setInterval(2000); // 2秒后隐藏
+    hideTimer->setInterval(2000); // 默认2秒后隐藏
+    // 定时器超时，隐藏滚动条
     connect(hideTimer, &QTimer::timeout, this, &CustomScrollArea::hideScrollBars);
     
     // 启用鼠标跟踪
@@ -27,6 +28,7 @@ void CustomScrollArea::enterEvent(QEnterEvent *event)
 
 void CustomScrollArea::leaveEvent(QEvent *event)
 {
+    // 延迟隐藏滚动条
     hideTimer->start();
     QScrollArea::leaveEvent(event);
 }

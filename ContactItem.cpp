@@ -30,7 +30,8 @@ void ContactItem::setupUI()
     // 创建主水平布局
     QHBoxLayout *mainLayout = new QHBoxLayout(this);
     mainLayout->setContentsMargins(5, 5, 5, 5);  // 减少左右边距
-    
+    mainLayout->setSpacing(5);
+
     // 创建头像标签
     _avatarLabel = new QLabel(this);
     _avatarLabel->setFixedSize(40, 40);
@@ -39,13 +40,17 @@ void ContactItem::setupUI()
 
     // 创建中间的垂直布局（用于姓名和消息）
     QVBoxLayout *middleLayout = new QVBoxLayout();
-    
+    middleLayout->setContentsMargins(0, 0, 0, 0);
+    middleLayout->setSpacing(2);
+
     // 创建姓名标签
     _nameLabel = new QLabel("联系人", this);
+    _nameLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     _nameLabel->setStyleSheet("font-weight: bold; color: #333333; font-size: 12px;");
     _nameLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     // 创建消息标签
     _msgLabel = new QLabel("message", this);
+    _msgLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     _msgLabel->setStyleSheet("color: #666666; font-size: 9px;");
     _msgLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
@@ -87,8 +92,6 @@ void ContactItem::setInfo(const QString &name, const QString &avatarPath, const 
     _avatarPath = avatarPath;
     _time = time;
     _message = message;
-    
-    updateDisplayContent();
 }
 
 void ContactItem::setAvatar(const QString &avatarPath)
@@ -154,12 +157,19 @@ void ContactItem::updateDisplayContent()
 {
     _nameLabel->setText(_name);
     
-    // 处理消息显示，如果太长则截断
-    QString displayMsg = _message;
-    if (displayMsg.length() > 10) {
-        displayMsg = displayMsg.left(7) + "...";
-    }
-    _msgLabel->setText(displayMsg);
+    _msgLabel->setText(_message);
+
+    // 处理消息显示，末尾省略
+    QFontMetrics fontWidth(_msgLabel->font());
+    qDebug() << "Contact Item width: " << width();
+    qDebug() << "avatar label: " << _avatarLabel->width();
+    qDebug() << "name Label width: " << _nameLabel->width();
+    qDebug() << "msg Label width: " << _msgLabel->width();
+    qDebug() << "time Label width: " << _timeLabel->width();
+    QString elideNote = fontWidth.elidedText(_message, Qt::ElideRight, _msgLabel->width());
+    
+    _msgLabel->setText(elideNote);
+
     _timeLabel->setText(_time);
     // 设置头像
     setAvatar(_avatarPath);
@@ -171,4 +181,10 @@ void ContactItem::mousePressEvent(QMouseEvent *event)
         emit contactClicked(_name);
     }
     QWidget::mousePressEvent(event);
+}
+
+void ContactItem::resizeEvent(QResizeEvent *event)
+{
+    QWidget::resizeEvent(event);
+    updateDisplayContent();
 }

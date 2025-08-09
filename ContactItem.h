@@ -9,6 +9,8 @@
 #include <QPainter>
 #include <QPixmap>
 #include <QFileInfo>
+#include <QResizeEvent>
+
 class ContactItem : public QWidget
 {
     Q_OBJECT
@@ -27,6 +29,7 @@ public:
 public slots:
     // 鼠标点击事件
     void mousePressEvent(QMouseEvent *event) override;
+    void resizeEvent(QResizeEvent *event) override;
 
 signals:
     void contactClicked(const QString &name);

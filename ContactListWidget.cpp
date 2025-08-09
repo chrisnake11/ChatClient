@@ -48,7 +48,6 @@ void ContactListWidget::addContact(const QString &name, const QString &avatarPat
     // 创建新的联系人项目
     ContactItem *contactItem = new ContactItem(this);
     contactItem->setInfo(name, avatarPath, message, time);
-
     // 添加到布局
     _contentLayout->insertWidget(_contentLayout->count(), contactItem);
 

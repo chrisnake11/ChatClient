@@ -9,6 +9,7 @@
 #include <QPixmap>
 #include <QFileInfo>
 #include <QScrollArea>
+#include <QPaintEvent>
 #include "ContactItem.h"
 
 
@@ -27,6 +28,8 @@ public:
     
     
     void setScrollArea(QScrollArea *scrollArea);
+
+    void paintEvent(QPaintEvent *event) override;
     
 public slots:
     void setCurrentContact(ContactItem *item);

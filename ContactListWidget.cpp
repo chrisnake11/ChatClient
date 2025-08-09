@@ -1,7 +1,8 @@
 #include "ContactListWidget.h"
 #include "global.h"
 #include <QScrollBar>
-
+#include <QStyleOption>
+#include <QPainter>
 
 ContactListWidget::ContactListWidget(QWidget *parent)
     : QWidget(parent),
@@ -130,4 +131,12 @@ ContactItem* ContactListWidget::findContactItem(const QString &name)
         }
     }
     return nullptr;
+}
+
+void ContactListWidget::paintEvent(QPaintEvent *event){
+    QStyleOption opt;
+    opt.initFrom(this);
+    QPainter painter(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
+    QWidget::paintEvent(event);
 }

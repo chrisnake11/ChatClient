@@ -30,7 +30,7 @@ QWidget#contact_widget{
 
 QScrollArea#contact_scroll ContactListWidget{
     border: none;
-    background-color: #0681aa;
+    background-color: #ffffff;
 }
 
 QScrollArea#contact_scroll ContactItem[state='normal'] {

@@ -7,6 +7,8 @@
 #include <QHBoxLayout>
 #include <QVBoxLayout>
 #include <QLabel>
+#include <QStyleOption>
+#include <QPainter>
 
 ContactItem::ContactItem(QWidget *parent) : QWidget(parent),
                                             _avatarLabel(nullptr),
@@ -37,7 +39,7 @@ void ContactItem::setupUI()
     _avatarLabel = new QLabel(this);
     _avatarLabel->setFixedSize(40, 40);
     _avatarLabel->setScaledContents(true);
-    _avatarLabel->setStyleSheet("border: 1px solid #ddd; border-radius: 20px;"); // 圆形边框
+    _avatarLabel->setStyleSheet("border-radius: 20px;"); // 圆形边框
 
     // 创建中间的垂直布局（用于姓名和消息）
     QVBoxLayout *middleLayout = new QVBoxLayout();
@@ -208,12 +210,14 @@ void ContactItem::setState(WidgetState state){
             setProperty("state", "disabled");
             break;
     }
-        // 添加调试信息
-    qDebug() << "Current styleSheet for" << _name << ":" << this->styleSheet();
-    qDebug() << "Proprty 'state' value:" << this->property("state").toString();
     
     repolish(this);
-    
-    // 再次检查样式表是否生效
-    qDebug() << "After repolish, styleSheet:" << this->styleSheet();
+}
+
+void ContactItem::paintEvent(QPaintEvent *event){
+    QStyleOption opt;
+    opt.initFrom(this);
+    QPainter painter(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
+    QWidget::paintEvent(event);
 }

@@ -10,7 +10,9 @@
 #include <QPixmap>
 #include <QFileInfo>
 #include <QResizeEvent>
+#include <QPaintEvent>
 #include "global.h"
+
 
 class ContactItem : public QWidget
 {
@@ -29,6 +31,9 @@ public:
     // 状态
     void setState(WidgetState state);
 
+    // 重写paintEvent, 绘制qss样式
+    // QT StyleSheet 示例：https://doc.qt.io/qt-6/stylesheet-examples.html
+    void paintEvent(QPaintEvent *event) override;
 public slots:
     // 鼠标点击事件
     void mousePressEvent(QMouseEvent *event) override;
@@ -40,6 +45,7 @@ public slots:
 signals:
     // 联系人被点击
     void contactClicked(ContactItem *item);
+
 
 private:
     void setupUI();

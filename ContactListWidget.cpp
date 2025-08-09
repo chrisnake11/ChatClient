@@ -87,6 +87,9 @@ void ContactListWidget::setCurrentContact(ContactItem *item)
     if (item) {
         item->setState(WidgetState::SELECTED);
         _currentSelectedContact = item;
+        // 发送信号，通知ChatWidget
+        qDebug() << "ContactListWidget send contactClicked signal for:" << item->getName();
+        emit contactClicked(item->getName());
     }
 }
 

@@ -160,6 +160,8 @@ void ContactItem::mousePressEvent(QMouseEvent *event)
 {
     // 发送选中信号，让ContactListWidget处理
     if (event->button() == Qt::LeftButton) {
+        // 发送联系人，由ContactListWidget传递给聊天窗口渲染。
+        qDebug() << "ContactItem clicked:" << _name;
         emit contactClicked(this);
     }
     // 继续事件传播

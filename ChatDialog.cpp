@@ -19,6 +19,9 @@ ChatDialog::ChatDialog(QWidget *parent)
     // 加载聊天对话框专用qss样式
     initChatDialog();
 
+    // 连接联系人点击加载聊天界面
+    connect(ui->contact_list, &ContactListWidget::contactClicked, 
+        this, &ChatDialog::loadChatContact);
 }
 
 ChatDialog::~ChatDialog()
@@ -44,4 +47,16 @@ void ChatDialog::initChatDialog()
 {
     // 初始化聊天对话框的UI和其他设置
     loadChatDialogStyle();
+}
+
+void ChatDialog::loadChatContact(const QString &name)
+{
+    qDebug() << "Loading chat for contact:" << name;
+    _currentContact = name;
+    ui->chat_title->setText(name);
+    // 读取状态
+    ui->chat_status->setText("在线");
+    ui->chat_status->setStyleSheet("color: green;");
+    // TODO: Load chat history for the selected contact
+
 }

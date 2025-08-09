@@ -351,7 +351,7 @@
            <item>
             <widget class="QLabel" name="chat_status">
              <property name="text">
-              <string>在线</string>
+              <string/>
              </property>
             </widget>
            </item>

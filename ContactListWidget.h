@@ -35,6 +35,9 @@ public slots:
     void setCurrentContact(ContactItem *item);
     void loadContactList();
 
+signals:
+    void contactClicked(const QString& name);
+
 private:
     // 初始化联系人列表
     void initContactList();

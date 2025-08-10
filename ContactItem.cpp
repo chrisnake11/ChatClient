@@ -15,7 +15,7 @@ ContactItem::ContactItem(QWidget *parent) : QWidget(parent),
                                             _nameLabel(nullptr),
                                             _msgLabel(nullptr),
                                             _timeLabel(nullptr),
-                                            _state(WidgetState::NORMAL)
+                                            _state(WidgetMouseState::NORMAL)
 {
     setupUI();
     setProperty("state", "normal");
@@ -48,14 +48,12 @@ void ContactItem::setupUI()
 
     // 创建姓名标签
     _nameLabel = new QLabel("联系人", this);
-    _nameLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    _nameLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     _nameLabel->setStyleSheet("font-weight: bold; color: #333333; font-size: 12px;");
-    _nameLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
     // 创建消息标签
     _msgLabel = new QLabel("message", this);
-    _msgLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
+    _msgLabel->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Preferred);
     _msgLabel->setStyleSheet("color: #666666; font-size: 9px;");
-    _msgLabel->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Preferred);
 
     middleLayout->addWidget(_nameLabel);
     middleLayout->addWidget(_msgLabel);
@@ -179,36 +177,36 @@ void ContactItem::resizeEvent(QResizeEvent *event)
 void ContactItem::enterEvent(QEnterEvent *event){
     qDebug() << "ContactItem Mouse entered:" << _name;
     QWidget::enterEvent(event);
-    if(_state != WidgetState::SELECTED){
-        setState(WidgetState::HOVERED);
+    if(_state != WidgetMouseState::SELECTED){
+        setState(WidgetMouseState::HOVERED);
     }
 }
 
 void ContactItem::leaveEvent(QEvent *event){
     qDebug() << "ContactItem Mouse left:" << _name;
     QWidget::leaveEvent(event);
-    if(_state != WidgetState::SELECTED){
-        setState(WidgetState::NORMAL);
+    if(_state != WidgetMouseState::SELECTED){
+        setState(WidgetMouseState::NORMAL);
     }
 }
 
-void ContactItem::setState(WidgetState state){
+void ContactItem::setState(WidgetMouseState state){
     if (_state == state) {
         return;
     }
     _state = state;
 
     switch (state) {
-        case WidgetState::NORMAL:
+        case WidgetMouseState::NORMAL:
             setProperty("state", "normal");
             break;
-        case WidgetState::HOVERED:
+        case WidgetMouseState::HOVERED:
             setProperty("state", "hovered");
             break;
-        case WidgetState::SELECTED:
+        case WidgetMouseState::SELECTED:
             setProperty("state", "selected");
             break;
-        case WidgetState::DISABLED:
+        case WidgetMouseState::DISABLED:
             setProperty("state", "disabled");
             break;
     }

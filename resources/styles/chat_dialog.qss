@@ -1,17 +1,17 @@
 /* QQ NT 风格样式 */
 QDialog#ChatDialogClass {
-    background-color: #f2f2f2;
+    background-color: #ffffff;
     border: 1px solid #e1e4e8;
 }
 
 /* 左侧用户头像区域 */
 QWidget#user_widget {
-    background-color: #f2f2f2;
+    background-color: #cfcfcf;
     border: none;
     border-right: 1px solid #e1e4e8;
 }
 
-QLabel#user_avatar {
+QWidget#user_widget QLabel#user_avatar {
     border-radius: 20px;
     background-color: #4285f4;
     color: white;
@@ -27,6 +27,30 @@ QWidget#contact_widget{
     background-color: #ffffff;
     border: none;
 }
+
+QWidget#contact_widget ClickedButton#search_btn[state = 'normal'] {
+    background-color: #f5f5f5;
+    border: none;
+    border-radius: 5px;
+}
+
+QWidget#contact_widget ClickedButton#search_btn[state = 'hovered'] {
+    background-color: #4285f4;
+    border: none;
+    border-radius: 5px;
+}
+
+QWidget#contact_widget ClickedButton#search_btn[state = 'pressed'] {
+    background-color: #3367d6;
+    border: none;
+    border-radius: 5px;
+}
+
+QWidget#contact_widget TextEdit#search_edit {
+    background-color: #f5f5f5;
+    border: none;
+}
+
 
 QScrollArea#contact_scroll ContactListWidget{
     border: none;
@@ -48,10 +72,6 @@ QScrollArea#contact_scroll ContactItem[state='selected'] {
 QScrollArea#contact_scroll ContactItem[state='disabled'] {
     background-color: transparent;
 }
-
-
-
-
 
 /* 聊天主区域 */
 /* ===============================*/
@@ -93,6 +113,41 @@ QWidget#input_widget {
     margin: 10px 12px 10px 12px;
 }
 
+
+
+QWidget#input_widget ClickedLabel#emoji_btn[state = 'normal']{
+    border-image: url(:/images/emoji.png);
+    background-color: transparent;
+    border: none;
+}
+
+QWidget#input_widget ClickedLabel#emoji_btn[state = 'hovered']{
+    border-image: url(:/images/emoji-hover.png);
+    background-color: transparent;
+    border: none;
+}
+QWidget#input_widget ClickedLabel#emoji_btn[state = 'pressed']{
+    border-image: url(:/images/emoji_hover.png);
+    background-color: transparent;
+    border: none;
+}
+
+QWidget#input_widget ClickedLabel#attach_btn[state = 'normal']{
+    border-image: url(:/images/attachment.png);
+    background-color: transparent;
+    border: none;
+}
+QWidget#input_widget ClickedLabel#attach_btn[state = 'hovered']{
+    border-image: url(:/images/attachment-hover.png);
+    background-color: transparent;
+    border: none;
+}
+QWidget#input_widget ClickedLabel#attach_btn[state = 'pressed']{
+    border-image: url(:/images/attachment_hover.png);
+    background-color: transparent;
+    border: none;
+}
+
 QTextEdit#send_edit {
     background-color: transparent;
     border : none;
@@ -113,24 +168,9 @@ QPushButton#send_btn {
 }
 
 QPushButton#send_btn:hover {
-    background-color: #3367d6;
+    background-color: #0099ff;
 }
 
 QPushButton#send_btn:pressed {
-    background-color: #2851a3;
+    background-color: #3367d6;
 }
-
-/* 工具按钮 */
-QPushButton#emoji_btn, QPushButton#file_btn {
-    border: none;
-    background-color: transparent;
-    min-width: 30px;
-    min-height: 30px;
-    max-width: 30px;
-    max-height: 30px;
-}
-
-QPushButton#emoji_btn:hover, QPushButton#file_btn:hover {
-    background-color: #f0f0f0;
-}
-

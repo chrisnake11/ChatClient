@@ -80,12 +80,12 @@ void ContactListWidget::setCurrentContact(ContactItem *item)
     }
     // 清除之前的选中状态
     if (_currentSelectedContact) {
-        _currentSelectedContact->setState(WidgetState::NORMAL);
+        _currentSelectedContact->setState(WidgetMouseState::NORMAL);
     }
 
     // 记录当前选中联系人
     if (item) {
-        item->setState(WidgetState::SELECTED);
+        item->setState(WidgetMouseState::SELECTED);
         _currentSelectedContact = item;
         // 发送信号，通知ChatWidget
         qDebug() << "ContactListWidget send contactClicked signal for:" << item->getName();

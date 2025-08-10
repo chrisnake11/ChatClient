@@ -69,32 +69,28 @@ ResetDialog::ResetDialog(QWidget *parent)
 	ui->confirm_visible->setCursor(Qt::PointingHandCursor);
 
 	// 初始化标签的状态
-	ui->passwd_visible->setState("unvisible", "unvisible_hover", "", "visible",
-		"visible_hover", "");
-	ui->confirm_visible->setState("unvisible", "unvisible_hover", "", "visible",
-		"visible_hover", "");
+	ui->passwd_visible->setState(WidgetMouseState::NORMAL);
+	ui->confirm_visible->setState(WidgetMouseState::NORMAL);
 
 	// 连接密码可见性切换标签的点击事件
-	connect(ui->passwd_visible, &clickedlabel::clicked, [this]() {
-		auto state = ui->passwd_visible->getCurrentState();
-		if (state == ClickLabelState::NORMAL) {
+	connect(ui->passwd_visible, &ClickedLabel::clicked, [this]() {
+		auto state = ui->passwd_visible->getState();
+		if (state == WidgetMouseState::NORMAL) {
 			ui->passwd_text->setEchoMode(QLineEdit::Password);
 		}
 		else {
 			ui->passwd_text->setEchoMode(QLineEdit::Normal);
 		}
-		qDebug() << "passwd visible label was clicked, state: " << state;
 		});
 
-	connect(ui->confirm_visible, &clickedlabel::clicked, [this]() {
-		auto state = ui->confirm_visible->getCurrentState();
-		if (state == ClickLabelState::NORMAL) {
+	connect(ui->confirm_visible, &ClickedLabel::clicked, [this]() {
+		auto state = ui->confirm_visible->getState();
+		if (state == WidgetMouseState::NORMAL) {
 			ui->confirm_text->setEchoMode(QLineEdit::Password);
 		}
 		else {
 			ui->confirm_text->setEchoMode(QLineEdit::Normal);
 		}
-		qDebug() << "confirm visible label was clicked, state: " << state;
 		});
 
 }
@@ -106,7 +102,7 @@ ResetDialog::~ResetDialog()
 
 void ResetDialog::on_get_code_btn_clicked() {
 	auto email = ui->email_text->text();
-	// ��ʽ���
+	// 检查邮箱格式
 	QRegularExpression email_regex(R"(^\w+(-+.\w+)*@\w+(-.\w+)*.\w+(-.\w+)*$)");
 	if (!email_regex.match(email).hasMatch()) {
         showTip(tr("email format error"), false);
@@ -213,13 +209,13 @@ void ResetDialog::initHttpHandlers() {
 
 bool ResetDialog::checkEmailValid()
 {
-	//��֤����ĵ�ַ�������ʽ
+	// 检查邮箱格式
 	auto email = ui->email_text->text();
-	// �����ַ���������ʽ
+	// 邮箱格式正则表达式
 	QRegularExpression regex(R"((\w+)(\.|_)?(\w*)@(\w+)(\.(\w+))+)");
-	bool match = regex.match(email).hasMatch(); // ִ���������ʽƥ��
+	bool match = regex.match(email).hasMatch(); // 执行正则表达式匹配
 	if (!match) {
-		//��ʾ���䲻��ȷ
+		// 提示邮箱格式不正确
 		addTipErr(TipErr::TIP_EMAIL_ERR, tr("email address is incorrect"));
 		return false;
 	}
@@ -231,18 +227,18 @@ bool ResetDialog::checkPasswdValid()
 {
 	auto pass = ui->passwd_text->text();
 	if (pass.length() < 6 || pass.length() > 15) {
-		//��ʾ���Ȳ�׼ȷ
-		addTipErr(TipErr::TIP_PWD_ERR, tr("���볤��ӦΪ6~15"));
+		// 提示密码长度不符合要求
+		addTipErr(TipErr::TIP_PWD_ERR, tr("密码长度应为6~15"));
 		return false;
 	}
-	// ����һ���������ʽ���󣬰�����������Ҫ��
-	// ����������ʽ���ͣ�
-	// ^[a-zA-Z0-9!@#$%^&*]{6,15}$ ���볤������6����������ĸ�����ֺ��ض��������ַ�
+	// 检查密码复杂度
+	// 需要包含字母、数字、特殊字符
+	// ^[a-zA-Z0-9!@#$%^&*]{6,15}$  只允许6~15位字母、数字、特殊字符
 	QRegularExpression regExp("^[a-zA-Z0-9!@#$%^&*]{6,15}$");
 	bool match = regExp.match(pass).hasMatch();
 	if (!match) {
-		//��ʾ�ַ��Ƿ�
-		addTipErr(TipErr::TIP_PWD_ERR, tr("���ܰ����Ƿ��ַ�"));
+		// 提示密码格式不正确
+		addTipErr(TipErr::TIP_PWD_ERR, tr("密码格式不正确"));
 		return false;;
 	}
 	delTipErr(TipErr::TIP_PWD_ERR);
@@ -254,7 +250,7 @@ bool ResetDialog::checkConfirmValid()
 	auto pass = ui->passwd_text->text();
 	auto confirm = ui->confirm_text->text();
 	if (pass != confirm) {
-		addTipErr(TipErr::TIP_CONFIRM_ERR, tr("���벻һ��"));
+		addTipErr(TipErr::TIP_CONFIRM_ERR, tr("确认密码不匹配"));
 		return false;
 	}
 	delTipErr(TipErr::TIP_CONFIRM_ERR);

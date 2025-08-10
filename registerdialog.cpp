@@ -86,32 +86,28 @@ RegisterDialog::RegisterDialog(QWidget *parent)
     ui->confirm_visible->setCursor(Qt::PointingHandCursor);
 
     // 设置按钮初始状态
-    ui->passwd_visible->setState("unvisible", "unvisible_hover", "", "visible",
-        "visible_hover", "");
-    ui->confirm_visible->setState("unvisible", "unvisible_hover", "", "visible",
-        "visible_hover", "");
+    ui->passwd_visible->setState(WidgetMouseState::NORMAL);
+    ui->confirm_visible->setState(WidgetMouseState::NORMAL);
 
     // 密码可见性按钮状态点击切换
-    connect(ui->passwd_visible, &clickedlabel::clicked, [this]() {
-        auto state = ui->passwd_visible->getCurrentState();
-        if (state == ClickLabelState::NORMAL) {
+    connect(ui->passwd_visible, &ClickedLabel::clicked, [this]() {
+        auto state = ui->passwd_visible->getState();
+        if (state == WidgetMouseState::NORMAL) {
             ui->passwd_text_reg->setEchoMode(QLineEdit::Password);
         }
         else {
             ui->passwd_text_reg->setEchoMode(QLineEdit::Normal);
         }
-        qDebug() << "passwd visible label was clicked, state: " << state;
     });
 
-    connect(ui->confirm_visible, &clickedlabel::clicked, [this]() {
-        auto state = ui->confirm_visible->getCurrentState();
-        if (state == ClickLabelState::NORMAL) {
+    connect(ui->confirm_visible, &ClickedLabel::clicked, [this]() {
+        auto state = ui->confirm_visible->getState();
+        if (state == WidgetMouseState::NORMAL) {
             ui->confirm_text_reg->setEchoMode(QLineEdit::Password);
         }
         else {
             ui->confirm_text_reg->setEchoMode(QLineEdit::Normal);
         }
-        qDebug() << "confirm visible label was clicked, state: " << state;
         });
 
 

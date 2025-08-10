@@ -15,6 +15,7 @@ ChatDialog::ChatDialog(QWidget *parent)
     ui->setupUi(this);    
     // 设置联系人列表的滚动区域，绑定滚动加载事件。
     ui->contact_list->setScrollArea(ui->contact_scroll);
+    // 让QDialog降级为自定义无边框的QWidget窗口，嵌入到主窗口中。
     this->setWindowFlags(Qt::CustomizeWindowHint|Qt::FramelessWindowHint);
     // 加载聊天对话框专用qss样式
     initChatDialog();
@@ -59,4 +60,17 @@ void ChatDialog::loadChatContact(const QString &name)
     ui->chat_status->setStyleSheet("color: green;");
     // TODO: Load chat history for the selected contact
 
+}
+
+void ChatDialog::showEvent(QShowEvent *event)
+{
+    QDialog::showEvent(event);
+    
+    // 现在可以获取真实宽度
+    qDebug() << "=== Real Widget Widths ===";
+    qDebug() << "chat_widget width:" << ui->chat_widget->width();
+    qDebug() << "chat_scroll width:" << ui->chat_scroll->width();
+    qDebug() << "chat_header width:" << ui->chat_header->width();
+    qDebug() << "input_widget width:" << ui->input_widget->width();
+    qDebug() << "========================";
 }

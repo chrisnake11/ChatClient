@@ -84,11 +84,13 @@ extern std::vector<QString> test_messages;
 
 extern std::vector<QString> test_times;
 
-enum class WidgetState{
+enum class WidgetMouseState{
     NORMAL = 0,
     HOVERED = 1,
-    SELECTED = 2,
-    DISABLED = 3
+    PRESSED = 2,
+    SELECTED = 3,
+    SELECTED_PRESSED = 4,
+    DISABLED = 5
 };
 
 

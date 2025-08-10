@@ -16,9 +16,9 @@ MainWindow::MainWindow(QWidget* parent)
     // setCentralWidget(_login_dialog);
 
     _chat_dialog = new ChatDialog(this);
-    // 设置主窗口的大小
-    this->setMinimumSize(QSize(900, 600));
-    this->setMaximumSize(QWIDGETSIZE_MAX, QWIDGETSIZE_MAX);
+    // 让主窗口匹配_chat_dialog的大小
+    this->setMinimumSize(_chat_dialog->minimumSize());
+    this->setMaximumSize(_chat_dialog->maximumSize());
     // 设置聊天界面为主窗口的中心部件
     setCentralWidget(_chat_dialog);
 

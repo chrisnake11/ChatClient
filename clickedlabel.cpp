@@ -1,89 +1,70 @@
 #include "clickedlabel.h"
 
-clickedlabel::clickedlabel(QWidget *parent)
-	: QLabel(parent), _current_state(ClickLabelState::NORMAL)
+ClickedLabel::ClickedLabel(QWidget *parent)
+	: QLabel(parent), _state(WidgetMouseState::NORMAL)
 {
+    setState(WidgetMouseState::NORMAL);
 }
 
-clickedlabel::~clickedlabel()
+ClickedLabel::~ClickedLabel()
 {}
 
-void clickedlabel::mousePressEvent(QMouseEvent * event)
-{
-	if (event->button() == Qt::MouseButton::LeftButton) {
-		if (_current_state == ClickLabelState::NORMAL) {
-			qDebug() << "clicked, change to SELECTED: " << _selected_hover;
-			_current_state = ClickLabelState::SELECTED;
-			setProperty("state", _selected_hover);
-			repolish(this); // �ػ�
-			update(); // ˢ�����
-		}
-		else {
-			qDebug() << "clicked, change to NORMAL: " << _normal_hover;
-			_current_state = ClickLabelState::NORMAL;
-			setProperty("state", _normal_hover);
-            repolish(this);
-            update();
-		}
-		emit clicked();
-	}
-	QLabel::mousePressEvent(event);
-}
 
-void clickedlabel::enterEvent(QEnterEvent * event)
+void ClickedLabel::enterEvent(QEnterEvent * event)
 {
-		if (_current_state == ClickLabelState::NORMAL) {
-			qDebug() << "enter, change to normal HOVER: " << _normal_hover;
-            setProperty("state", _normal_hover);
-            repolish(this);
-            update();
-		}
-		else {
-            qDebug() << "enter, change to selected HOVER: " << _selected_hover;
-            setProperty("state", _selected_hover);
-            repolish(this);
-            update();
-		}
+	// 进入为悬浮
+	setState(WidgetMouseState::HOVERED);
     QLabel::enterEvent(event);
 }
 
-void clickedlabel::leaveEvent(QEvent* event)
+void ClickedLabel::leaveEvent(QEvent* event)
 {
-	if (_current_state == ClickLabelState::NORMAL) {
-		qDebug() << "leave, change to NORMAL: " << _normal;
-        setProperty("state", _normal);
-        repolish(this);
-        update();
-	}
-	else {
-		qDebug() << "leave, change to SELECTED: " << _selected;
-		setProperty("state", _selected);
-        repolish(this);
-        update();
-	}
+	// 离开恢复正常
+	setState(WidgetMouseState::NORMAL);
 	QLabel::leaveEvent(event);
 }
 
-void clickedlabel::setCurrentState(ClickLabelState state)
+void ClickedLabel::mouseReleaseEvent(QMouseEvent *event)
 {
-	_current_state = state;
+	// 释放触发事件
+	
+	QLabel::mouseReleaseEvent(event);
 }
 
-void clickedlabel::setState(QString normal, QString hover, QString press, QString selected, QString selected_hover, QString selected_press)
+void ClickedLabel::setState(WidgetMouseState state)
 {
-	_normal = normal;
-	_normal_hover = hover;
-	_normal_press = press;
-    _selected = selected;
-    _selected_hover = selected_hover;
-    _selected_press = selected_press;
-	setProperty("state", _normal);
+	if(_state == state){
+		return;
+	}
+	_state = state;
+	switch (state) {
+		case WidgetMouseState::NORMAL:
+			setProperty("state", "normal");
+			break;
+		case WidgetMouseState::HOVERED:
+			setProperty("state", "hovered");
+			break;
+		case WidgetMouseState::SELECTED:
+			setProperty("state", "selected");
+			break;
+		case WidgetMouseState::DISABLED:
+			setProperty("state", "disabled");
+			break;
+		}
 	repolish(this);
-    update();
+	update();
 }
 
-ClickLabelState clickedlabel::getCurrentState()
+WidgetMouseState ClickedLabel::getState()
 {
-	return _current_state;
+	return _state;
 }
 
+void ClickedLabel::paintEvent(QPaintEvent *event)
+{
+    QStyleOption opt;
+    opt.initFrom(this);
+    QPainter painter(this);
+    style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
+    QLabel::paintEvent(event);
+}

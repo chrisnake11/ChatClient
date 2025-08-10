@@ -18,7 +18,12 @@
         <file alias="eye-hover.png">resources/images/eye-hover.png</file>
         <file alias="eye-hover-close.png">resources/images/eye-hover-close.png</file>
         <file alias="search_icon.png">resources/images/search_icon.png</file>
-        
+        <file alias="emoji.png">resources/images/emoji.png</file>
+        <file alias="emoji-hover.png">resources/images/emoji-hover.png</file>
+        <file alias="attachment.png">resources/images/attachment.png</file>
+        <file alias="attachment-hover.png">resources/images/attachment-hover.png</file>
+        <file alias="clock.png">resources/images/clock.png</file>
+        <file alias="clock-hover.png">resources/images/clock-hover.png</file>
     </qresource>
     <qresource prefix="/styles/">
         <!--样式资源-->

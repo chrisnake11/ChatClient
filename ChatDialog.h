@@ -2,6 +2,7 @@
 
 #include <QDialog>
 #include <QWidget>
+#include <QShowEvent>
 
 namespace Ui {
 class ChatDialog;
@@ -17,6 +18,7 @@ public:
 
 public slots:
     void loadChatContact(const QString &name);
+    void showEvent(QShowEvent *event);
 
 private:
     void loadChatDialogStyle();

@@ -19,8 +19,8 @@ LoginDialog::LoginDialog(QWidget *parent)
 
     ui->forget_label->setCursor(Qt::PointingHandCursor);
     // 设置按钮初始状态
-    ui->forget_label->setState("normal", "hover", "", "", "", "");
-    connect(ui->forget_label, &clickedlabel::clicked, this, &LoginDialog::on_forget_label_clicked);
+    ui->forget_label->setState(WidgetMouseState::NORMAL);
+    connect(ui->forget_label, &ClickedLabel::clicked, this, &LoginDialog::on_forget_label_clicked);
 
     // 初始化http handler
     initHttpHandlers();

@@ -29,7 +29,7 @@ public:
     // 绘制ui的内容
     void updateDisplayContent();
     // 状态
-    void setState(WidgetState state);
+    void setState(WidgetMouseState state);
 
     // 重写paintEvent, 绘制qss样式
     // QT StyleSheet 示例：https://doc.qt.io/qt-6/stylesheet-examples.html
@@ -63,7 +63,7 @@ private:
     QLabel *_msgLabel;
     QLabel *_timeLabel;
 
-    WidgetState _state;
+    WidgetMouseState _state;
 };
 
 #endif // CONTACTITEM_H

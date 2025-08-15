@@ -19,6 +19,10 @@ public:
 
 public slots:
     void loadChatContact(const QString &name);
+    void sendMessage();
+
+signals:
+    void messageSent(const QString &contact, const QString &message);
 
 private:
     void loadChatDialogStyle();

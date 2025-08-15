@@ -28,6 +28,10 @@ ChatDialog::ChatDialog(QWidget *parent)
     // 连接联系人点击加载聊天界面
     connect(ui->contact_list, &ContactListWidget::contactClicked, 
         this, &ChatDialog::loadChatContact);
+
+    connect(ui->send_btn, &QPushButton::clicked, this, &ChatDialog::sendMessage);
+    connect(this, &ChatDialog::messageSent, ui->chat_content, &ChatListWidget::onMessageSent);
+
 }
 
 ChatDialog::~ChatDialog()
@@ -74,4 +78,15 @@ void ChatDialog::keyPressEvent(QKeyEvent *event)
         return;
     }
     QDialog::keyPressEvent(event);
+}
+
+void ChatDialog::sendMessage(){
+    QString message = ui->send_edit->toPlainText();
+    if (message.isEmpty()) {
+        return;
+    }
+    // TODO: Send the message to the current contact
+    emit messageSent(_currentContact, message);
+    ui->send_edit->clear();
+    
 }

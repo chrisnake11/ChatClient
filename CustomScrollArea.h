@@ -17,6 +17,7 @@ class CustomScrollArea : public QScrollArea
 
 public:
     explicit CustomScrollArea(QWidget *parent = nullptr);
+    QScrollBar* getCustomScrollBar() const;
 
 protected:
     void enterEvent(QEnterEvent *event) override;

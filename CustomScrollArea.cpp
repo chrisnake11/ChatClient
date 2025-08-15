@@ -122,3 +122,8 @@ void CustomScrollArea::updateOverlayScrollBarRange(int min, int max)
     _overlayScrollBar->setPageStep(verticalScrollBar()->pageStep());
     _overlayScrollBar->setSingleStep(verticalScrollBar()->singleStep());
 }
+
+QScrollBar* CustomScrollArea::getCustomScrollBar() const
+{
+    return _overlayScrollBar;
+}

@@ -94,6 +94,7 @@
         "qtime": "cpp",
         "qhboxlayout": "cpp",
         "qresizeevent": "cpp",
-        "qmouseevent": "cpp"
+        "qmouseevent": "cpp",
+        "qtimer": "cpp"
     }
 }

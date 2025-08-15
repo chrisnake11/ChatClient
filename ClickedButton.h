@@ -28,6 +28,9 @@ protected slots:
     virtual void mouseReleaseEvent(QMouseEvent *event) override;
     void paintEvent(QPaintEvent *event) override;
 
+signals:
+    void clicked();
+
 protected:
     WidgetMouseState _state;
 };

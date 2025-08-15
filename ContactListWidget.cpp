@@ -24,7 +24,9 @@ void ContactListWidget::setupUI()
     _contentLayout = new QVBoxLayout(this);
     _contentLayout->setContentsMargins(0, 0, 0, 0);
     _contentLayout->setSpacing(0);
-    
+    // 设置布局对齐
+    _contentLayout->setAlignment(Qt::AlignTop);
+
     setLayout(_contentLayout);
 
     setMouseTracking(true);
@@ -141,4 +143,15 @@ void ContactListWidget::paintEvent(QPaintEvent *event){
     QPainter painter(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
     QWidget::paintEvent(event);
+}
+
+void ContactListWidget::searchContact(const QString &text){
+    for (ContactItem *item : _contactItems) {
+        if (item->getName().contains(text, Qt::CaseInsensitive)) {
+            item->show();
+        } else {
+            item->hide();
+        }
+    }
+    updateGeometry();
 }

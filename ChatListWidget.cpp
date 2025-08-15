@@ -6,6 +6,7 @@ ChatListWidget::ChatListWidget(QWidget *parent)
 {
     qDebug() << "ChatListWidget created";
     _layout->setContentsMargins(20, 20, 20, 20);
+    _layout->setAlignment(Qt::AlignTop);
     setLayout(_layout);
     loadChatHistory();
     setMouseTracking(true);

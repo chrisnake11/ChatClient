@@ -89,8 +89,7 @@ enum class WidgetMouseState{
     HOVERED = 1,
     PRESSED = 2,
     SELECTED = 3,
-    SELECTED_PRESSED = 4,
-    DISABLED = 5
+    DISABLED = 4
 };
 
 

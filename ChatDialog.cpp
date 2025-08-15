@@ -31,7 +31,8 @@ ChatDialog::ChatDialog(QWidget *parent)
 
     connect(ui->send_btn, &QPushButton::clicked, this, &ChatDialog::sendMessage);
     connect(this, &ChatDialog::messageSent, ui->chat_content, &ChatListWidget::onMessageSent);
-
+    connect(ui->search_btn, &ClickedButton::clicked, this, &ChatDialog::searchContact);
+    connect(ui->search_edit, &QLineEdit::textChanged, this, &ChatDialog::searchContact);
 }
 
 ChatDialog::~ChatDialog()
@@ -39,7 +40,7 @@ ChatDialog::~ChatDialog()
     delete ui;
 }
 
-void ChatDialog::loadChatDialogStyle()
+void ChatDialog::initChatDialog()
 {
     QFile styleFile(":/styles/chat_dialog.qss");
     if (styleFile.open(QFile::ReadOnly)) {
@@ -50,13 +51,9 @@ void ChatDialog::loadChatDialogStyle()
     } else {
         qDebug() << "Failed to load chat_dialog.qss from resources";
     }
-}
 
-
-void ChatDialog::initChatDialog()
-{
-    // 初始化聊天对话框的UI和其他设置
-    loadChatDialogStyle();
+    _currentListLabel = ui->msg_list_btn;
+    ui->msg_list_btn->setState(WidgetMouseState::SELECTED);
 }
 
 void ChatDialog::loadChatContact(const QString &name)
@@ -89,4 +86,10 @@ void ChatDialog::sendMessage(){
     emit messageSent(_currentContact, message);
     ui->send_edit->clear();
     
+}
+
+void ChatDialog::searchContact(){
+    QString searchText = ui->search_edit->text();
+    // 调用联系人列表的搜索功能
+    ui->contact_list->searchContact(searchText);
 }

@@ -19,7 +19,7 @@ public:
 	void setState(WidgetMouseState state);
 	WidgetMouseState getState();
 
-protected slots:
+public slots:
 	virtual void enterEvent(QEnterEvent* event) override;
 	virtual void leaveEvent(QEvent* event) override;
 	virtual void mouseReleaseEvent(QMouseEvent* event) override;

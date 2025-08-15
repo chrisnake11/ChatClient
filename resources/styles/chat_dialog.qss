@@ -19,6 +19,35 @@ QWidget#user_widget QLabel#user_avatar {
     font-weight: bold;
 }
 
+SelectedLabel#msg_list_btn[state = 'normal'] {
+    border-image: url(:/images/message.png);
+    background-color: transparent;
+    border-radius: 5px;
+}
+
+SelectedLabel#msg_list_btn[state = 'hovered'] {
+    border-image: url(:/images/message.png);
+    background-color: #c4c6ca;
+    border: none;
+    border-radius: 5px;
+}
+
+SelectedLabel#msg_list_btn[state = 'pressed'] {
+    border-image: url(:/images/message.png);
+    background-color: #bfc1c4;
+    border: none;
+    border-radius: 5px;
+}
+
+SelectedLabel#msg_list_btn[state = 'selected'] {
+    border-image: url(:/images/message-select.png);
+    background-color: #c4c5c9;
+    border: none;
+    border-radius: 5px;
+}
+
+
+
 
 /* 联系人列表区域 */
 /* ===============================*/

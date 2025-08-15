@@ -34,6 +34,7 @@ public:
 public slots:
     void setCurrentContact(ContactItem *item);
     void loadContactList();
+    void searchContact(const QString &text);
 
 signals:
     void contactClicked(const QString& name);

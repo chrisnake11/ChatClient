@@ -24,6 +24,8 @@
         <file alias="attachment-hover.png">resources/images/attachment-hover.png</file>
         <file alias="clock.png">resources/images/clock.png</file>
         <file alias="clock-hover.png">resources/images/clock-hover.png</file>
+        <file alias="message.png">resources/images/message.png</file>
+        <file alias="message-select.png">resources/images/message-select.png</file>
     </qresource>
     <qresource prefix="/styles/">
         <!--样式资源-->

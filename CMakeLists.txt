@@ -42,8 +42,9 @@ set(SOURCES
     # custom widgets
     timerbtn.cpp
     ClickedLabel.cpp
+    SelectedLabel.cpp
     ClickedButton.cpp
-    # SelectedButton.cpp
+    SelectedButton.cpp
     ContactItem.cpp
     ContactListWidget.cpp
     CustomScrollArea.cpp
@@ -73,8 +74,9 @@ set(HEADERS
     # custom widgets
     timerbtn.h
     ClickedLabel.h
+    SelectedLabel.h
     ClickedButton.h
-    # SelectedButton.h
+    SelectedButton.h
     ContactItem.h
     ContactListWidget.h
     CustomScrollArea.h

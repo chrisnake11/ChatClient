@@ -86,7 +86,6 @@ void ChatListWidget::onMessageSent(const QString &contact, const QString &messag
 {
     qDebug() << "Message sent to" << contact << ":" << message;
     // TODO: Add the message to the chat history
-    qDebug() << "Current maximum scroll value:" << _scrollArea->getCustomScrollBar()->maximum();
     auto chat_item = new ChatItem(true, this);
     chat_item->setName("Me");
     chat_item->setMessageBubble(new TextBubble(true, message));

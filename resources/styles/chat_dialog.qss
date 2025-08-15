@@ -51,10 +51,15 @@ QWidget#contact_widget TextEdit#search_edit {
     border: none;
 }
 
+/* 联系人滚动列表 */
+QScrollArea#contact_scroll {
+    border: none;
+    background: transparent;
+}
 
 QScrollArea#contact_scroll ContactListWidget{
     border: none;
-    background-color: #ffffff;
+    background: transparent;
 }
 
 QScrollArea#contact_scroll ContactItem[state='normal'] {
@@ -72,6 +77,7 @@ QScrollArea#contact_scroll ContactItem[state='selected'] {
 QScrollArea#contact_scroll ContactItem[state='disabled'] {
     background-color: transparent;
 }
+
 
 /* 聊天主区域 */
 /* ===============================*/
@@ -106,15 +112,24 @@ QWidget#chat_content {
     background-color: #f2f2f2;
 }
 
+QWidget#chat_content TextBubble{
+    background:transparent;
+    border:none;
+}
+
+QWidget#chat_content QLabel#name_label {
+    color: #9c9c9c;
+    font-size: 10px;
+}
+
 /* 输入区域 */
 QWidget#input_widget {
     background-color: #f2f2f2;
     border-top: 1px solid #e1e4e8;
-    margin: 10px 12px 10px 12px;
+    padding-top: 5px;
 }
 
-
-
+/* 表情按钮 */
 QWidget#input_widget ClickedLabel#emoji_btn[state = 'normal']{
     border-image: url(:/images/emoji.png);
     background-color: transparent;
@@ -132,6 +147,7 @@ QWidget#input_widget ClickedLabel#emoji_btn[state = 'pressed']{
     border: none;
 }
 
+/* 附件按钮 */
 QWidget#input_widget ClickedLabel#attach_btn[state = 'normal']{
     border-image: url(:/images/attachment.png);
     background-color: transparent;
@@ -147,6 +163,24 @@ QWidget#input_widget ClickedLabel#attach_btn[state = 'pressed']{
     background-color: transparent;
     border: none;
 }
+
+/* 历史消息按钮 */
+QWidget#input_widget ClickedLabel#history_btn[state = 'normal']{
+    border-image: url(:/images/clock.png);
+    background-color: transparent;
+    border: none;
+}
+QWidget#input_widget ClickedLabel#history_btn[state = 'hovered']{
+    border-image: url(:/images/clock-hover.png);
+    background-color: transparent;
+    border: none;
+}
+QWidget#input_widget ClickedLabel#history_btn[state = 'pressed']{
+    border-image: url(:/images/clock_hover.png);
+    background-color: transparent;
+    border: none;
+}
+
 
 QTextEdit#send_edit {
     background-color: transparent;

@@ -2,6 +2,14 @@
 <ui version="4.0">
  <class>ChatDialog</class>
  <widget class="QDialog" name="ChatDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>960</width>
+    <height>600</height>
+   </rect>
+  </property>
   <property name="sizePolicy">
    <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
     <horstretch>0</horstretch>
@@ -128,6 +136,9 @@
       </size>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
+      <property name="spacing">
+       <number>0</number>
+      </property>
       <property name="leftMargin">
        <number>0</number>
       </property>
@@ -229,24 +240,41 @@
        </layout>
       </item>
       <item>
-       <widget class="CustomScrollArea" name="contact_scroll">
-        <property name="widgetResizable">
-         <bool>true</bool>
-        </property>
-        <widget class="ContactListWidget" name="contact_list">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
+       <widget class="QWidget" name="contact_view" native="true">
+        <layout class="QVBoxLayout" name="verticalLayout_3">
+         <property name="spacing">
+          <number>0</number>
          </property>
-         <property name="minimumSize">
-          <size>
-           <width>0</width>
-           <height>0</height>
-          </size>
+         <property name="leftMargin">
+          <number>0</number>
          </property>
-        </widget>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="CustomScrollArea" name="contact_scroll">
+           <property name="widgetResizable">
+            <bool>true</bool>
+           </property>
+           <widget class="ContactListWidget" name="contact_list">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>248</width>
+              <height>558</height>
+             </rect>
+            </property>
+           </widget>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>
@@ -356,22 +384,53 @@
        </widget>
       </item>
       <item>
-       <widget class="QScrollArea" name="chat_scroll">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
+       <widget class="QWidget" name="chat_view" native="true">
         <property name="sizePolicy">
          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
           <horstretch>0</horstretch>
           <verstretch>1</verstretch>
          </sizepolicy>
         </property>
-        <property name="widgetResizable">
-         <bool>true</bool>
-        </property>
-        <widget class="ContactListWidget" name="chat_content">
-
-        </widget>
+        <layout class="QVBoxLayout" name="verticalLayout_2">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="CustomScrollArea" name="chat_scroll">
+           <property name="widgetResizable">
+            <bool>true</bool>
+           </property>
+           <widget class="ChatListWidget" name="chat_content">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>648</width>
+              <height>293</height>
+             </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
       <item>
@@ -419,13 +478,13 @@
             <number>10</number>
            </property>
            <property name="topMargin">
-            <number>5</number>
+            <number>0</number>
            </property>
            <property name="rightMargin">
             <number>10</number>
            </property>
            <property name="bottomMargin">
-            <number>5</number>
+            <number>0</number>
            </property>
            <item>
             <widget class="ClickedLabel" name="emoji_btn">
@@ -443,9 +502,6 @@
              </property>
              <property name="text">
               <string/>
-             </property>
-             <property name="pixmap">
-              <pixmap resource="resources.qrc">:/images/emoji.png</pixmap>
              </property>
              <property name="scaledContents">
               <bool>true</bool>
@@ -468,9 +524,6 @@
              </property>
              <property name="text">
               <string/>
-             </property>
-             <property name="pixmap">
-              <pixmap resource="resources.qrc">:/images/attachment.png</pixmap>
              </property>
              <property name="scaledContents">
               <bool>true</bool>
@@ -513,9 +566,6 @@
              <property name="text">
               <string/>
              </property>
-             <property name="pixmap">
-              <pixmap resource="resources.qrc">:/images/clock.png</pixmap>
-             </property>
              <property name="scaledContents">
               <bool>true</bool>
              </property>
@@ -532,10 +582,10 @@
             <number>10</number>
            </property>
            <property name="topMargin">
-            <number>5</number>
+            <number>0</number>
            </property>
            <property name="rightMargin">
-            <number>12</number>
+            <number>10</number>
            </property>
            <property name="bottomMargin">
             <number>10</number>
@@ -631,6 +681,12 @@
    <class>ClickedButton</class>
    <extends>QPushButton</extends>
    <header>ClickedButton.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ChatListWidget</class>
+   <extends>QWidget</extends>
+   <header>ChatListWidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

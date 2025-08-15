@@ -3,7 +3,7 @@
 #include <QDialog>
 #include <QWidget>
 #include <QShowEvent>
-
+#include <QKeyEvent>
 namespace Ui {
 class ChatDialog;
 }
@@ -15,10 +15,10 @@ class ChatDialog : public QDialog
 public:
     ChatDialog(QWidget *parent = nullptr);
     ~ChatDialog();
+    void keyPressEvent(QKeyEvent *event) override;
 
 public slots:
     void loadChatContact(const QString &name);
-    void showEvent(QShowEvent *event);
 
 private:
     void loadChatDialogStyle();

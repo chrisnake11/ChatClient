@@ -11,7 +11,7 @@
 #include <QScrollArea>
 #include <QPaintEvent>
 #include "ContactItem.h"
-
+#include <QResizeEvent>
 
 class ContactListWidget : public QWidget{
     Q_OBJECT

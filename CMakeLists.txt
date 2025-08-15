@@ -47,6 +47,10 @@ set(SOURCES
     ContactItem.cpp
     ContactListWidget.cpp
     CustomScrollArea.cpp
+    ChatListWidget.cpp
+    ChatBubble.cpp
+    TextBubble.cpp
+    ChatItem.cpp
 )
 
 # 列出所有头文件
@@ -74,6 +78,10 @@ set(HEADERS
     ContactItem.h
     ContactListWidget.h
     CustomScrollArea.h
+    ChatListWidget.h
+    ChatBubble.h
+    ChatItem.h
+    TextBubble.h
 )
 
 # 列出所有UI文件

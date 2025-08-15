@@ -23,4 +23,4 @@ echo "部署Qt依赖..."
 echo "编译完成！可执行文件: $(pwd)/Debug/ChatRoom2.exe"
 
 # 可选：直接运行
-# ./Debug/ChatRoom2.exe
+./Debug/ChatRoom2.exe

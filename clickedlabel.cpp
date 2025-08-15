@@ -14,6 +14,8 @@ void ClickedLabel::enterEvent(QEnterEvent * event)
 {
 	// 进入为悬浮
 	setState(WidgetMouseState::HOVERED);
+	// 打印样式表
+	qDebug() << "ClickedLabel enterEvent";
     QLabel::enterEvent(event);
 }
 
@@ -26,16 +28,13 @@ void ClickedLabel::leaveEvent(QEvent* event)
 
 void ClickedLabel::mouseReleaseEvent(QMouseEvent *event)
 {
-	// 释放触发事件
-	
+	// 鼠标释放，触发事件
 	QLabel::mouseReleaseEvent(event);
 }
 
 void ClickedLabel::setState(WidgetMouseState state)
 {
-	if(_state == state){
-		return;
-	}
+	// 不要提前return，保证样式一定被设置
 	_state = state;
 	switch (state) {
 		case WidgetMouseState::NORMAL:

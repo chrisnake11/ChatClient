@@ -104,7 +104,6 @@ void ContactListWidget::initContactList(){
 void ContactListWidget::setScrollArea(QScrollArea *scrollArea)
 {
     _scrollArea = scrollArea;
-
     // 绑定动态加载事件
     connect(_scrollArea->verticalScrollBar(), &QScrollBar::valueChanged, this, &ContactListWidget::loadContactList);
 }

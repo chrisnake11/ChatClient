@@ -34,7 +34,6 @@ private:
     LoginDialog *_login_dialog;
     RegisterDialog *_register_dialog;
     ResetDialog *_reset_dialog;
-	ChatDialog* _chat_dialog;
-
+    ChatDialog *_chat_dialog;
 };
 #endif // MAINWINDOW_H

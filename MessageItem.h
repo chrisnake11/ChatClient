@@ -1,5 +1,5 @@
-#ifndef CONTACTITEM_H
-#define CONTACTITEM_H
+#ifndef MESSAGEITEM_H
+#define MESSAGEITEM_H
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QString>
@@ -14,12 +14,12 @@
 #include "global.h"
 
 
-class ContactItem : public QWidget
+class MessageItem : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ContactItem(QWidget *parent = nullptr);
-    ~ContactItem();
+    explicit MessageItem(QWidget *parent = nullptr);
+    ~MessageItem();
 
     // 更新信息
     void setInfo(const QString &name, const QString &avatarPath, const QString &message, const QString &time);
@@ -43,8 +43,8 @@ public slots:
     void leaveEvent(QEvent *event) override;
 
 signals:
-    // 联系人被点击
-    void contactClicked(ContactItem *item);
+    // 消息被点击
+    void messageClicked(MessageItem *item);
 
 
 private:

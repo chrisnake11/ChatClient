@@ -22,5 +22,9 @@ public slots:
 	void leaveEvent(QEvent* event) override;
 	void mousePressEvent(QMouseEvent* event) override;
 	void mouseReleaseEvent(QMouseEvent* event) override;
+	void paintRedDot();
+
+private:
+	QLabel* _red_dot; // 红点
 };
 

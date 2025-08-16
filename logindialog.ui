@@ -196,7 +196,7 @@
        </spacer>
       </item>
       <item>
-       <widget class="clickedlabel" name="forget_label">
+       <widget class="ClickedLabel" name="forget_label">
         <property name="font">
          <font>
           <underline>true</underline>
@@ -304,9 +304,9 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>clickedlabel</class>
+   <class>ClickedLabel</class>
    <extends>QLabel</extends>
-   <header>clickedlabel.h</header>
+   <header>ClickedLabel.h</header>
   </customwidget>
  </customwidgets>
  <resources>

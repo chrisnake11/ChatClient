@@ -1,4 +1,4 @@
-#include "ContactItem.h"
+#include "MessageItem.h"
 #include <QMouseEvent>
 #include <QEnterEvent>
 #include <QPixmap>
@@ -10,7 +10,7 @@
 #include <QStyleOption>
 #include <QPainter>
 
-ContactItem::ContactItem(QWidget *parent) : QWidget(parent),
+MessageItem::MessageItem(QWidget *parent) : QWidget(parent),
                                             _avatarLabel(nullptr),
                                             _nameLabel(nullptr),
                                             _msgLabel(nullptr),
@@ -21,12 +21,12 @@ ContactItem::ContactItem(QWidget *parent) : QWidget(parent),
     setProperty("state", "normal");
 }
 
-ContactItem::~ContactItem()
+MessageItem::~MessageItem()
 {
     // QT 会自动删除子控件
 }
 
-void ContactItem::setupUI()
+void MessageItem::setupUI()
 {
     // 设置固定大小 - 增加宽度以容纳所有内容
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
@@ -76,7 +76,7 @@ void ContactItem::setupUI()
     setMouseTracking(true);
 }
 
-void ContactItem::setInfo(const QString &name, const QString &avatarPath, const QString &message, const QString &time)
+void MessageItem::setInfo(const QString &name, const QString &avatarPath, const QString &message, const QString &time)
 {
     _name = name;
     _avatarPath = avatarPath;
@@ -85,7 +85,7 @@ void ContactItem::setInfo(const QString &name, const QString &avatarPath, const 
     updateDisplayContent();
 }
 
-void ContactItem::setAvatar(const QString &avatarPath)
+void MessageItem::setAvatar(const QString &avatarPath)
 {
     _avatarPath = avatarPath;
     
@@ -115,7 +115,7 @@ void ContactItem::setAvatar(const QString &avatarPath)
     }
 }
 
-void ContactItem::setDefaultAvatar()
+void MessageItem::setDefaultAvatar()
 {
     // 设置默认头像
     QPixmap defaultAvatar(":/images/wechat.png");
@@ -138,7 +138,7 @@ void ContactItem::setDefaultAvatar()
     _avatarLabel->setAlignment(Qt::AlignCenter);
 }
 
-void ContactItem::updateDisplayContent()
+void MessageItem::updateDisplayContent()
 {
     _nameLabel->setText(_name);
     _msgLabel->setText(_message);
@@ -154,19 +154,19 @@ void ContactItem::updateDisplayContent()
     setAvatar(_avatarPath);
 }
 
-void ContactItem::mousePressEvent(QMouseEvent *event)
+void MessageItem::mousePressEvent(QMouseEvent *event)
 {
-    // 发送选中信号，让ContactListWidget处理
+    // 发送选中信号，让MessageListWidget处理
     if (event->button() == Qt::LeftButton) {
-        // 发送联系人，由ContactListWidget传递给聊天窗口渲染。
-        qDebug() << "ContactItem clicked:" << _name;
-        emit contactClicked(this);
+        // 发送消息，由MessageListWidget传递给聊天窗口渲染。
+        qDebug() << "MessageItem clicked:" << _name;
+        emit messageClicked(this);
     }
     // 继续事件传播
     QWidget::mousePressEvent(event);
 }
 
-void ContactItem::resizeEvent(QResizeEvent *event)
+void MessageItem::resizeEvent(QResizeEvent *event)
 {
     // 改变尺寸
     QWidget::resizeEvent(event);
@@ -174,7 +174,7 @@ void ContactItem::resizeEvent(QResizeEvent *event)
     updateDisplayContent();
 }
 
-void ContactItem::enterEvent(QEnterEvent *event){
+void MessageItem::enterEvent(QEnterEvent *event){
     qDebug() << "ContactItem Mouse entered:" << _name;
     QWidget::enterEvent(event);
     if(_state != WidgetMouseState::SELECTED){
@@ -182,15 +182,15 @@ void ContactItem::enterEvent(QEnterEvent *event){
     }
 }
 
-void ContactItem::leaveEvent(QEvent *event){
-    qDebug() << "ContactItem Mouse left:" << _name;
+void MessageItem::leaveEvent(QEvent *event){
+    qDebug() << "MessageItem Mouse left:" << _name;
     QWidget::leaveEvent(event);
     if(_state != WidgetMouseState::SELECTED){
         setState(WidgetMouseState::NORMAL);
     }
 }
 
-void ContactItem::setState(WidgetMouseState state){
+void MessageItem::setState(WidgetMouseState state){
     if (_state == state) {
         return;
     }
@@ -214,7 +214,7 @@ void ContactItem::setState(WidgetMouseState state){
     repolish(this);
 }
 
-void ContactItem::paintEvent(QPaintEvent *event){
+void MessageItem::paintEvent(QPaintEvent *event){
     QStyleOption opt;
     opt.initFrom(this);
     QPainter painter(this);

@@ -1,12 +1,12 @@
 #include "ChatDialog.h"
 #include "ui_ChatDialog.h"
-#include "ContactListWidget.h"
 #include <QScrollBar>
 #include <QFile>
 #include <QDebug>
 #include <QTime>
-#include "global.h"
 #include <QApplication>
+#include "global.h"
+#include "MessageListWidget.h"
 
 ChatDialog::ChatDialog(QWidget *parent)
     : QDialog(parent)
@@ -15,7 +15,7 @@ ChatDialog::ChatDialog(QWidget *parent)
     ui->setupUi(this);    
     
     // 设置联系人列表的滚动区域，绑定滚动加载事件。
-    ui->contact_list->setScrollArea(ui->contact_scroll);
+    ui->message_list->setScrollArea(ui->contact_scroll);
     // 设置聊天内容区域的滚动区域，绑定滚动加载事件。
     ui->chat_content->setScrollArea(ui->chat_scroll);
 
@@ -25,14 +25,13 @@ ChatDialog::ChatDialog(QWidget *parent)
     // 加载聊天对话框专用qss样式
     initChatDialog();
 
-    // 连接联系人点击加载聊天界面
-    connect(ui->contact_list, &ContactListWidget::contactClicked, 
-        this, &ChatDialog::loadChatContact);
+    // 连接消息点击加载聊天界面
+    connect(ui->message_list, &MessageListWidget::messageClicked, 
+        this, &ChatDialog::loadChatMessage);
 
     connect(ui->send_btn, &QPushButton::clicked, this, &ChatDialog::sendMessage);
     connect(this, &ChatDialog::messageSent, ui->chat_content, &ChatListWidget::onMessageSent);
-    connect(ui->search_btn, &ClickedButton::clicked, this, &ChatDialog::searchContact);
-    connect(ui->search_edit, &QLineEdit::textChanged, this, &ChatDialog::searchContact);
+    connect(ui->search_edit, &QLineEdit::textChanged, this, &ChatDialog::searchMessage);
 }
 
 ChatDialog::~ChatDialog()
@@ -54,9 +53,12 @@ void ChatDialog::initChatDialog()
 
     _currentListLabel = ui->msg_list_btn;
     ui->msg_list_btn->setState(WidgetMouseState::SELECTED);
+
+    // 设置中间堆栈窗口为消息页面
+    ui->mid_stack_widget->setCurrentWidget(ui->message_page);
 }
 
-void ChatDialog::loadChatContact(const QString &name)
+void ChatDialog::loadChatMessage(const QString &name)
 {
     qDebug() << "Loading chat for contact:" << name;
     _currentContact = name;
@@ -88,8 +90,8 @@ void ChatDialog::sendMessage(){
     
 }
 
-void ChatDialog::searchContact(){
+void ChatDialog::searchMessage(){
     QString searchText = ui->search_edit->text();
     // 调用联系人列表的搜索功能
-    ui->contact_list->searchContact(searchText);
+    ui->message_list->searchMessage(searchText);
 }

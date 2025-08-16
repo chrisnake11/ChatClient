@@ -5,13 +5,13 @@ QDialog#ChatDialogClass {
 }
 
 /* 左侧用户头像区域 */
-QWidget#user_widget {
+QWidget#left_widget {
     background-color: #cfcfcf;
     border: none;
     border-right: 1px solid #e1e4e8;
 }
 
-QWidget#user_widget QLabel#user_avatar {
+QWidget#left_widget QLabel#user_avatar {
     border-radius: 20px;
     background-color: #4285f4;
     color: white;
@@ -52,58 +52,58 @@ SelectedLabel#msg_list_btn[state = 'selected'] {
 /* 联系人列表区域 */
 /* ===============================*/
 
-QWidget#contact_widget{
+QWidget#mid_widget{
     background-color: #ffffff;
     border: none;
 }
 
-QWidget#contact_widget ClickedButton#search_btn[state = 'normal'] {
+QWidget#mid_widget ClickedButton#search_btn[state = 'normal'] {
     background-color: #f5f5f5;
     border: none;
     border-radius: 5px;
 }
 
-QWidget#contact_widget ClickedButton#search_btn[state = 'hovered'] {
+QWidget#mid_widget ClickedButton#search_btn[state = 'hovered'] {
     background-color: #4285f4;
     border: none;
     border-radius: 5px;
 }
 
-QWidget#contact_widget ClickedButton#search_btn[state = 'pressed'] {
+QWidget#mid_widget ClickedButton#search_btn[state = 'pressed'] {
     background-color: #3367d6;
     border: none;
     border-radius: 5px;
 }
 
-QWidget#contact_widget TextEdit#search_edit {
+QWidget#mid_widget TextEdit#search_edit {
     background-color: #f5f5f5;
     border: none;
 }
 
-/* 联系人滚动列表 */
-QScrollArea#contact_scroll {
+/* 消息滚动列表 */
+QScrollArea#message_scroll {
     border: none;
     background: transparent;
 }
 
-QScrollArea#contact_scroll ContactListWidget{
+QScrollArea#message_scroll MessageListWidget{
     border: none;
     background: transparent;
 }
 
-QScrollArea#contact_scroll ContactItem[state='normal'] {
+QScrollArea#message_scroll MessageItem[state='normal'] {
     background-color: #ffffff;
 }
 
-QScrollArea#contact_scroll ContactItem[state='hovered'] {
+QScrollArea#message_scroll MessageItem[state='hovered'] {
     background-color: #f5f5f5;
 }
 
-QScrollArea#contact_scroll ContactItem[state='selected'] {
+QScrollArea#message_scroll MessageItem[state='selected'] {
     background-color: #0099ff;
 }
 
-QScrollArea#contact_scroll ContactItem[state='disabled'] {
+QScrollArea#message_scroll MessageItem[state='disabled'] {
     background-color: transparent;
 }
 
@@ -112,7 +112,7 @@ QScrollArea#contact_scroll ContactItem[state='disabled'] {
 /* ===============================*/
 
 
-QWidget#chat_frame {
+QWidget#right_widget {
     background-color: #f2f2f2;
     border: none;
 }

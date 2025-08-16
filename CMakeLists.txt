@@ -45,8 +45,8 @@ set(SOURCES
     SelectedLabel.cpp
     ClickedButton.cpp
     SelectedButton.cpp
-    ContactItem.cpp
-    ContactListWidget.cpp
+    MessageItem.cpp
+    MessageListWidget.cpp
     CustomScrollArea.cpp
     ChatListWidget.cpp
     ChatBubble.cpp
@@ -77,8 +77,8 @@ set(HEADERS
     SelectedLabel.h
     ClickedButton.h
     SelectedButton.h
-    ContactItem.h
-    ContactListWidget.h
+    MessageItem.h
+    MessageListWidget.h
     CustomScrollArea.h
     ChatListWidget.h
     ChatBubble.h

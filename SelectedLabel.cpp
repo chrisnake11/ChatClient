@@ -1,13 +1,15 @@
 #include "SelectedLabel.h"
 
 SelectedLabel::SelectedLabel(QWidget *parent)
-	: ClickedLabel(parent)
+	: ClickedLabel(parent), _red_dot(nullptr)
 {
     setState(WidgetMouseState::NORMAL);
 }
 
 SelectedLabel::~SelectedLabel()
-{}
+{
+	
+}
 
 
 void SelectedLabel::enterEvent(QEnterEvent * event)
@@ -50,6 +52,9 @@ void SelectedLabel::mouseReleaseEvent(QMouseEvent *event)
 	if(rect().contains(pos)){
 		setState(WidgetMouseState::SELECTED);
 		// 触发事件
+		if(_red_dot) {
+			_red_dot->hide();
+		}
 	}
 	else{
 		setState(WidgetMouseState::NORMAL);
@@ -57,4 +62,15 @@ void SelectedLabel::mouseReleaseEvent(QMouseEvent *event)
 	qDebug() << "SelectedLabel release" << ", state" << int(getState());
 	// 鼠标释放，触发事件
 	QLabel::mouseReleaseEvent(event);
+}
+
+void SelectedLabel::paintRedDot()
+{
+	if (!_red_dot) {
+		_red_dot = new QLabel(this);
+		_red_dot->setFixedSize(8, 8);
+		_red_dot->setStyleSheet("background-color: red; border-radius: 4px;");
+		_red_dot->move(width() - 12, 4);
+	}
+	_red_dot->show();
 }

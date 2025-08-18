@@ -142,6 +142,31 @@
          </widget>
         </item>
         <item>
+         <widget class="SelectedLabel" name="contact_list_btn">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>40</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="maximumSize">
+           <size>
+            <width>40</width>
+            <height>40</height>
+           </size>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
+        </item>
+        <item>
          <spacer name="verticalSpacer">
           <property name="orientation">
            <enum>Qt::Orientation::Vertical</enum>
@@ -280,7 +305,7 @@
       <item>
        <widget class="QStackedWidget" name="mid_stack_widget">
         <property name="currentIndex">
-         <number>0</number>
+         <number>1</number>
         </property>
         <widget class="QWidget" name="search_page">
          <widget class="CustomScrollArea" name="search_scroll">
@@ -320,7 +345,7 @@
           <property name="widgetResizable">
            <bool>true</bool>
           </property>
-          <widget class="QWidget" name="contact_list">
+          <widget class="ContactListWidget" name="contact_list">
            <property name="geometry">
             <rect>
              <x>0</x>
@@ -365,8 +390,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>248</width>
-               <height>558</height>
+               <width>98</width>
+               <height>28</height>
               </rect>
              </property>
             </widget>
@@ -404,6 +429,9 @@
      </property>
      <property name="styleSheet">
       <string notr="true"/>
+     </property>
+     <property name="currentIndex">
+      <number>1</number>
      </property>
      <widget class="QWidget" name="chat_page">
       <layout class="QVBoxLayout" name="chat_layout">
@@ -756,7 +784,38 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="userinfo_page"/>
+     <widget class="QWidget" name="userinfo_page">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <widget class="QWidget" name="horizontalLayoutWidget">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>10</y>
+         <width>631</width>
+         <height>571</height>
+        </rect>
+       </property>
+       <layout class="QHBoxLayout" name="userinfo_layout">
+        <property name="leftMargin">
+         <number>10</number>
+        </property>
+        <property name="topMargin">
+         <number>10</number>
+        </property>
+        <property name="rightMargin">
+         <number>10</number>
+        </property>
+        <property name="bottomMargin">
+         <number>10</number>
+        </property>
+       </layout>
+      </widget>
+     </widget>
     </widget>
    </item>
   </layout>
@@ -794,6 +853,12 @@
    <class>SelectedLabel</class>
    <extends>QLabel</extends>
    <header>SelectedLabel.h</header>
+  </customwidget>
+  <customwidget>
+   <class>ContactListWidget</class>
+   <extends>QWidget</extends>
+   <header>ContactListWidget.h</header>
+   <container>1</container>
   </customwidget>
  </customwidgets>
  <resources>

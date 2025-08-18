@@ -47,9 +47,35 @@ SelectedLabel#msg_list_btn[state = 'selected'] {
 }
 
 
+SelectedLabel#contact_list_btn[state = 'normal'] {
+    border-image: url(:/images/contact.png);
+    background-color: transparent;
+    border-radius: 5px;
+}
+
+SelectedLabel#contact_list_btn[state = 'hovered'] {
+    border-image: url(:/images/contact.png);
+    background-color: #c4c6ca;
+    border: none;
+    border-radius: 5px;
+}
+
+SelectedLabel#contact_list_btn[state = 'pressed'] {
+    border-image: url(:/images/contact.png);
+    background-color: #bfc1c4;
+    border: none;
+    border-radius: 5px;
+}
+
+SelectedLabel#contact_list_btn[state = 'selected'] {
+    border-image: url(:/images/contact-select.png);
+    background-color: #c4c5c9;
+    border: none;
+    border-radius: 5px;
+}
 
 
-/* 联系人列表区域 */
+/* 中间列表区域 */
 /* ===============================*/
 
 QWidget#mid_widget{
@@ -81,6 +107,33 @@ QWidget#mid_widget TextEdit#search_edit {
 }
 
 /* 消息滚动列表 */
+QScrollArea#contact_scroll{
+    border: none;
+    background: transparent;
+}
+
+QScrollArea#contact_scroll ContactListWidget{
+    border: none;
+    background: transparent;
+}
+
+QScrollArea#contact_scroll ContactItem[state='normal'] {
+    background-color: #ffffff;
+}
+
+QScrollArea#contact_scroll ContactItem[state='hovered'] {
+    background-color: #f5f5f5;
+}
+
+QScrollArea#contact_scroll ContactItem[state='selected'] {
+    background-color: #0099ff;
+}
+
+QScrollArea#contact_scroll ContactItem[state='disabled'] {
+    background-color: transparent;
+}
+
+
 QScrollArea#message_scroll {
     border: none;
     background: transparent;

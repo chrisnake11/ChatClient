@@ -95,5 +95,9 @@ void ChatListWidget::onMessageSent(const QString &contact, const QString &messag
     // 强制更新布局，会自动通知QScrollArea更新
     updateGeometry();
     // 滚动到底部
-    _scrollArea->getCustomScrollBar()->setValue(_scrollArea->getCustomScrollBar()->maximum());
+    QTimer::singleShot(0, this, [this]() {
+        if (_scrollArea) {
+            _scrollArea->getCustomScrollBar()->setValue(_scrollArea->getCustomScrollBar()->maximum());
+        }
+    });
 }

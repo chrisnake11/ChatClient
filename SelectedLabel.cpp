@@ -61,6 +61,7 @@ void SelectedLabel::mouseReleaseEvent(QMouseEvent *event)
 	}
 	qDebug() << "SelectedLabel release" << ", state" << int(getState());
 	// 鼠标释放，触发事件
+	emit clicked();
 	QLabel::mouseReleaseEvent(event);
 }
 

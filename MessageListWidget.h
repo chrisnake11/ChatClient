@@ -19,9 +19,8 @@ public:
     explicit MessageListWidget(QWidget *parent = nullptr);
     ~MessageListWidget();
 
-    // contact management functions
-    void addMessage(const QString &name, const QString &avatarPath,
-                    const QString &message, const QString &time);
+    // message management functions
+    void addMessage(MessageItem *item);
     void clearMessages();
     void updateMessage(MessageItem *item, const QString &name, const QString &message, const QString &time, int unreadCount);
     MessageItem* findMessageItem(const QString &name);

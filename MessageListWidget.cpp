@@ -32,23 +32,20 @@ void MessageListWidget::setupUI()
     setMouseTracking(true);
 }
 
-void MessageListWidget::addMessage(const QString &name, const QString &avatarPath,
-                    const QString &message, const QString &time){
+void MessageListWidget::addMessage(MessageItem *item){
     // 检查是否已存在该消息
+    QString name = item->getName();
     if (findMessageItem(name) != nullptr) {
         qDebug() << "Message already exists for sender:" << name;
         return;
     }
 
-    // 创建新的消息项目
-    MessageItem *messageItem = new MessageItem(this);
     // 连接点击信号
-    connect(messageItem, &MessageItem::messageClicked, this, &MessageListWidget::setCurrentMessage);
-    messageItem->setInfo(name, avatarPath, message, time);
+    connect(item, &MessageItem::messageClicked, this, &MessageListWidget::setCurrentMessage);
     // 添加到布局
-    _contentLayout->insertWidget(_contentLayout->count(), messageItem);
+    _contentLayout->insertWidget(_contentLayout->count(), item);
 
-    _messageItems.append(messageItem);
+    _messageItems.append(item);
     qDebug() << "Added message:" << name;
 }
 
@@ -98,7 +95,9 @@ void MessageListWidget::setCurrentMessage(MessageItem *item)
 void MessageListWidget::initMessageList(){
     // 加载消息数据
     for(int i = 0; i < 20; ++i){
-        addMessage(test_users[i], ":/images/wechat.png", test_messages[i], test_times[i]);
+        MessageItem* item = new MessageItem(this);
+        item->setInfo(test_users[i], ":/images/wechat.png", test_messages[i], test_times[i]);
+        addMessage(item);
     }
 }
 
@@ -121,7 +120,9 @@ void MessageListWidget::loadMessageList()
         // 从内存中加载20条数据。
         // 假设_messageItems与test_user长度一致。
         for (int i = n; i < n + 20 && i < test_users.size(); ++i) {
-            addMessage(test_users[i], ":/images/wechat.png", test_messages[i], test_times[i]);
+            MessageItem* item = new MessageItem(this);
+            item->setInfo(test_users[i], ":/images/wechat.png", test_messages[i], test_times[i]);
+            addMessage(item);    
         }
     }
 }

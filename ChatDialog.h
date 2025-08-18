@@ -5,6 +5,9 @@
 #include <QShowEvent>
 #include <QKeyEvent>
 #include "SelectedLabel.h"
+#include "UserInfo.h"
+#include "AddFriendDialog.h"
+
 namespace Ui {
 class ChatDialog;
 }
@@ -21,14 +24,20 @@ public:
 public slots:
     void loadChatMessage(const QString &name);
     void sendMessage();
-    void searchMessage();
+    void chatWithUser(const QString& name);
+    void searchContact();
+    void clearListState();
+    void switchToContact();
+    void switchToMessage();
+    void loadContactInfo(const QString &name);
+    void openAddContactDialog();
+    void addUser(const UserInfo& user_info);
 
 signals:
     void messageSent(const QString &contact, const QString &message);
 
 private:
     void initChatDialog();
-    
     Ui::ChatDialog *ui;
 
     // 当前选中的联系人

@@ -38,6 +38,8 @@ set(SOURCES
     registerdialog.cpp
     resetdialog.cpp
     ChatDialog.cpp
+    UserInfoWidget.cpp
+    AddFriendDialog.cpp
     
     # custom widgets
     timerbtn.cpp
@@ -47,6 +49,8 @@ set(SOURCES
     SelectedButton.cpp
     MessageItem.cpp
     MessageListWidget.cpp
+    ContactItem.cpp
+    ContactListWidget.cpp
     CustomScrollArea.cpp
     ChatListWidget.cpp
     ChatBubble.cpp
@@ -62,6 +66,7 @@ set(HEADERS
     TcpManager.h
     singleton.h
     UserManager.h
+    UserInfo.h
     
     # ui
     mainwindow.h
@@ -69,6 +74,8 @@ set(HEADERS
     registerdialog.h
     resetdialog.h
     ChatDialog.h
+    UserInfoWidget.h
+    AddFriendDialog.h
 
     
     # custom widgets
@@ -79,6 +86,8 @@ set(HEADERS
     SelectedButton.h
     MessageItem.h
     MessageListWidget.h
+    ContactItem.h
+    ContactListWidget.h
     CustomScrollArea.h
     ChatListWidget.h
     ChatBubble.h
@@ -93,6 +102,8 @@ set(UIS
     registerdialog.ui
     resetdialog.ui
     ChatDialog.ui
+    UserInfoWidget.ui
+    AddFriendDialog.ui
 )
 
 # 创建可执行文件，包含源文件、头文件、UI文件和资源文件

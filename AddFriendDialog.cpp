@@ -22,11 +22,11 @@ void AddFriendDialog::onAddUserButtonClicked(){
     // 向服务器发送添加好友请求。
     
     // 假设发送添加请求成功，返回用户数据
-    UserInfo user_info(1, 1, 18, "", "new_user", "jiangsu", "hello new world", false);
+    // UserInfo user_info(1, 1, 18, "", "new_user", "jiangsu", "hello new world", false);
 
     // 提示添加用户成功
-    QMessageBox::information(this, "Success",  user_info.username + " added successfully!");
+    QMessageBox::information(this, "Success",  name + " added successfully!");
 
-    // 更新客户端
-    emit addUser(user_info);
+    // 发送添加用户信号
+    emit addUser(name, "hello new world");
 }

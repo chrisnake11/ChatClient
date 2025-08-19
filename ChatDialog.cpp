@@ -9,6 +9,8 @@
 #include "MessageListWidget.h"
 #include "UserInfoWidget.h"
 #include "AddFriendDialog.h"
+#include "NewFriendItem.h"
+#include "NewFriendWidget.h"
 
 ChatDialog::ChatDialog(QWidget *parent)
     : QDialog(parent)
@@ -21,6 +23,7 @@ ChatDialog::ChatDialog(QWidget *parent)
     // 设置聊天内容区域的滚动区域，绑定滚动加载事件。
     ui->chat_content->setScrollArea(ui->chat_scroll);
     ui->contact_list->setScrollArea(ui->contact_scroll);
+    ui->new_friend_list->setScrollArea(ui->new_friend_scroll);
 
     // 让QDialog降级为自定义无边框的QWidget窗口，嵌入到主窗口中。
     this->setWindowFlags(Qt::CustomizeWindowHint|Qt::FramelessWindowHint);
@@ -47,6 +50,14 @@ ChatDialog::ChatDialog(QWidget *parent)
 
     connect(ui->add_contact_btn, &QPushButton::clicked, this, &ChatDialog::openAddContactDialog);
 
+    // 好友请求界面
+    connect(ui->contact_notification_label, &ClickedLabel::clicked, this, &ChatDialog::switchToNewFriendUI);
+    
+    // 好友请求
+    connect(ui->new_friend_list, &NewFriendWidget::acceptNewFriend, this, &ChatDialog::acceptNewFriend);
+    connect(ui->new_friend_list, &NewFriendWidget::rejectNewFriend, this, &ChatDialog::rejectNewFriend);
+    connect(this, &ChatDialog::acceptNewFriendSuccess, ui->new_friend_list, &NewFriendWidget::onAcceptNewFriendSuccess);
+    connect(this, &ChatDialog::rejectNewFriendSuccess, ui->new_friend_list, &NewFriendWidget::onRejectNewFriendSuccess);
 }
 
 ChatDialog::~ChatDialog()
@@ -71,7 +82,6 @@ void ChatDialog::initChatDialog()
     // 设置中间堆栈窗口为消息页面
     ui->mid_stack_widget->setCurrentWidget(ui->message_page);
     ui->right_widget->setCurrentWidget(ui->chat_page);
-
 }
 
 void ChatDialog::loadChatMessage(const QString &name)
@@ -179,14 +189,43 @@ void ChatDialog::chatWithUser(const QString& name){
 
 void ChatDialog::openAddContactDialog(){
     AddFriendDialog *dialog = new AddFriendDialog(this);
-    connect(dialog, &AddFriendDialog::addUser, this, &ChatDialog::addUser);
+    // 
+    connect(dialog, &AddFriendDialog::addUser, this, &ChatDialog::addNewFriend);
     dialog->exec();
+}
+
+void ChatDialog::addNewFriend(const QString& username, const QString& message){
+    // 发送添加好友请求
+    qDebug() << "Sending add friend request for:" << username;
+    // 假设成功，添加到new_friend列表
+    NewFriendItem *item = new NewFriendItem(true, false, ui->new_friend_list);
+    item->setInfo(username, "", message);
+    ui->new_friend_list->addNewFriendItem(item);
+    // 添加到联系人列表。
+    addUser(UserInfo(0, 0, 18, "", username, "beijing", "personal signature", true));
 }
 
 // 新加用户到联系人列表
 void ChatDialog::addUser(const UserInfo& user_info){
-    ContactItem *item = new ContactItem(this);
+    ContactItem *item = new ContactItem(ui->contact_list);
     item->setInfo(user_info.username, "", "");
     // 添加用户到联系人列表
     ui->contact_list->addContact(item);
+}
+
+void ChatDialog::switchToNewFriendUI(){
+    qDebug() << "Switching to new friend UI";
+    // right_widget切换到新好友页面
+    ui->right_widget->setCurrentWidget(ui->new_friend_page);
+}
+
+void ChatDialog::acceptNewFriend(const QString& requester){
+    // 发送信号
+    qDebug() << _currentUsername << " accept " << requester << " request";
+    emit acceptNewFriendSuccess(requester);
+}
+
+void ChatDialog::rejectNewFriend(const QString& requester){
+    qDebug() << _currentUsername << " reject " << requester << " request";
+    emit rejectNewFriendSuccess(requester);
 }

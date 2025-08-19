@@ -29,6 +29,8 @@ void ClickedLabel::leaveEvent(QEvent* event)
 void ClickedLabel::mouseReleaseEvent(QMouseEvent *event)
 {
 	// 鼠标释放，触发事件
+	qDebug() << "Clicked Label clicked";
+	emit clicked();
 	QLabel::mouseReleaseEvent(event);
 }
 

@@ -40,6 +40,8 @@ set(SOURCES
     ChatDialog.cpp
     UserInfoWidget.cpp
     AddFriendDialog.cpp
+    NewFriendWidget.cpp
+    NewFriendItem.cpp
     
     # custom widgets
     timerbtn.cpp
@@ -76,6 +78,8 @@ set(HEADERS
     ChatDialog.h
     UserInfoWidget.h
     AddFriendDialog.h
+    NewFriendWidget.h
+    NewFriendItem.h
 
     
     # custom widgets

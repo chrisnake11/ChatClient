@@ -24,8 +24,7 @@ public:
     void clearContacts();
     void updateContact(ContactItem *item, const QString &name, const QString &message);
     ContactItem* findContactItem(const QString &name);
-
-
+    
     void setScrollArea(QScrollArea *scrollArea);
 
     void paintEvent(QPaintEvent *event) override;

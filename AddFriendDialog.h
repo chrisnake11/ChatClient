@@ -18,7 +18,8 @@ public slots:
     void onAddUserButtonClicked();
 
 signals:
-    void addUser(const UserInfo& userInfo);
+    // 给ChatDialog发送好友请求信号
+    void addUser(const QString& username, const QString& message);
 
 private:
     Ui::AddFriendDialog *ui;

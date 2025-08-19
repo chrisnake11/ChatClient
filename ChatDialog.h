@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QShowEvent>
 #include <QKeyEvent>
+#include <QString>
 #include "SelectedLabel.h"
 #include "UserInfo.h"
 #include "AddFriendDialog.h"
@@ -31,10 +32,21 @@ public slots:
     void switchToMessage();
     void loadContactInfo(const QString &name);
     void openAddContactDialog();
+    
+    // 好友添加请求
+    // 添加好友到联系人列表
     void addUser(const UserInfo& user_info);
+    void switchToNewFriendUI();
+    // 添加到好友请求列表
+    void addNewFriend(const QString& username, const QString& message);
+    // 接收/拒绝好友请求
+    void acceptNewFriend(const QString& requester);
+    void rejectNewFriend(const QString& requester);
 
 signals:
     void messageSent(const QString &contact, const QString &message);
+    void acceptNewFriendSuccess(const QString& requester);
+    void rejectNewFriendSuccess(const QString& requester);
 
 private:
     void initChatDialog();

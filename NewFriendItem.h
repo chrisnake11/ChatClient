@@ -1,5 +1,5 @@
-#ifndef CONTACTITEM_H
-#define CONTACTITEM_H
+#ifndef NEWFRIENDITEM_H
+#define NEWFRIENDITEM_H
 #include <QWidget>
 #include <QVBoxLayout>
 #include <QString>
@@ -11,41 +11,35 @@
 #include <QFileInfo>
 #include <QResizeEvent>
 #include <QPaintEvent>
+#include <QPushButton>
 #include "global.h"
 
 
-class ContactItem : public QWidget
+class NewFriendItem : public QWidget
 {
     Q_OBJECT
 public:
-    explicit ContactItem(QWidget *parent = nullptr);
-    ~ContactItem();
+    explicit NewFriendItem(bool isRequest, bool isAccepted, QWidget *parent = nullptr);
+    ~NewFriendItem();
 
     // 更新信息
     void setInfo(const QString &name, const QString &avatarPath, const QString &message);
     void setAvatar(const QString &avatarPath);
-    QString getAvatarPath() const { return _avatarPath; }
-    QString getName() const { return _name; }
-    // 绘制ui的内容
-    void updateDisplayContent();
-    // 状态
-    void setState(WidgetMouseState state);
-
+    QString& getName();
     // 重写paintEvent, 绘制qss样式
     // QT StyleSheet 示例：https://doc.qt.io/qt-6/stylesheet-examples.html
     void paintEvent(QPaintEvent *event) override;
+
+
 public slots:
-    // 鼠标点击事件
-    void mousePressEvent(QMouseEvent *event) override;
-    // 尺寸改变事件
-    void resizeEvent(QResizeEvent *event) override;
-    void enterEvent(QEnterEvent *event) override;
-    void leaveEvent(QEvent *event) override;
+    // 根据服务器返回结果，更新UI
+    void onAcceptFriendSuccess(bool success);
+    void onRejectFriendSuccess(bool success);
 
 signals:
-    // 联系人被点击
-    void contactClicked(ContactItem *item);
-
+    // 发送信号，接收/拒绝requester的请求
+    void addFriendAccepted(const QString& requester);
+    void addFriendRejected(const QString& requester);
 
 private:
     void setupUI();
@@ -54,18 +48,22 @@ private:
     // 信息
     QString _avatarPath;
     QString _name;
-    QString _message; // 个性签名
+    QString _message;
 
     // ui组件
     QHBoxLayout *_layout;
     QLabel *_avatarLabel; // 头像
     QLabel *_nameLabel; // 名称
-    QLabel *_personalSigLabel; // 个性签名标签
+    QLabel *_messageLabel; // 留言
 
-    // 在线状态
-    bool _isOnline;
+    QPushButton* _acceptButton; // 接收按钮
+    QPushButton* _rejectButton; // 拒绝按钮
+    QLabel* _infoLabel; // 已添加/正在等待
 
-    WidgetMouseState _state;
+    // 请求还是响应
+    bool _isRequest;
+    // 是否处理了
+    bool _isAccepted;
 };
 
 #endif // CONTACTITEM_H

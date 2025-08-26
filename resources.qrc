@@ -1,13 +1,3 @@
-<!--
-    代码访问路径： ": + prefix + alias"
-    例如：":/images/wechat.png"
-
-    实际文件索引路径：<file> real_path </file>
-    例如：<file alias="wechat.png">resources/images/wechat.png</file>
-    QT Designer 会根据<file>标签内的路径，去项目文件夹下寻找对应的资源文件
-
-    优点：这样如果文件位置变动，只需修改<file>标签内的路径，代码中访问路径不变
--->
 <RCC>
     <qresource prefix="/images/">
         <!--图片资源-->

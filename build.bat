@@ -3,7 +3,7 @@ chcp 65001 >nul
 setlocal
 
 REM ChatRoom2 一键编译脚本 (Windows版本)
-set PROJECT_NAME=ChatRoom2
+set PROJECT_NAME=ChatRoom
 set QT_PATH=D:\dev\Qt6.9\6.9.0\msvc2022_64
 set BUILD_TYPE=Debug
 

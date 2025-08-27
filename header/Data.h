@@ -31,6 +31,20 @@ public:
 	QString register_time; // 注册时间
 };
 
+// 聊天消息
+struct MessageInfoItem {
+	MessageInfoItem() : uid(0), unread_count(0) {}
+	MessageInfoItem(int uid, const QString& nickname, const QString& avatar, const QString& message, const QString& last_message_time, int unread_count)
+		: uid(uid), nickname(nickname), avatar(avatar), message(message), last_message_time(last_message_time), unread_count(unread_count) {
+	}
+	int uid;
+	QString nickname;
+	QString avatar;
+	QString message;
+	QString last_message_time;
+	int unread_count;
+};
+
 struct AddFriendInfo {
 };
 

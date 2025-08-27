@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QCloseEvent>
 #include "logindialog.h"
 #include "registerdialog.h"
 #include "resetdialog.h"
@@ -30,6 +31,9 @@ private slots:
     void createResetDialog();
     void createChatDialog();
     void createLoginDialog();
+
+    // 窗口关闭事件处理函数
+    void closeEvent(QCloseEvent* event) override;
 private:
     // 通过指针访问UI界面。
     Ui::MainWindow *ui;

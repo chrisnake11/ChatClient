@@ -12,6 +12,9 @@
 #include <QPaintEvent>
 #include "MessageItem.h"
 #include <QResizeEvent>
+#include "Data.h"
+#include <memory>
+#include <vector>
 
 class MessageListWidget : public QWidget{
     Q_OBJECT
@@ -32,7 +35,7 @@ public:
     
 public slots:
     void setCurrentMessage(MessageItem *item);
-    void loadMessageList();
+    void loadMessageList(std::shared_ptr<std::vector<MessageInfoItem>>);
     void searchMessage(const QString &text);
 
 signals:

@@ -17,7 +17,6 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QDir>
-#include <QString>
 #include <QCryptographicHash>
 
 // repolish widget style
@@ -31,13 +30,9 @@ enum RequestID {
     ID_RESET_USER = 1003,
     ID_LOGIN_USER = 1004,
     ID_LOGIN_CHAT = 1005,
-    ID_LOGIN_CHAT_RSP = 1006,
-};
-
-enum Modules{
-    REG_MODEL = 0,
-    RESET_MODEL = 1,
-    LOGIN_MODEL = 2
+    ID_LOGOUT = 1006,
+    ID_GET_MESSAGE_LIST = 1007,
+    ID_GET_MESSAGE_DETAIL = 1008,
 };
 
 enum ErrorCodes{
@@ -70,6 +65,12 @@ enum TipErr {
 enum ClickLabelState{
     NORMAL = 0,
     SELECTED = 1,
+};
+
+enum Modules {
+    REG_MODEL = 0,
+    RESET_MODEL = 1,
+    LOGIN_MODEL = 2,
 };
 
 extern QString gate_url_prefix;

@@ -3,6 +3,9 @@
 #include <QScrollBar>
 #include <QStyleOption>
 #include <QPainter>
+#include <QJSonDocument>
+#include "UserManager.h"
+#include "TcpManager.h"
 
 MessageListWidget::MessageListWidget(QWidget *parent)
     : QWidget(parent),
@@ -10,7 +13,7 @@ MessageListWidget::MessageListWidget(QWidget *parent)
 {
     setupUI();
     initMessageList();
-
+    connect(TcpManager::getInstance().get(), &TcpManager::getMessageInfoList, this, &MessageListWidget::loadMessageList);
 }
 
 MessageListWidget::~MessageListWidget()
@@ -93,11 +96,25 @@ void MessageListWidget::setCurrentMessage(MessageItem *item)
 
 
 void MessageListWidget::initMessageList(){
-    // 加载消息数据
-    for(int i = 0; i < 20; ++i){
-        MessageItem* item = new MessageItem(this);
-        item->setInfo(test_uids[i], test_users[i], ":/images/wechat.png", test_messages[i], test_times[i]);
-        addMessage(item);
+    // 加载消息数据，向服务器请求数据
+    auto uid = UserManager::getInstance()->getUid();
+    auto token = UserManager::getInstance()->getToken();
+    QJsonObject root;
+    root["uid"] = uid;
+    root["token"] = token;
+    QJsonDocument doc(root);
+    QString doc_str = doc.toJson(QJsonDocument::Indented);
+    TcpManager::getInstance()->sig_send_data(RequestID::ID_GET_MESSAGE_LIST, doc_str);
+}
+
+void MessageListWidget::loadMessageList(std::shared_ptr<std::vector<MessageInfoItem>> message_list)
+{
+    qDebug() << "MessageListWidget receive messageList:" << (*message_list).size();
+
+    for (auto& item : *message_list) {
+        MessageItem* messageItem = new MessageItem(this);
+        messageItem->setInfo(item.uid, item.nickname, item.avatar, item.message, item.last_message_time);
+        addMessage(messageItem);
     }
 }
 
@@ -105,26 +122,7 @@ void MessageListWidget::setScrollArea(QScrollArea *scrollArea)
 {
     _scrollArea = scrollArea;
     // 绑定动态加载事件
-    connect(_scrollArea->verticalScrollBar(), &QScrollBar::valueChanged, this, &MessageListWidget::loadMessageList);
-}
-
-void MessageListWidget::loadMessageList()
-{
-    // 获取当前滚动条的值
-    int scrollValue = _scrollArea->verticalScrollBar()->value();
-    int maxScrollValue = _scrollArea->verticalScrollBar()->maximum();
-
-    // 如果滚动条已经到达底部，加载更多消息
-    if (scrollValue == maxScrollValue) {
-        int n = _messageItems.size();
-        // 从内存中加载20条数据。
-        // 假设_messageItems与test_user长度一致。
-        for (int i = n; i < n + 20 && i < test_users.size(); ++i) {
-            MessageItem* item = new MessageItem(this);
-            item->setInfo(test_uids[i], test_users[i], ":/images/wechat.png", test_messages[i], test_times[i]);
-            addMessage(item);    
-        }
-    }
+    //connect(_scrollArea->verticalScrollBar(), &QScrollBar::valueChanged, this, &MessageListWidget::loadMessageList);
 }
 
 MessageItem* MessageListWidget::findMessageItem(const int &uid)

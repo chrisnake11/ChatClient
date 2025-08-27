@@ -13,7 +13,7 @@ public:
     // json：发送的数据
     // req_id：请求的类型
     // mod：发送的模块类型
-    void postHttpRequest(QUrl url, QJsonObject json, RequestID req_id, Modules mod);
+    void postHttpRequest(QUrl url, QJsonObject json, ::RequestID req_id, Modules mod);
 private:
     friend class Singleton<HttpManager>;
     HttpManager();

@@ -87,7 +87,9 @@ void ChatDialog::initChatDialog()
     ui->mid_stack_widget->setCurrentWidget(ui->message_page);
     // 隐藏右边界面
     ui->right_widget->setCurrentWidget(ui->chat_page);
-    ui->right_widget->hide();
+    ui->chat_header->hide();
+    ui->chat_content->hide();
+    ui->input_widget->hide();
 
     QString username = UserManager::getInstance()->getUsername();
     ui->user_avatar->setText(username);
@@ -96,7 +98,9 @@ void ChatDialog::initChatDialog()
 // 聊天界面，读取聊天对象的用户名
 void ChatDialog::loadChatFrame(const int& uid)
 {
-    ui->right_widget->show();
+    ui->chat_header->show();
+    ui->chat_content->show();
+    ui->input_widget->show();
     qDebug() << "Loading chat for contact: " << uid;
     QString username = UserManager::getInstance()->getUsername(uid);
     _currentContact = username;

@@ -3,6 +3,9 @@
 #include <QMessageBox>
 #include <QString>
 #include "TcpManager.h"
+#include <QTimer>
+#include "UserManager.h"
+
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
@@ -16,15 +19,26 @@ MainWindow::MainWindow(QWidget* parent)
 
     // 绑定TCP登录成功信号
     connect(TcpManager::getInstance().get(), &TcpManager::loginSuccess, this, &MainWindow::createChatDialog);
-    
-    // 初始化聊天界面
-    // createChatDialog();
+
 }
 
 MainWindow::~MainWindow()
 {
     qDebug() << "MainWindow destructor called";
+    // 发送用户退出信号
     delete ui;
+}
+
+void MainWindow::closeEvent(QCloseEvent* event) {
+    qDebug() << "MainWindow closeEvent called";
+
+    // 在退出时发送用户退出消息，提醒服务器更新用户登录状态。
+    int user_id = UserManager::getInstance()->getUid();
+    // user_id 转 QString
+    QString user_id_str = QString::number(user_id);
+    TcpManager::getInstance()->slot_send_data(RequestID::ID_LOGOUT, user_id_str);
+
+    event->accept(); // 接受关闭
 }
 
 void MainWindow::createLoginDialog() {

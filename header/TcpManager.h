@@ -19,7 +19,8 @@ private:
 	void initHandlers();
 	void handleMsg(RequestID id, int len, QByteArray data);
 	void handleLogin(RequestID id, int len, QByteArray data);
-	void handlerGetMessageList(RequestID id, int len, QByteArray data);
+	void handleGetMessageList(RequestID id, int len, QByteArray data);
+	void handleGetContactList(RequestID id, int len, QByteArray data);
 
 	// handle login response
 	QMap<RequestID, std::function<void(RequestID id, int len, QByteArray data)>> _handlers;
@@ -48,6 +49,7 @@ signals:
 	void sig_send_data(RequestID reqId, QString data);
 	void sig_login_failed(int); // 登录失败
 	void loginSuccess(); // 登录成功
-	void getMessageInfoList(std::shared_ptr<std::vector<MessageInfoItem>>); // 获取消息列表成功
+	void getMessageInfoList(std::shared_ptr<std::vector<MessageItemInfo>>); // 获取消息列表成功
+	void getContactInfoList(std::shared_ptr<std::vector<ContactItemInfo>>); // 获取消息列表成功
 };
 

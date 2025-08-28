@@ -16,30 +16,33 @@ TcpManager::TcpManager() : _host(""), _port(0), _b_recv_pending(false), _message
 		QObject::connect(&_socket, &QTcpSocket::readyRead, [&] {
 			// 当所有数据接收完毕，添加到缓存中
 			_buffer.append(_socket.readAll());
-
-			QDataStream stream(&_buffer, QIODevice::ReadOnly);
-			stream.setVersion(QDataStream::Qt_6_0);
+			
 
 			// 处理接收到的数据
-			forever {
-				// 没有中断，直接获取消息头
+			while(true) {
+				// 直接获取消息头
 				if (!_b_recv_pending) {
 					// 没有足够的数据来读取消息头，退出
 					if (_buffer.size() < static_cast<int>(sizeof(quint16) * 2)) {
 						return;
 					}
 
+					// 每次重新绑定stream，否则后面_buffer改变地址后，stream仍然指向原来的地址，导致报错。
+					QDataStream stream(&_buffer, QIODevice::ReadOnly);
+					stream.setVersion(QDataStream::Qt_6_0);
 					// 读取消息ID和消息len
 					stream >> _message_id >> _message_len;
-
-					//将buffer中的前四个字节移除
+					
+					qDebug() << "Message id: " << _message_id << ", Message len: " << _message_len;
+					
+					//将buffer中头部的4个字节移除
 					_buffer = _buffer.mid(sizeof(quint16) * 2);
 
-					qDebug() << "Message id: " << _message_id << ", Message len: " << _message_len;
 				}
 
 				// 没有足够的缓存读取消息体
 				if (_buffer.size() < _message_len) {
+					std::cout << "ERROR! buffer is less than message_len" << std::endl;
 					_b_recv_pending = true;
 					return;
 				}
@@ -49,8 +52,8 @@ TcpManager::TcpManager() : _host(""), _port(0), _b_recv_pending(false), _message
 				QByteArray message_body = _buffer.mid(0, _message_len);
 				qDebug() << "recv body is: " << message_body;
 
-				// 处理消息体
 				_buffer = _buffer.mid(_message_len);
+				// 处理消息体
 				handleMsg(RequestID(_message_id), _message_len, message_body);
 			}
 
@@ -141,7 +144,7 @@ void TcpManager::handleLogin(RequestID id, int len, QByteArray data) {
 	emit loginSuccess();
 }
 
-void TcpManager::handlerGetMessageList(RequestID id, int len, QByteArray data) { 
+void TcpManager::handleGetMessageList(RequestID id, int len, QByteArray data) { 
 	Q_UNUSED(len);
 	qDebug() << "handle id is ID_GET_MESSAGE_LIST: " << id;
 	// 解析为json
@@ -163,7 +166,7 @@ void TcpManager::handlerGetMessageList(RequestID id, int len, QByteArray data) {
 		return;
 	}
 
-	std::shared_ptr<std::vector<MessageInfoItem>> message_list = std::make_shared<std::vector<MessageInfoItem>>();
+	std::shared_ptr<std::vector<MessageItemInfo>> message_list = std::make_shared<std::vector<MessageItemInfo>>();
 
 	if (jsonObj.contains("message_list") && jsonObj["message_list"].isArray()) {
 		for (auto item : jsonObj["message_list"].toArray()) {
@@ -176,6 +179,45 @@ void TcpManager::handlerGetMessageList(RequestID id, int len, QByteArray data) {
 	emit getMessageInfoList(message_list);
 }
 
+void TcpManager::handleGetContactList(RequestID id, int len, QByteArray data)
+{
+	Q_UNUSED(len);
+	qDebug() << "handle id is ID_GET_CONTACT_LIST: " << id;
+	// 解析为json
+	QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
+	if (jsonDoc.isNull()) {
+		qDebug() << "Failed to create JsonDocument";
+		return;
+	}
+	QJsonObject jsonObj = jsonDoc.object();
+	if (!jsonObj.contains("error")) {
+		int err = ErrorCodes::ERROR_JSON_PARSE_FAILED;
+		qDebug() << "Get Message List Failed, error is json parse error" << err;
+		return;
+	}
+	// check success signals
+	int err = jsonObj["error"].toInt();
+	if (err != ErrorCodes::SUCCESS) {
+		qDebug() << "Get Message List Failed, err is " << err;
+		return;
+	}
+
+	std::shared_ptr<std::vector<ContactItemInfo>> contact_list = std::make_shared<std::vector<ContactItemInfo>>();
+
+    if (jsonObj.contains("contact_list") && jsonObj["contact_list"].isArray()) {
+		for (auto item : jsonObj["contact_list"].toArray()) {
+			QJsonObject contact_obj = item.toObject();
+			contact_list->emplace_back(contact_obj["uid"].toInt(), 
+				contact_obj["nickname"].toString(),
+				contact_obj["avatar"].toString(),
+				contact_obj["sign"].toString());
+		}
+	}
+
+	emit getContactInfoList(contact_list);
+
+}
+
 void TcpManager::initHandlers() {
 	// 响应获取用户数据的请求结果
 	_handlers.insert(ID_LOGIN_CHAT, [this](RequestID id, int len, QByteArray data) {
@@ -183,7 +225,11 @@ void TcpManager::initHandlers() {
 		});
 
 	_handlers.insert(ID_GET_MESSAGE_LIST, [this](RequestID id, int len, QByteArray data) {
-			handlerGetMessageList(id, len, data);
+			handleGetMessageList(id, len, data);
+		});
+
+	_handlers.insert(ID_GET_CONTACT_LIST, [this](RequestID id, int len, QByteArray data) {
+			handleGetContactList(id, len, data);
 		});
 }
 

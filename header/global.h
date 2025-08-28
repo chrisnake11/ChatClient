@@ -33,6 +33,8 @@ enum RequestID {
     ID_LOGOUT = 1006,
     ID_GET_MESSAGE_LIST = 1007,
     ID_GET_MESSAGE_DETAIL = 1008,
+    ID_GET_CONTACT_LIST = 1009,
+    ID_GET_CONTACT_DETAIL = 1010,
 };
 
 enum ErrorCodes{

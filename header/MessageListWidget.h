@@ -35,7 +35,7 @@ public:
     
 public slots:
     void setCurrentMessage(MessageItem *item);
-    void loadMessageList(std::shared_ptr<std::vector<MessageInfoItem>>);
+    void loadMessageList(std::shared_ptr<std::vector<MessageItemInfo>>);
     void searchMessage(const QString &text);
 
 signals:

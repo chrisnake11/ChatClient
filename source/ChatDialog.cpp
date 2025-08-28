@@ -141,7 +141,6 @@ void ChatDialog::sendMessage(){
     // TODO: Send the message to the current contact
     emit messageSent(_currentContact, message);
     ui->send_edit->clear();
-    
 }
 
 void ChatDialog::searchContact(){
@@ -165,9 +164,11 @@ void ChatDialog::switchToContact(){
 }
 
 void ChatDialog::switchToMessage(){
+    // 重新选择列表按钮
     clearListState();
     _currentListLabel = ui->msg_list_btn;
     _currentListLabel->setState(WidgetMouseState::SELECTED);
+    // 显示对应界面
     ui->mid_stack_widget->setCurrentWidget(ui->message_page);
     ui->right_widget->setCurrentWidget(ui->chat_page);
 }

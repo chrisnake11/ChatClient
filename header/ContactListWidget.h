@@ -12,6 +12,9 @@
 #include <QPaintEvent>
 #include <QResizeEvent>
 #include "ContactItem.h"
+#include <memory>
+#include "Data.h"
+#include <vector>
 
 class ContactListWidget : public QWidget{
     Q_OBJECT
@@ -31,7 +34,7 @@ public:
     
 public slots:
     void setCurrentContact(ContactItem *item);
-    void loadContactList();
+    void loadContactList(std::shared_ptr<std::vector<ContactItemInfo>> contact_list);
     void searchContact(const QString &text);
 
 signals:

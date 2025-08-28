@@ -39,7 +39,7 @@ void MessageListWidget::addMessage(MessageItem *item){
     // 检查是否已存在该消息
     int uid = item->getUid();
     if (findMessageItem(uid) != nullptr) {
-        qDebug() << "Message already exists for sender:" << uid;
+        qDebug() << "Message already exists. uid:" << uid;
         return;
     }
 
@@ -107,7 +107,7 @@ void MessageListWidget::initMessageList(){
     TcpManager::getInstance()->sig_send_data(RequestID::ID_GET_MESSAGE_LIST, doc_str);
 }
 
-void MessageListWidget::loadMessageList(std::shared_ptr<std::vector<MessageInfoItem>> message_list)
+void MessageListWidget::loadMessageList(std::shared_ptr<std::vector<MessageItemInfo>> message_list)
 {
     qDebug() << "MessageListWidget receive messageList:" << (*message_list).size();
 

@@ -39,7 +39,7 @@ public slots:
     void searchMessage(const QString &text);
 
 signals:
-    void messageClicked(const int& uid);
+    void messageClicked(const int& uid, const int& friend_uid);
 
 private:
     // 初始化消息列表

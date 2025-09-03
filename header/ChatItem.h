@@ -20,13 +20,14 @@
 class ChatItem : public QWidget {
     Q_OBJECT
 public:
-    explicit ChatItem(bool fromthis = true, QWidget *parent = nullptr);
+    explicit ChatItem(bool from_this, QWidget *parent = nullptr);
     ~ChatItem();
-
+    void setUid(const int& uid);
     void setName(const QString &name);
     void setAvatar(const QString &avatarPath);
     void setMessageBubble(QWidget* bubble);
     QString getName() const;
+    int getUid() const;
 
 protected:
     void paintEvent(QPaintEvent *event) override;
@@ -36,7 +37,7 @@ private:
     QWidget *_messageLabel;
     QLabel *_avatarLabel;
     QLabel *_nameLabel;
-    bool _fromthis;
+    int _uid;
 };
 
 #endif // CHATITEM_H

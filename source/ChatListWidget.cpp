@@ -1,6 +1,8 @@
 #include "ChatListWidget.h"
 #include <QScrollBar>
 #include <QTimer>
+#include "UserManager.h"
+
 ChatListWidget::ChatListWidget(QWidget *parent)
     : QWidget(parent), _layout(new QVBoxLayout(this)), _scrollArea(nullptr)
 {
@@ -8,12 +10,21 @@ ChatListWidget::ChatListWidget(QWidget *parent)
     _layout->setContentsMargins(20, 20, 20, 20);
     _layout->setAlignment(Qt::AlignTop);
     setLayout(_layout);
-    loadChatHistory();
     setMouseTracking(true);
 }
 
 ChatListWidget::~ChatListWidget()
 {
+}
+
+void ChatListWidget::clear() {
+    QLayoutItem* item;
+    while ((item = _layout->takeAt(0)) != nullptr) {
+        if (item->widget()) {
+            delete item->widget();  // 删除其中的控件
+        }
+        delete item;  // 删除布局项本身
+    }
 }
 
 void ChatListWidget::addChatItemBack(QWidget* chat_item)
@@ -43,11 +54,6 @@ void ChatListWidget::setScrollArea(CustomScrollArea* scrollArea)
         _scrollArea->verticalScrollBar()->setValue(_scrollArea->verticalScrollBar()->maximum());
         // 如果scrollArea向上滚动到头，就在头部添加ChatBubble
         connect(_scrollArea->verticalScrollBar(), &QScrollBar::valueChanged, this, &ChatListWidget::onScrollBarValueChanged);
-        connect(this, &ChatListWidget::messageSent, this, [this]() {
-            if (_scrollArea) {
-                qDebug() << "_scrollbar max" <<  _scrollArea->verticalScrollBar()->maximum();
-            }
-        });
     }
 }
 
@@ -57,47 +63,65 @@ void ChatListWidget::onScrollBarValueChanged(int value)
         // 在头部添加ChatBubble
         auto chat_item = new ChatItem(true, this);
         chat_item->setName("Me");
-        chat_item->setMessageBubble(new TextBubble(true,"New message at the top"));
+        chat_item->setMessageBubble(new TextBubble("New message at the top"));
         chat_item->setAvatar(":/images/wechat.png");
         addChatItemFront(chat_item);
         _scrollArea->getCustomScrollBar()->setValue(_scrollArea->getCustomScrollBar()->minimum() + 1);
     }
 }
 
-void ChatListWidget::loadChatHistory()
+void ChatListWidget::loadChatMessageList(std::shared_ptr<std::vector<ChatMessageInfo>> message_list)
 {
-    for(int i = 0; i < 20; i = i + 2){
-        auto chat_item1 = new ChatItem(true, this);
-        auto text_bubble1 = new TextBubble(true, test_messages[i] + " from this");
-        auto chat_item2 = new ChatItem(false, this);
-        auto text_bubble2 = new TextBubble(false, test_messages[i + 1] + " from other");
-        chat_item1->setName("Me");
-        chat_item1->setAvatar(":/images/wechat.png");
-        chat_item1->setMessageBubble(text_bubble1);
-        addChatItemBack(chat_item1);
-
-        chat_item2->setName("Other");
-        chat_item2->setAvatar(":/images/wechat.png");
-        chat_item2->setMessageBubble(text_bubble2);
-        addChatItemBack(chat_item2);
+    // 清空之前的聊天记录，重新加载
+    clear();
+    // 当前用户id
+    int uid = UserManager::getInstance()->getUid();
+    if (message_list) {
+        for (auto& message : *message_list) {
+            // 发送者的id
+            int sender_id = message.sender_id;
+            // 生成chat_item和bubble
+            ChatItem* chat_item = new ChatItem(sender_id == uid, this);
+            std::shared_ptr<UserInfo> sender;
+            auto text_bubble = new TextBubble(message.message);
+            // 根据是否为当前用户发送，生成不同的chat_item
+            if (sender_id == uid) {
+                sender = UserManager::getInstance()->getUserInfo(sender_id);
+            }
+            else {
+                sender = UserManager::getInstance()->getFriendInfo(sender_id);
+            }
+            chat_item->setName(sender->nickname);
+            chat_item->setAvatar(sender->avatar);
+            chat_item->setMessageBubble(text_bubble);
+            addChatItemBack(chat_item);
+        }
     }
+    _scrollArea->getCustomScrollBar()->setValue(_scrollArea->getCustomScrollBar()->maximum());
 }
 
-void ChatListWidget::onMessageSent(const QString &contact, const QString &message)
+void ChatListWidget::addSingleMessage(std::shared_ptr<ChatMessageInfo> message)
 {
-    qDebug() << "Message sent to" << contact << ":" << message;
-    // TODO: Add the message to the chat history
-    auto chat_item = new ChatItem(true, this);
-    chat_item->setName("Me");
-    chat_item->setMessageBubble(new TextBubble(true, message));
-    chat_item->setAvatar(":/images/wechat.png");
-    addChatItemBack(chat_item);
+    qDebug() << "Message add from " << message->sender_id << " to " << message->receiver_id << " : " << message->message;
+    int uid = UserManager::getInstance()->getUid();
+    ChatItem* chatItem = nullptr;
+    if (message->sender_id == uid) {
+        chatItem = new ChatItem(true, this);
+        chatItem->setName(UserManager::getInstance()->getUsername());
+        chatItem->setAvatar(":/images/wechat.png");
+    }
+    else {
+        chatItem = new ChatItem(false, this);
+        chatItem->setName(UserManager::getInstance()->getFriendInfo(message->sender_id)->nickname);
+        chatItem->setAvatar(":/images/wechat.png");
+    }
+    TextBubble* textBubble = new TextBubble(message->message, chatItem);
+    chatItem->setMessageBubble(textBubble);
+    addChatItemBack(chatItem);
     // 强制更新布局，会自动通知QScrollArea更新
     updateGeometry();
-    // 滚动到底部
+    // 延迟滚动到底部
     QTimer::singleShot(0, this, [this]() {
-        if (_scrollArea) {
-            _scrollArea->getCustomScrollBar()->setValue(_scrollArea->getCustomScrollBar()->maximum());
-        }
-    });
+        _scrollArea->getCustomScrollBar()->setValue(_scrollArea->getCustomScrollBar()->maximum());
+        });
 }

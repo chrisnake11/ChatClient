@@ -15,7 +15,7 @@ ContactItem::ContactItem(QWidget *parent) : QWidget(parent),
                                             _avatarLabel(nullptr),
                                             _nameLabel(nullptr),
                                             _personalSigLabel(nullptr),
-                                            _isOnline(false),
+                                            _onlineStatus(0),
                                             _state(WidgetMouseState::NORMAL)
 {
     setupUI();
@@ -63,7 +63,7 @@ void ContactItem::setupUI()
     statusIndicator->setFixedSize(8, 8);
     QLabel* onlineLabel = new QLabel(this);
     
-    if(_isOnline == true){
+    if(_onlineStatus == true){
         statusIndicator->setStyleSheet("background-color: green; border-radius: 4px;");
         onlineLabel->setText("在线");
         onlineLabel->setStyleSheet("color: #666666; font-size: 9px;");
@@ -97,12 +97,13 @@ void ContactItem::setupUI()
     setMouseTracking(true);
 }
 
-void ContactItem::setInfo(const int& uid, const QString &name, const QString &avatarPath, const QString &message)
+void ContactItem::setInfo(const int& uid, const QString &name, const QString &avatarPath, const QString &message, const int& online_status)
 {
     _uid = uid;
     _name = name;
     _avatarPath = avatarPath;
     _message = message;
+    _onlineStatus = online_status;
     updateDisplayContent();
 }
 

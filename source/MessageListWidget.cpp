@@ -90,7 +90,10 @@ void MessageListWidget::setCurrentMessage(MessageItem *item)
         _currentSelectedMessage = item;
         // 发送信号，通知ChatWidget
         qDebug() << "MessageListWidget send messageClicked signal for:" << item->getName();
-        emit messageClicked(item->getUid());
+        int uid = UserManager::getInstance()->getUid();
+        int friend_uid = item->getUid();
+        // 发送消息点击信号，触发TcpManager发送消息
+        emit messageClicked(uid, friend_uid);
     }
 }
 
@@ -113,7 +116,7 @@ void MessageListWidget::loadMessageList(std::shared_ptr<std::vector<MessageItemI
 
     for (auto& item : *message_list) {
         MessageItem* messageItem = new MessageItem(this);
-        messageItem->setInfo(item.uid, item.nickname, item.avatar, item.message, item.last_message_time);
+        messageItem->setInfo(item.uid, item.nickname, item.avatar, item.message, item.lastMessageTime);
         addMessage(messageItem);
     }
 }

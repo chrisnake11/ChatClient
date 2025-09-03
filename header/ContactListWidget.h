@@ -25,7 +25,7 @@ public:
     // contact management functions
     void addContact(ContactItem* item);
     void clearContacts();
-    void updateContact(ContactItem *item, const int& uid, const QString &name, const QString &message);
+    void updateContact(ContactItem *item, const int& uid, const QString &name, const QString &message, const int& online_status);
     ContactItem* findContactItem(const QString &name);
     
     void setScrollArea(QScrollArea *scrollArea);

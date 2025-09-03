@@ -8,6 +8,10 @@
 #include "SelectedLabel.h"
 #include "AddFriendDialog.h"
 #include "Data.h"
+#include <vector>
+#include <memory>
+#include "TcpManager.h"
+#include "UserManager.h"
 
 namespace Ui {
 class ChatDialog;
@@ -21,6 +25,12 @@ public:
     ChatDialog(QWidget *parent = nullptr);
     ~ChatDialog();
     void keyPressEvent(QKeyEvent *event) override;
+    void setFriendUid(const int& uid) {
+        _friend_uid = uid;
+    }
+    int getFriendUid() {
+        return _friend_uid;
+    }
 
 public slots:
     // 清除侧边栏选中状态
@@ -38,12 +48,12 @@ public slots:
     // 打开添加联系人对话框
     void openAddContactDialog();
     
-    // 加载聊天框
-    void loadChatFrame(const int &uid);
-    // 加载和uid用户的聊天信息
-    void loadChatMessageList(const int& uid);
+    // 向服务器请求消息
+    void loadChatInfo(const int& uid, const int& friend_uid);
+    // 加载聊天界面
+    void loadChatFrame(const int& uid, const int& friend_uid, std::shared_ptr<std::vector<ChatMessageInfo>>);
     // 发送消息
-    void sendMessage();
+    void onSendMessage();
 
     // 添加好友到联系人列表
     void addUser(std::unique_ptr<UserInfo>& user_info);
@@ -55,9 +65,10 @@ public slots:
     void rejectNewFriend(const QString& requester);
 
 signals:
-    void messageSent(const QString &contact, const QString &message);
     void acceptNewFriendSuccess(const QString& requester);
     void rejectNewFriendSuccess(const QString& requester);
+    // 加载和uid用户的聊天信息
+    void loadChatMessageList(std::shared_ptr<std::vector<ChatMessageInfo>>);
 
 private:
     void initChatDialog();
@@ -65,6 +76,6 @@ private:
 
     // 当前选中的联系人
     SelectedLabel* _currentListLabel;
-    QString _currentContact;
+    int _friend_uid;
 };
 

@@ -51,10 +51,10 @@ void ContactListWidget::addContact(ContactItem* item){
     qDebug() << "Added contact:" << item->getName();
 }
 
-void ContactListWidget::updateContact(ContactItem *item, const int& uid, const QString &name, const QString &message)
+void ContactListWidget::updateContact(ContactItem *item, const int& uid, const QString &name, const QString &message, const int& online_status)
 {
     if (item) {
-        item->setInfo(uid, name, item->getAvatarPath(), message);
+        item->setInfo(uid, name, item->getAvatarPath(), message, online_status);
         qDebug() << "Updated contact:" << name;
     } else {
         qDebug() << "Contact not found for update:" << name;
@@ -109,9 +109,13 @@ void ContactListWidget::initContactList(){
 
 void ContactListWidget::loadContactList(std::shared_ptr<std::vector<ContactItemInfo>> contact_list) {
     qDebug() << "load ContactList, size: " << (*contact_list).size();
+    // 更新UserManager维护的用户信息
+    qDebug() << "update updateFriendInfoByContactList";
+    UserManager::getInstance()->updateFriendInfoByContactList(contact_list);
+    // 更新UI界面的联系人列表
     for (auto& item : *contact_list) {
         ContactItem* contact_item = new ContactItem(this);
-        contact_item->setInfo(item.uid, item.nickname, item.avatar, item.sign);
+        contact_item->setInfo(item.uid, item.nickname, item.avatar, item.sign, item.onlineStatus);
         addContact(contact_item);
     }
 }

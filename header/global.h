@@ -29,12 +29,14 @@ enum RequestID {
     ID_REG_USER = 1002,
     ID_RESET_USER = 1003,
     ID_LOGIN_USER = 1004,
-    ID_LOGIN_CHAT = 1005,
-    ID_LOGOUT = 1006,
-    ID_GET_MESSAGE_LIST = 1007,
-    ID_GET_MESSAGE_DETAIL = 1008,
-    ID_GET_CONTACT_LIST = 1009,
-    ID_GET_CONTACT_DETAIL = 1010,
+    ID_LOGIN_CHAT = 1005, // 登录聊天
+    ID_LOGOUT = 1006, // 登出
+    ID_GET_MESSAGE_LIST = 1007, // 获取消息列表
+    ID_GET_CHAT_MESSAGE = 1008, // 获取聊天消息
+    ID_GET_CONTACT_LIST = 1009, // 获取联系人列表
+    ID_GET_CONTACT_DETAIL = 1010, // 获取联系人详情
+    ID_SEND_CHAT_MESSAGE = 1011, // 发送消息
+    ID_RECEIVE_CHAT_MESSAGE = 1012, // 收到聊天消息
 };
 
 enum ErrorCodes{

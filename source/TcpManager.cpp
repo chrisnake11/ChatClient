@@ -28,7 +28,9 @@ TcpManager::TcpManager() : _host(""), _port(0), _b_recv_pending(false), _message
 					}
 
 					// 每次重新绑定stream，否则后面_buffer改变地址后，stream仍然指向原来的地址，导致报错。
+					// 每次循环创建stream用于读取消息头。
 					QDataStream stream(&_buffer, QIODevice::ReadOnly);
+					stream.setByteOrder(QDataStream::BigEndian);
 					stream.setVersion(QDataStream::Qt_6_0);
 					// 读取消息ID和消息len
 					stream >> _message_id >> _message_len;
@@ -124,9 +126,9 @@ void TcpManager::handleLogin(RequestID id, int len, QByteArray data) {
 		user_info->gender = user_obj["gender"].toInt();
 		user_info->birthday = user_obj["birthday"].toString();
 		user_info->sign = user_obj["sign"].toString();
-		user_info->online_status = user_obj["online_status"].toInt();
-		user_info->last_login = user_obj["last_login"].toString();
-		user_info->register_time = user_obj["register_time"].toString();
+		user_info->onlineStatus = user_obj["online_status"].toInt();
+		user_info->lastLogin = user_obj["last_login"].toString();
+		user_info->registerTime = user_obj["register_time"].toString();
 	}
 	else {
 		int err = ErrorCodes::ERROR_LOAD_USERINFO_FAILED;
@@ -171,8 +173,15 @@ void TcpManager::handleGetMessageList(RequestID id, int len, QByteArray data) {
 	if (jsonObj.contains("message_list") && jsonObj["message_list"].isArray()) {
 		for (auto item : jsonObj["message_list"].toArray()) {
 			QJsonObject message_obj = item.toObject();
-
-			message_list->emplace_back(message_obj["uid"].toInt(), message_obj["nickname"].toString(), message_obj["avatar"].toString(), message_obj["message"].toString(), message_obj["last_message_time"].toString(), message_obj["unread_count"].toInt());
+			MessageItemInfo message_item(
+				message_obj["uid"].toInt(),
+				message_obj["nickname"].toString(),
+				message_obj["avatar"].toString(),
+				message_obj["message"].toString(),
+				message_obj["last_message_time"].toString(),
+				message_obj["unread_count"].toInt()
+			);
+			message_list->push_back(message_item);
 		}
 	}
 
@@ -207,10 +216,14 @@ void TcpManager::handleGetContactList(RequestID id, int len, QByteArray data)
     if (jsonObj.contains("contact_list") && jsonObj["contact_list"].isArray()) {
 		for (auto item : jsonObj["contact_list"].toArray()) {
 			QJsonObject contact_obj = item.toObject();
-			contact_list->emplace_back(contact_obj["uid"].toInt(), 
-				contact_obj["nickname"].toString(),
-				contact_obj["avatar"].toString(),
-				contact_obj["sign"].toString());
+			ContactItemInfo contact_item_info;
+			contact_item_info.uid = contact_obj["uid"].toInt();
+			contact_item_info.username = contact_obj["username"].toString();
+            contact_item_info.nickname = contact_obj["nickname"].toString();
+            contact_item_info.avatar = contact_obj["avatar"].toString();
+            contact_item_info.sign = contact_obj["sign"].toString();
+            contact_item_info.onlineStatus = contact_obj["online_status"].toInt();
+			contact_list->emplace_back(contact_item_info);
 		}
 	}
 
@@ -231,6 +244,117 @@ void TcpManager::initHandlers() {
 	_handlers.insert(ID_GET_CONTACT_LIST, [this](RequestID id, int len, QByteArray data) {
 			handleGetContactList(id, len, data);
 		});
+	_handlers.insert(ID_GET_CHAT_MESSAGE, [this](RequestID id, int len, QByteArray data) {
+			handleGetChatMessageList(id, len, data);
+		});
+	_handlers.insert(ID_SEND_CHAT_MESSAGE, [this](RequestID id, int len, QByteArray data) {
+		handleSentChatMessageSuccess(id, len, data);
+		});
+	_handlers.insert(ID_RECEIVE_CHAT_MESSAGE, [this](RequestID id, int len, QByteArray data) {
+		handleReceiveChatMessage(id, len, data);
+		});
+}
+
+void TcpManager::handleReceiveChatMessage(RequestID id, int len, QByteArray data) {
+	Q_UNUSED(len);
+	qDebug() << "handle id is ID_RECEIVEC_CHAT_MESSAGE "<< id;
+	// 解析为json
+	QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
+	if (jsonDoc.isNull()) {
+		qDebug() << "Failed to create JsonDocument";
+		return;
+	}
+	QJsonObject jsonObj = jsonDoc.object();
+	if (!jsonObj.contains("error")) {
+		int err = ErrorCodes::ERROR_JSON_PARSE_FAILED;
+		qDebug() << "Sent Chat Message Success Failed, error is json.";
+	}
+	if (jsonObj["error"].toInt() != ErrorCodes::SUCCESS) {
+		qDebug() << "Sent Chat Message Success Failed, err is " << jsonObj["error"].toInt();
+		return;
+	}
+
+	std::shared_ptr<ChatMessageInfo> chat_message_info = std::make_shared<ChatMessageInfo>();;
+	chat_message_info->sender_id = jsonObj["sender_id"].toInt();
+	chat_message_info->receiver_id = jsonObj["receiver_id"].toInt();
+	chat_message_info->message = jsonObj["message"].toString();
+
+	emit receiveChatMessage(chat_message_info);
+}
+
+void TcpManager::handleSentChatMessageSuccess(RequestID id, int len, QByteArray data) {
+	Q_UNUSED(len);
+	qDebug() << "handle id is ID_SENT_CHAT_MESSAGE_SUCCESS: " << id;
+	// 解析为json
+	QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
+	if (jsonDoc.isNull()) {
+		qDebug() << "Failed to create JsonDocument";
+		return;
+	}
+	QJsonObject jsonObj = jsonDoc.object();
+	if (!jsonObj.contains("error")) {
+		int err = ErrorCodes::ERROR_JSON_PARSE_FAILED;
+		qDebug() << "Sent Chat Message Success Failed, error is json.";
+	}
+    if (jsonObj["error"].toInt() != ErrorCodes::SUCCESS) {
+		qDebug() << "Sent Chat Message Success Failed, err is " << jsonObj["error"].toInt();
+		return;
+	}
+
+	std::shared_ptr<ChatMessageInfo> chat_message_info = std::make_shared<ChatMessageInfo>();;
+	chat_message_info->message_id = jsonObj["message_id"].toInt();
+	chat_message_info->sender_id = jsonObj["sender_id"].toInt();
+    chat_message_info->receiver_id = jsonObj["receiver_id"].toInt();
+    chat_message_info->message = jsonObj["message"].toString();
+	chat_message_info->message_time = jsonObj["message_time"].toString();
+    chat_message_info->message_type = jsonObj["message_type"].toString();
+
+
+	emit sentChatMessageSuccess(chat_message_info);
+}
+
+void TcpManager::handleGetChatMessageList(RequestID id, int len, QByteArray data) {
+	Q_UNUSED(len);
+	qDebug() << "handle id is ID_GET_CHAT_MESSAGE: " << id;
+	// 解析为json
+	QJsonDocument jsonDoc = QJsonDocument::fromJson(data);
+	if (jsonDoc.isNull()) {
+		qDebug() << "Failed to create JsonDocument";
+		return;
+	}
+	QJsonObject jsonObj = jsonDoc.object();
+	if (!jsonObj.contains("error")) {
+		int err = ErrorCodes::ERROR_JSON_PARSE_FAILED;
+		qDebug() << "Get Chat Message List Failed, error is json parse error" << err;
+		return;
+	}
+	// check success signals
+	int err = jsonObj["error"].toInt();
+	if (err != ErrorCodes::SUCCESS) {
+		qDebug() << "Get Chat Message List Failed, err is " << err;
+		return;
+	}
+
+	std::shared_ptr<std::vector<ChatMessageInfo>> message_list = std::make_shared<std::vector<ChatMessageInfo>>();
+
+	if (jsonObj.contains("message_list") && jsonObj["message_list"].isArray()) {
+		for (auto item : jsonObj["message_list"].toArray()) {
+			QJsonObject message_obj = item.toObject();
+			ChatMessageInfo chat_message;
+			chat_message.sender_id = message_obj["sender_id"].toInt();
+            chat_message.receiver_id = message_obj["receiver_id"].toInt();
+            chat_message.message = message_obj["message"].toString();
+			chat_message.message_time = message_obj["message_time"].toString();
+			chat_message.message_type = message_obj["message_type"].toString();
+            message_list->push_back(chat_message);
+		}
+	}
+
+	int uid = jsonObj["uid"].toInt();
+	int friend_uid = jsonObj["friend_uid"].toInt();
+	qDebug() << "TcpManager:: Get Chat Message List Success, uid is " << uid;
+
+	emit getChatMessageList(uid, friend_uid, message_list);
 }
 
 void TcpManager::handleMsg(RequestID id, int len, QByteArray data) {

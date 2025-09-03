@@ -17,6 +17,7 @@
 #include "global.h"
 #include "TextBubble.h"
 #include "CustomScrollArea.h"
+#include "UserManager.h"
 
 class ChatListWidget : public QWidget {
     Q_OBJECT
@@ -26,14 +27,10 @@ public:
     void addChatItemBack(QWidget* chat_item);
     void addChatItemFront(QWidget* chat_item);
     void setScrollArea(CustomScrollArea* scrollArea);
-    void loadChatHistory();
-
+    void loadChatMessageList(std::shared_ptr<std::vector<ChatMessageInfo>>);
+    void clear();
 public slots:
-    void onMessageSent(const QString &contact, const QString &message);
-
-
-signals:
-    void messageSent();
+    void addSingleMessage(std::shared_ptr<ChatMessageInfo> message);
 
 private:
     void paintEvent(QPaintEvent* event) override;

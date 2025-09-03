@@ -11,10 +11,9 @@
 #include "AddFriendDialog.h"
 #include "NewFriendItem.h"
 #include "NewFriendWidget.h"
-#include "UserManager.h"
 
 ChatDialog::ChatDialog(QWidget* parent)
-	: QDialog(parent), _currentListLabel(nullptr), _currentContact("")
+	: QDialog(parent), _currentListLabel(nullptr)
     , ui(new Ui::ChatDialog)
 {
     ui->setupUi(this);  
@@ -36,15 +35,16 @@ ChatDialog::ChatDialog(QWidget* parent)
     connect(ui->msg_list_btn, &ClickedLabel::clicked, this, &ChatDialog::switchToMessage);
     connect(ui->contact_list_btn, &ClickedLabel::clicked, this, &ChatDialog::switchToContact);
 
-    // 加载聊天窗口
+    // 请求聊天记录
     connect(ui->message_list, &MessageListWidget::messageClicked, 
-        this, &ChatDialog::loadChatFrame);
-    // 联系人信息加载事件
+        this, &ChatDialog::loadChatInfo);
+    connect(TcpManager::getInstance().get(), &TcpManager::getChatMessageList,
+        this, &ChatDialog::loadChatFrame); 
+    connect(this, &ChatDialog::loadChatMessageList, ui->chat_content, &ChatListWidget::loadChatMessageList);
+    // 点击联系人
     connect(ui->contact_list, &ContactListWidget::contactClicked, this, &ChatDialog::loadContactInfo);
 
-    // 消息发送事件
-    connect(ui->send_btn, &QPushButton::clicked, this, &ChatDialog::sendMessage);
-    connect(this, &ChatDialog::messageSent, ui->chat_content, &ChatListWidget::onMessageSent);
+
     
     // 搜索框事件
     connect(ui->search_edit, &QLineEdit::textChanged, this, &ChatDialog::searchContact);
@@ -59,6 +59,11 @@ ChatDialog::ChatDialog(QWidget* parent)
     connect(ui->new_friend_list, &NewFriendWidget::rejectNewFriend, this, &ChatDialog::rejectNewFriend);
     connect(this, &ChatDialog::acceptNewFriendSuccess, ui->new_friend_list, &NewFriendWidget::onAcceptNewFriendSuccess);
     connect(this, &ChatDialog::rejectNewFriendSuccess, ui->new_friend_list, &NewFriendWidget::onRejectNewFriendSuccess);
+
+    // 消息发送事件
+    connect(ui->send_btn, &QPushButton::clicked, this, &ChatDialog::onSendMessage);
+    connect(TcpManager::getInstance().get(), &TcpManager::sentChatMessageSuccess, ui->chat_content, &ChatListWidget::addSingleMessage);
+    connect(TcpManager::getInstance().get(), &TcpManager::receiveChatMessage, ui->chat_content, &ChatListWidget::addSingleMessage);
 }
 
 ChatDialog::~ChatDialog()
@@ -95,18 +100,41 @@ void ChatDialog::initChatDialog()
     ui->user_avatar->setText(username);
 }
 
+void ChatDialog::loadChatInfo(const int& uid, const int& friend_uid)
+{
+    QJsonObject obj;
+    obj["uid"] = uid;
+    obj["friend_uid"] = friend_uid;
+    QString token = UserManager::getInstance()->getToken();
+    obj["token"] = token;
+    QJsonDocument doc(obj);
+    // 发送ChatMessage列表请求
+    TcpManager::getInstance()->slot_send_data(ID_GET_CHAT_MESSAGE, doc.toJson());
+}
+
 // 聊天界面，读取聊天对象的用户名
-void ChatDialog::loadChatFrame(const int& uid)
+void ChatDialog::loadChatFrame(const int& uid, const int& friend_uid, std::shared_ptr<std::vector<ChatMessageInfo>> message_list)
 {
     ui->chat_header->show();
     ui->chat_content->show();
     ui->input_widget->show();
-    qDebug() << "Loading chat for contact: " << uid;
-    QString username = UserManager::getInstance()->getUsername(uid);
-    _currentContact = username;
-    ui->chat_title->setText(username);
-    // 读取状态
-    if (UserManager::getInstance()->getUserInfo(uid)->online_status == 1) {
+
+    setFriendUid(friend_uid);
+
+    // 获取uid对应的好友信息
+    std::shared_ptr<UserInfo> user_info = UserManager::getInstance()->getFriendInfo(friend_uid);
+    if (user_info == nullptr) {
+        std::cout << "UserManager friend " << uid << " not found" << std::endl;
+        return;
+    }
+    // 获取用户数据
+    QString name = user_info->nickname;
+    int online_status = user_info->onlineStatus;
+    qDebug() << "Loading chat for contact: " << uid << ", " << name;
+
+    ui->chat_title->setText(name);
+    // 设置用户在线状态
+    if (online_status) {
         ui->chat_status->setText("在线");
         ui->chat_status->setStyleSheet("color: green;");
     }
@@ -114,17 +142,13 @@ void ChatDialog::loadChatFrame(const int& uid)
         ui->chat_status->setText("离线");
         ui->chat_status->setStyleSheet("color: red;");
     }
-    // TODO: Load chat history for the selected contact
-    loadChatMessageList(uid);
+    // 加载消息列表
+    emit loadChatMessageList(message_list);
+    // 加载聊天界面的同时，切换到消息列表
+    switchToMessage();
 }
 
-// 读取与聊天人的消息记录
-void ChatDialog::loadChatMessageList(const int& uid)
-{
-    qDebug() << "load chat message list with uid: " << uid;
-}
-
-void ChatDialog::keyPressEvent(QKeyEvent *event)
+void ChatDialog::keyPressEvent(QKeyEvent* event)
 {
     if (event->key() == Qt::Key_Escape) {
         event->ignore();
@@ -133,14 +157,24 @@ void ChatDialog::keyPressEvent(QKeyEvent *event)
     QDialog::keyPressEvent(event);
 }
 
-void ChatDialog::sendMessage(){
+void ChatDialog::onSendMessage() {
     QString message = ui->send_edit->toPlainText();
     if (message.isEmpty()) {
         return;
     }
-    // TODO: Send the message to the current contact
-    emit messageSent(_currentContact, message);
+    // 发送消息，清除发送框。
+    int uid = UserManager::getInstance()->getUid();
+    int friend_uid = getFriendUid();
     ui->send_edit->clear();
+    QJsonObject obj;
+    obj["token"] = UserManager::getInstance()->getToken();
+    obj["uid"] = uid;
+    obj["friend_uid"] = friend_uid;
+    obj["message"] = message;
+    obj["message_time"] = QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss");
+    obj["message_type"] = "text";
+    QJsonDocument doc(obj);
+    TcpManager::getInstance()->slot_send_data(ID_SEND_CHAT_MESSAGE, doc.toJson());
 }
 
 void ChatDialog::searchContact(){
@@ -194,27 +228,14 @@ void ChatDialog::loadContactInfo(const int &uid)
     ui->right_widget->setCurrentWidget(ui->userinfo_page);
 }
 
-void ChatDialog::chatWithUser(const int& uid){
-    MessageItem * item = ui->message_list->findMessageItem(uid);
-    // 创建新的message item
-    if(item == nullptr){
-        // 获取当前时间
-        QString time_str = QDateTime::currentDateTime().toString("hh:mm");
-        // 父元素绑定message_list
-        item = new MessageItem(ui->message_list);
-        item->setInfo(item->getUid(), item->getName(), ":/images/wechat.png", "", time_str);
-        ui->message_list->addMessage(item);
-    }
-    // 设置选中的message item
-    ui->message_list->setCurrentMessage(item);
-
-    // 根据当前message item加载聊天内容
-    loadChatFrame(item->getUid());
-
-    // 显示聊天界面
+// 用户界面，点击聊天按钮
+void ChatDialog::chatWithUser(const int& uid)
+{
+    // 设置当前聊天对象为点击的uid用户。
+    ui->message_list->setCurrentMessage(ui->message_list->findMessageItem(uid));
+    // 切换到Message列表
     switchToMessage();
 }
-
 
 void ChatDialog::openAddContactDialog(){
     AddFriendDialog *dialog = new AddFriendDialog(this);
@@ -240,7 +261,8 @@ void ChatDialog::addNewFriend(const int& uid, const QString& username, const QSt
 // 新加用户到联系人列表
 void ChatDialog::addUser(std::unique_ptr<UserInfo>& user_info){
     ContactItem *item = new ContactItem(ui->contact_list);
-    item->setInfo(user_info->uid, user_info->username, "", "");
+    // 测试代码
+    item->setInfo(user_info->uid, user_info->username, "", "", 0);
     // 添加用户到联系人列表
     ui->contact_list->addContact(item);
 }

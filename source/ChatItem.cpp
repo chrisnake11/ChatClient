@@ -1,7 +1,7 @@
 #include "ChatItem.h"
 
-ChatItem::ChatItem(bool fromthis, QWidget *parent)
-    : QWidget(parent), _fromthis(fromthis)
+ChatItem::ChatItem(bool from_this, QWidget *parent)
+    : QWidget(parent)
 {
     _layout = new QGridLayout(this);
     _layout->setVerticalSpacing(3);
@@ -23,7 +23,7 @@ ChatItem::ChatItem(bool fromthis, QWidget *parent)
     QSpacerItem* spacer = new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
     // 来自于自己的消息
-    if(fromthis == true){
+    if(from_this == true){
         // 设置布局，头像在右
         // _    name    avatar
         // _    bubble  _
@@ -71,6 +71,10 @@ ChatItem::~ChatItem()
 {
 }
 
+void ChatItem::setUid(const int& uid) {
+
+}
+
 void ChatItem::setName(const QString &name){
     _nameLabel->setText(name);
 }
@@ -86,7 +90,13 @@ void ChatItem::setMessageBubble(QWidget* bubble)
 void ChatItem::setAvatar(const QString &avatarPath)
 {
     QPixmap avatarPixmap(avatarPath);
-    _avatarLabel->setPixmap(avatarPixmap.scaled(40, 40, Qt::KeepAspectRatio));
+    if (avatarPixmap.isQBitmap()) {
+        _avatarLabel->setPixmap(avatarPixmap.scaled(40, 40, Qt::KeepAspectRatio));
+    }
+    else {
+        _avatarLabel->setText("default");
+        _avatarLabel->setStyleSheet("background: green;");
+    }
 }
 
 QString ChatItem::getName() const
@@ -101,4 +111,8 @@ void ChatItem::paintEvent(QPaintEvent *event){
     QPainter painter(this);
     style()->drawPrimitive(QStyle::PE_Widget, &opt, &painter, this);
     QWidget::paintEvent(event);
+}
+
+int ChatItem::getUid() const {
+    return _uid;
 }

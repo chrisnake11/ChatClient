@@ -11,14 +11,13 @@
 class ChatBubble : public QWidget {
     Q_OBJECT
 public:
-    explicit ChatBubble(const bool fromthis, QWidget *parent = nullptr);
+    explicit ChatBubble(QWidget *parent = nullptr);
     ~ChatBubble();
     void setMargin(int margin);
     void setWidget(QWidget *widget);
 
 protected:
     void paintEvent(QPaintEvent *event) override;
-    bool _fromthis; // 是否来自于自己
     QHBoxLayout *_layout;
     int _margin;
 };

@@ -22,7 +22,7 @@ public:
     ~ContactItem();
 
     // 更新信息
-    void setInfo(const int& uid, const QString &name, const QString &avatarPath, const QString &message);
+    void setInfo(const int& uid, const QString &name, const QString &avatarPath, const QString &message, const int& online_status);
     void setAvatar(const QString &avatarPath);
     QString getAvatarPath() const { return _avatarPath; }
     QString getName() const { return _name; }
@@ -57,15 +57,13 @@ private:
     QString _avatarPath;
     QString _name;
     QString _message; // 个性签名
+    int _onlineStatus;
 
     // ui组件
     QHBoxLayout *_layout;
     QLabel *_avatarLabel; // 头像
     QLabel *_nameLabel; // 名称
     QLabel *_personalSigLabel; // 个性签名标签
-
-    // 在线状态
-    bool _isOnline;
 
     WidgetMouseState _state;
 };

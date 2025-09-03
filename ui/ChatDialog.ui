@@ -258,7 +258,7 @@
            <string/>
           </property>
           <property name="pixmap">
-           <pixmap resource="resources.qrc">:/images/search_icon.png</pixmap>
+           <pixmap resource="../resources.qrc">:/images/search_icon.png</pixmap>
           </property>
           <property name="scaledContents">
            <bool>true</bool>
@@ -468,7 +468,7 @@
       <string notr="true"/>
      </property>
      <property name="currentIndex">
-      <number>2</number>
+      <number>0</number>
      </property>
      <widget class="QWidget" name="chat_page">
       <layout class="QVBoxLayout" name="chat_layout">
@@ -582,8 +582,8 @@
               <rect>
                <x>0</x>
                <y>0</y>
-               <width>98</width>
-               <height>28</height>
+               <width>648</width>
+               <height>293</height>
               </rect>
              </property>
              <property name="sizePolicy">
@@ -936,7 +936,8 @@
   </customwidget>
  </customwidgets>
  <resources>
-  <include location="resources.qrc"/>
+  <include location="../resources.qrc"/>
+  <include location="../resources.qrc"/>
  </resources>
  <connections/>
 </ui>

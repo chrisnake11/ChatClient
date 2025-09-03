@@ -3,8 +3,8 @@
 #include <QTextDocument>
 #include <QFontMetricsF>
 
-TextBubble::TextBubble(const bool fromthis, const QString& text, QWidget *parent)
-    : ChatBubble(fromthis, parent), _text(text)
+TextBubble::TextBubble(const QString& text, QWidget *parent)
+    : ChatBubble(parent), _text(text)
 {
     _textEdit = new QTextEdit(this);
     _textEdit->setReadOnly(true);
